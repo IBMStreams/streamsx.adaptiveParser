@@ -1,0 +1,30 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite BinaryParserSample {
+graph
+	stream<blob data> BinStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = (blob)[0x1u,0x2u,0x3u,0x4u]}, BinStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as 4 bytes blob, but originally it could be 2 halfword numbers
+	 *  Output SPL type determines whether to see the input as 2 uint16 attributes or list<uint16>[2] or something else
+	 */
+    stream<list<uint16>[2] digits> ParsedStream = AdaptiveParser(BinStream) {
+    	param
+    		blobDataAttr : data;
+    		binaryMode : true;
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
