@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
+  <cppOperatorModel>
+    <context>
+      <description></description>
+      <customLiterals>
+        <enumeration>
+          <name>Skippers</name>
+          <value>none</value>
+          <value>blank</value>
+          <value>endl</value>
+          <value>whitespace</value>
+        </enumeration>
+      </customLiterals>
+      <customOutputFunctions>
+        <customOutputFunction>
+          <name>AdaptiveParserFS</name>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T AsIs(T v)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any A, tuple T> A Param(T options)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any A, tuple T1, tuple T2> A Param(T1 options, T2 deepOptions)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;tuple T> boolean ParamN(T options)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;tuple T1, tuple T2> boolean ParamN(T1 options, T2 deepOptions)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.TupleId, boolean tupleId)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.TupleId, boolean tupleId)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomListParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomSetParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;any T> T CustomMapParser(rstring keyDelimiter, Skipper.Skippers keySkipper, rstring valueDelimiter, Skipper.Skippers valueSkipper, rstring endMarker)</prototype>
+          </function>
+        </customOutputFunction>
+      </customOutputFunctions>
+      <libraryDependencies>
+        <library>
+          <cmn:description></cmn:description>
+          <cmn:managedLibrary>
+            <cmn:includePath>../../impl/include</cmn:includePath>
+          </cmn:managedLibrary>
+        </library>
+      </libraryDependencies>
+      <providesSingleThreadedContext>Always</providesSingleThreadedContext>
+      <allowCustomLogic>false</allowCustomLogic>
+      <splExpressionTree output="true"/>
+    </context>
+    <parameters>
+      <description></description>
+      <allowAny>false</allowAny>
+      <parameter>
+        <name>batch</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>binaryMode</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>blobDataAttr</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Attribute</expressionMode>
+        <type>blob</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>stringDataAttr</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Attribute</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>comment</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>delimiter</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>prefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>suffix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>skipper</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>CustomLiteral</expressionMode>
+        <type>Skippers</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>quotedStrings</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>undefined</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>-1</cardinality>
+      </parameter>
+    </parameters>
+    <inputPorts>
+      <inputPortSet>
+        <description></description>
+        <windowingDescription></windowingDescription>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <windowExpressionMode>AttributeFree</windowExpressionMode>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </inputPortSet>
+    </inputPorts>
+    <outputPorts>
+      <outputPortSet>
+        <description></description>
+        <expressionMode>AttributeFree</expressionMode>
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>false</rewriteAllowed>
+        <outputFunctions>
+          <default>AsIs</default>
+          <type>AdaptiveParserFS</type>
+        </outputFunctions>
+        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>0</windowPunctuationInputPort>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <allowNestedCustomOutputFunctions>true</allowNestedCustomOutputFunctions>
+        <cardinality>1</cardinality>
+        <optional>false</optional>
+      </outputPortSet>
+    </outputPorts>
+  </cppOperatorModel>
+</operatorModel>

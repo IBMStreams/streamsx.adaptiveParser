@@ -1,0 +1,6 @@
+namespace com.ibm.streamsx.adaptiveparser;
+
+public composite Skipper {
+	type
+		static Skippers = enum{none, blank, endl, whitespace};
+}

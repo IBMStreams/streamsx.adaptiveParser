@@ -1,0 +1,183 @@
+#include <SPL/Runtime/Type/Enum.h>
+#include <SPL/Runtime/Type/SPLType.h>
+
+<%# [----- perl code -----]
+BEGIN {*Type:: = *SPL::CodeGen::Type::};
+use AdaptiveParserCommon;
+
+my $parserOpt = {};
+$parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+$parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+$parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
+$parserOpt->{'delimiter'} = ($_ = $model->getParameterByName('delimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
+$parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+$parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+$parserOpt->{'skipper'} = ($_ = $model->getParameterByName('skipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
+$parserOpt->{'skipperLast'} = $parserOpt->{'skipper'};
+$parserOpt->{'undefined'} = $model->getParameterByName('undefined');
+ 
+my $oTupleCppType = 'oport0';
+my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
+my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
+my $structs = [];
+
+my $oAttrParams = $model->getOutputPortAt(0);
+#my %oAttrNames = map { $_->getName() => ($_->hasAssignment() ? $_ : undef) } @{$model->getOutputPortAt(0)->getAttributes()};
+
+my $FUSION_MAX_VECTOR_SIZE = 10;
+AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $structs, $oAttrParams, $parserOpt, \$FUSION_MAX_VECTOR_SIZE);
+# [----- perl code -----]%>
+
+#define FUSION_MAX_VECTOR_SIZE <%=$FUSION_MAX_VECTOR_SIZE > 50 ? 50 : $FUSION_MAX_VECTOR_SIZE%>
+
+#include "Spirit.h"
+#include <streams_boost/typeof/typeof.hpp>
+#include <streams_boost/foreach.hpp>
+
+#define foreach STREAMS_BOOST_FOREACH
+
+typedef const unsigned char* charPtr;
+typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
+
+<%SPL::CodeGen::headerPrologue($model);%>
+ 
+typedef MY_BASE_OPERATOR::OPort0Type oport0;
+
+struct boolean_ : qi::symbols<char, bool> {
+	boolean_() {
+		add
+			("T", true)
+			("F", false)
+			("t", true)
+			("f", false)
+			("TRUE", true)
+			("FALSE", false)
+			("true", true)
+			("false", false)
+			("1", true)
+			("0", false);
+	}
+} boolean;
+
+<%if ($parserOpt->{'undefined'}) {
+	my $undefValue;
+	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
+	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);%>
+
+struct undefined_ : qi::symbols<char, qi::unused_type> {
+	undefined_() {
+		
+		add <%=@undefinedValues%> ;
+	}
+} undefined;
+
+<%}%>
+
+
+<%# [----- perl code -----]
+my $baseRule = 'oport0_base';
+
+for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+	my @symbol = values %{$symbols};
+print qq(
+	@symbol
+);
+}
+ 
+# [----- perl code -----]%>
+
+template <typename Iterator>
+struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
+    TupleParserGrammar() : TupleParserGrammar::base_type(<%=$baseRule%>) {
+    	using namespace ::ext;
+//    	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
+//    	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
+
+    	const std::string dq = "\"";
+
+<%# [----- perl code -----]
+
+foreach my $struct (@{$structs}) {
+if (scalar %{$struct}) {
+	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
+	my $ruleBody = join(" >> ", @{$struct->{'ruleBody'}});
+	$ruleBody = "lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $ruleBody)" if ($parserOpt->{'comment'});
+	my $rule = $skipper."[$ruleBody]";
+	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple - no need from Streams 3.2.2
+print qq(
+		$struct->{'ruleName'} %= $rule;
+);
+}
+}
+# [----- perl code -----]%>
+
+		timestamp = lexeme[ (long_ >> string(_r1) >> uint_ >> eps[_a = val(0)] >> -(string(_r1) >> uint_[_a = _1]))[_val = construct<SPL::timestamp>(_1, _3, _a)] ];
+
+    	<%=$baseRule%>.name("oport0");
+
+//		on_error<fail> (<%=$baseRule%>, std::cout
+//				<< val("Error! Expecting ")
+//				<< _4                               // what failed?
+//				<< val("\nhere:")
+//				<< std::endl
+//				<< construct<std::string>(_3, _2)   // iterators to error-pos, end
+//				<< std::endl
+//		);
+
+//			debug(oport0);
+    }
+
+	qi::rule<Iterator,  SPL::timestamp(std::string), locals<int> > timestamp;
+
+    qi::rule<Iterator, oport0(bool&)> oport0_base;
+    
+<%# [----- perl code -----]
+
+foreach my $struct (@{$structs}) {
+if (scalar %{$struct} && $struct->{'cppType'} ne 'oport0') {
+print qq(
+	qi::rule<Iterator, $struct->{'cppType'}()> $struct->{'ruleName'};
+);
+}
+}
+# [----- perl code -----]%>
+};
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+public:
+  MY_OPERATOR();
+  virtual ~MY_OPERATOR(); 
+
+  void allPortsReady(); 
+  void prepareToShutdown(); 
+
+  void process(Tuple const & tuple, uint32_t port);
+  void process(Punctuation const & punct, uint32_t port);
+
+private:
+	TupleParserGrammar<charPtr> tupleParser;
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>
+
+typedef <%=$model->getOutputPortAt(0)->getCppTupleType()%> oport0;
+
+<%# [----- perl code -----]
+if (defined($structs->[-1]->{'xml'})) {
+	my @xmlDefs = values %{$structs->[-1]->{'xml'}};
+	
+	foreach my $xml (@xmlDefs) {
+print qq(
+	$xml
+);
+	}
+
+}
+ 
+foreach my $struct (@{$structs}) {
+print qq(
+	$struct->{'traits'}
+	$struct->{'extension'}
+);
+}
+# [----- perl code -----]%>

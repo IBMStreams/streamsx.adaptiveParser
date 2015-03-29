@@ -1,0 +1,67 @@
+<%SPL::CodeGen::implementationPrologue($model);%>
+
+<%# [----- perl code -----]
+use AdaptiveParserCommon;
+
+my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+my $blobDataAttr = ($_ = $model->getParameterByName('blobDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
+my $comment = $model->getParameterByName('comment') ? 'true' : 'false';
+my $stringDataAttr = ($_ = $model->getParameterByName('stringDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
+
+SPL::CodeGen::errorln("'One of the parameters: blobDataAttr' or 'stringDataAttr' is missing", $model->getOutputPortAt(0)->getSourceLocation()) unless (length($blobDataAttr) || length($stringDataAttr));
+SPL::CodeGen::errorln("Only one of the parameters: 'blobDataAttr' or 'stringDataAttr' should be used", $model->getOutputPortAt(0)->getSourceLocation()) if (length($blobDataAttr) && length($stringDataAttr));
+
+my $oTupleName = 'oport0';
+my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
+my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
+my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
+
+# [----- perl code -----]%>
+
+MY_OPERATOR::MY_OPERATOR() : tupleParser() {}
+MY_OPERATOR::~MY_OPERATOR() {}
+
+void MY_OPERATOR::allPortsReady() {}
+void MY_OPERATOR::prepareToShutdown() {}
+
+void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
+	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);
+
+<%if ($blobDataAttr) {%>
+	const blob & raw =  <%=$blobDataAttr%>;
+	charPtr iter_start = raw.getData();
+	charPtr iter_end = raw.getData() + raw.getSize();
+<%}
+else {%>
+	const std::string & row =  <%=$stringDataAttr%>;
+	charPtr iter_start = (charPtr)row.data();
+	charPtr iter_end = (charPtr)(iter_start + row.size());
+<%}%>
+
+<%if ($batch) {%>
+	while(iter_start < iter_end) {
+<%}%>
+		OPort0Type otuple;
+
+
+		bool isCommented = <%=$comment%>;
+		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);
+
+		if(!isCommented) {
+			if(!parsed <%=$batch ? '' : '|| iter_start != iter_end'%>)
+				SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");
+	
+			submit(otuple, 0);
+		}
+<%if ($batch) {%>
+	}
+<%}%>
+}
+
+void MY_OPERATOR::process(Punctuation const & punct, uint32_t port) {
+   forwardWindowPunctuation(punct);
+}
+
+<%SPL::CodeGen::implementationEpilogue($model);%>
+
+//qi::unused_type streams_boost::fusion::extension::struct_member<SPL::BeJwrMcwtLjbMBQAKbgKX, 1>::dummy;
