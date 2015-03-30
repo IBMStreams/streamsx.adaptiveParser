@@ -1,0 +1,36 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite CSVParserSample {
+graph
+	stream<rstring data> CSVStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "1496500390.657267, text, 42, 3.14"}, CSVStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type generates the CSV parser
+	 *  Parameters define general behavior: delimter is ',' and any whitespaces should be skipped
+	 *  Custom formats can be handled by custom output functions: timestamp expects '.' to be the separator (the default is ',')
+	 */
+    stream<timestamp ts, rstring data, uint32 mol, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
+    	param
+    		stringDataAttr : data;
+    		delimiter : ",";
+    		skipper : whitespace;
+		output
+			ParsedStream :
+				ts = Param({tsToken = ".", skipper = Skipper.none});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
