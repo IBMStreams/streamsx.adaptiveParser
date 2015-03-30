@@ -18,11 +18,11 @@ sub main::generate($$) {
    $parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'delimiter'} = ($_ = $model->getParameterByName('delimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
+   $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'skipper'} = ($_ = $model->getParameterByName('skipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
-   $parserOpt->{'skipperLast'} = $parserOpt->{'skipper'};
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
     
    my $oTupleCppType = 'oport0';

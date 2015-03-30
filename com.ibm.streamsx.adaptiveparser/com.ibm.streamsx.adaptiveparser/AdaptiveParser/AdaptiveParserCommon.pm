@@ -6,17 +6,19 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('binaryMode','quotedStrings','delimiter','skipper','undefined');
+my @inheritedParams = ('binaryMode','quotedStrings','globalDelimiter','globalSkipper','undefined');
 
 my %allowedParams = (
 					binaryMode => 'boolean',
 					delimiter => 'rstring',
+					globalDelimiter => 'rstring',
 					cutCharsetDelim => 'rstring',
 					cutStringDelim => 'rstring',
 					cutSkipper => 'Skipper.Skippers',
 					prefix => 'rstring',
 					suffix => 'rstring',
 					skipper => 'Skipper.Skippers',
+					globalSkipper => 'Skipper.Skippers',
 					quotedStrings => 'boolean',
 					tsToken => 'rstring',
 					tupleId => 'boolean'
@@ -32,22 +34,16 @@ my %skippers = (
 sub buildStructs(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size) = @_;
 
-	if (Type::isTuple($splType)) {
-		return buildStructFromTuple($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size);
-	}
-	elsif (Type::isList($splType) || Type::isBList($splType) ||
-		  Type::isSet($splType) || Type::isBSet($splType)) {
-		return handleListOrSet($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size);
-	}
-	elsif (Type::isMap($splType) || Type::isBMap($splType)) {
-		return handleMap($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size);
-	}
-	elsif (Type::isPrimitive($splType)) {
-		return handlePrimitive($srcLocation, $cppType, $splType, $structs, $parserOpt);
-	}
-	else {
-		SPL::CodeGen::errorln("Unsupported type %s.", $splType, $srcLocation);
-	}
+	return buildStructFromTuple($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size) if (Type::isTuple($splType));
+	
+	return handleListOrSet($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size)	if (Type::isList($splType) || Type::isBList($splType) ||
+																											Type::isSet($splType) || Type::isBSet($splType));
+	
+	return handleMap($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size) if (Type::isMap($splType) || Type::isBMap($splType));
+	
+	return handlePrimitive($srcLocation, $cppType, $splType, $structs, $parserOpt) if (Type::isPrimitive($splType));
+	
+	SPL::CodeGen::errorln("Unsupported type %s.", $splType, $srcLocation);
 }
 
 
@@ -79,7 +75,7 @@ sub buildStructFromTuple(@) {
 	my %attrParams;
 	my $topLevel = ref $oAttrParams eq 'SPL::Operator::Instance::OutputPort';
 
-	unless ($topLevel){
+	if (!$topLevel && $oAttrParams){
 		my $attrParamNames = $oAttrParams->getAttributes();
 		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
 			SPL::CodeGen::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
@@ -123,6 +119,9 @@ sub buildStructFromTuple(@) {
 				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
 			}
 		}
+		
+		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 				
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
 
@@ -138,9 +137,10 @@ sub buildStructFromTuple(@) {
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 		}
 
-		if ($parserCustOpt->{'undefined'}) {
-			$parser = "(attr_cast(undefined) | $parser)";
-		}
+		$parser = "(attr_cast(undefined) | $parser)" if ($parserCustOpt->{'undefined'});
+		
+		$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+		
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
 	
@@ -181,6 +181,9 @@ sub handleListOrSet(@) {
 			}
 		}
 		
+		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
 	
 		if ($parserCustOpt->{'cutStringDelim'}) {
@@ -193,6 +196,7 @@ sub handleListOrSet(@) {
 		if (Type::isComposite($valueType)) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 		}
 		
 		if ($bound) {
@@ -202,6 +206,7 @@ sub handleListOrSet(@) {
 			$parser = "*(($parser >> eps) - eoi)";
 		}
 	}
+	
 	
 	return $parser;
 }
@@ -236,11 +241,11 @@ sub handleMap(@) {
 		
 	}
 	
-	my $parserCustOpt;
 	my $keyDelimiter = '';
 	
 	foreach my $attrName (('key','value')) {
 
+		my $parserCustOpt;
 		@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
 		$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipperLast'};
 		
@@ -262,6 +267,9 @@ sub handleMap(@) {
 			}
 		}
 
+		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		
 		if ($attrName eq 'key') {
 			$keyDelimiter = $parserCustOpt->{'delimiter'};
 			$parser = buildStructs($srcLocation, "$cppType\::key_type", $keyType, $structs, $param2, $parserCustOpt, $size);
@@ -282,11 +290,6 @@ sub handleMap(@) {
 		}
 
 		my $attrType = ($attrName eq 'key') ? $keyType : $valueType;
-		if (Type::isComposite($attrType)) {
-			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
-		}
-	
 		if ($parserCustOpt->{'cutStringDelim'}) {
 			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
@@ -294,6 +297,12 @@ sub handleMap(@) {
 			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 		
+		if (Type::isComposite($attrType)) {
+			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
+			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+		}
+	
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
 
@@ -313,6 +322,9 @@ sub handleMap(@) {
 sub handlePrimitive(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
 	my $value = '';
+	
+	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 	
 	if (Type::isBlob($splType)) {
 		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 0);
@@ -414,7 +426,8 @@ sub handlePrimitive(@) {
 	
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
-	$value .= " >> ($parserOpt->{'delimiter'} | eoi)" if ($parserOpt->{'delimiter'});
+	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
+	#$value .= " >> ($parserOpt->{'delimiter'} | eoi)" if ($parserOpt->{'delimiter'});
 	return $value;
 }
 
@@ -457,7 +470,7 @@ sub setParserCustOpt(@) {
 	for (my $k = 0; $k < @{$paramAttrNames}; $k++) {
 		
 		if (exists($expectedAttrs->{$paramAttrNames->[$k]})) {
-			if ($paramAttrNames->[$k] ~~ ['skipper','cutSkipper']) {
+			if ($paramAttrNames->[$k] ~~ ['skipper','globalSkipper','cutSkipper']) {
 				my $skipper = AdaptiveParserCommon::getSkipper( $paramAttrVals->[$k]->getValue());
 				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;

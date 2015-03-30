@@ -138,12 +138,21 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>delimiter</name>
+        <name>globalDelimiter</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
         <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>globalSkipper</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>CustomLiteral</expressionMode>
+        <type>Skippers</type>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
@@ -162,15 +171,6 @@
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
         <type>rstring</type>
-        <cardinality>1</cardinality>
-      </parameter>
-      <parameter>
-        <name>skipper</name>
-        <description></description>
-        <optional>true</optional>
-        <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>CustomLiteral</expressionMode>
-        <type>Skippers</type>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
