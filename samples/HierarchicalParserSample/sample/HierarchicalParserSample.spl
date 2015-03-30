@@ -1,0 +1,50 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite HierarchicalParserSample {
+type
+	WalkedOnTheMoon_t = rstring firstName, rstring lastName, uint16 age, rstring mission;
+graph
+	stream<rstring data> HStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "Neil Armstrong 38 Appolo11  |
+								Buzz Aldrin 39 Appolo11     |
+								Pete Conrad 39 Appolo12     |
+								Alan Bean 37 Appolo12       |
+								Alan Shepard 47 Appolo14    |
+								Edgar Mitchell 40 Appolo14  |
+								David Scott 39 Appolo15     |
+								James Irwin 41 Appolo15     |
+								John Young 41 Appolo16      |
+								Charles Duke 36 Appolo16    |
+								Eugene Cernan 38 Appolo17   |
+								Harrison Schmitt 37 Appolo17"
+						}, HStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type is hierarchiacal and generates appropriate parser
+	 *  Custom formats can be handled by custom output functions recursively: Param() is the top level custom output function, while ParamN() should be used as nested one
+	 *  'value' stands for elements of list/set or map value
+	 *  delimiter is used to separate tuples in the list
+	 */
+    stream<list<WalkedOnTheMoon_t> walkedOnTheMoon> ParsedStream = AdaptiveParser(HStream) {
+    	param
+    		stringDataAttr : data;
+		output
+			ParsedStream :
+				walkedOnTheMoon = Param({skipper = Skipper.whitespace},
+						 {value = ParamN({delimiter = "|"})});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
