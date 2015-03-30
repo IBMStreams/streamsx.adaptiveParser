@@ -15,17 +15,17 @@ graph
 	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
 	 *  The data arrives as a string
 	 *  Output SPL type generates the CSV parser
-	 *  Parameters define general behavior: delimter is ',' and any whitespaces should be skipped
+	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
 	 *  Custom formats can be handled by custom output functions: timestamp expects '.' to be the separator (the default is ',')
 	 */
-    stream<timestamp ts, rstring data, uint32 mol, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
+    stream<timestamp ts, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
     	param
     		stringDataAttr : data;
-    		delimiter : ",";
-    		skipper : whitespace;
+    		globalDelimiter : ",";
+    		globalSkipper : whitespace;
 		output
 			ParsedStream :
-				ts = Param({tsToken = ".", skipper = Skipper.none});
+				ts = Param({tsToken = "."});
     }
     
     () as FSink = FileSink(ParsedStream) {
