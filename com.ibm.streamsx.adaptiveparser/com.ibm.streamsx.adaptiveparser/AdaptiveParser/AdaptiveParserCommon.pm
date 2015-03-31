@@ -135,11 +135,10 @@ sub buildStructFromTuple(@) {
 		if (Type::isComposite($attrTypes[$i])) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 		}
 
 		$parser = "(attr_cast(undefined) | $parser)" if ($parserCustOpt->{'undefined'});
-		
-		$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 		
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
