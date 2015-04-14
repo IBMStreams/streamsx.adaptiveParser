@@ -35,7 +35,7 @@ graph
 	 */
     stream<list<WalkedOnTheMoon_t> walkedOnTheMoon> ParsedStream = AdaptiveParser(HStream) {
     	param
-    		stringDataAttr : data;
+    		dataAttr : data;
 		output
 			ParsedStream :
 				walkedOnTheMoon = Param({skipper = Skipper.whitespace},
