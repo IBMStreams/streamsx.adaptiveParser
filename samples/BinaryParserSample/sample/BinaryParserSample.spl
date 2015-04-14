@@ -18,7 +18,7 @@ graph
 	 */
     stream<list<uint16>[2] digits> ParsedStream = AdaptiveParser(BinStream) {
     	param
-    		blobDataAttr : data;
+    		dataAttr : data;
     		binaryMode : true;
     }
     
