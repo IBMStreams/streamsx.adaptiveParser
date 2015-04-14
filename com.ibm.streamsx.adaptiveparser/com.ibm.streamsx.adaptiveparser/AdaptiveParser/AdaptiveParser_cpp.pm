@@ -18,7 +18,7 @@ sub main::generate($$) {
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
    
-   SPL::CodeGen::checkMinimalSchema ($model->getInputPortAt(0), { name => "data", type => ["blob", "rstring"] });
+   SPL::CodeGen::checkMinimalSchema ($model->getInputPortAt(0), { name => $dataAttrSPLValue, type => ["blob", "rstring"] });
    
    my $oTupleName = 'oport0';
    my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();

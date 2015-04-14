@@ -110,9 +110,6 @@ sub main::generate($$) {
    print 'struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {', "\n";
    print "\n";
    print '	static inline SPL::timestamp parseTS(const std::string& format, const std::string& ts) {', "\n";
-   print '//	inline SPL::timestamp parseTS(const TimestampFormat& format, std::string const & ts) {', "\n";
-   print '//		return toTimestamp(static_cast<SPL::uint32>(format), ts);', "\n";
-   print '//		strptime(ts, format, dateTime, numCharsProcessed);', "\n";
    print '		struct tm sysTm;', "\n";
    print '		if(strptime(ts.c_str(), format.c_str(), &sysTm)) {', "\n";
    print '			return SPL::timestamp(mktime(&sysTm),0,0);', "\n";
