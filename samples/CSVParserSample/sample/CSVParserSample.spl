@@ -23,7 +23,7 @@ graph
 	 */
     stream<timestamp ts1, timestamp ts2, timestamp ts3, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
     	param
-    		stringDataAttr : data;
+    		dataAttr : data;
     		globalDelimiter : ",";
     		globalSkipper : whitespace;
 		output
