@@ -123,7 +123,6 @@ sub buildStructFromTuple(@) {
 				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
 			}
 		}
-		
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 				
@@ -273,8 +272,10 @@ sub handleMap(@) {
 			}
 		}
 
+		SPL::CodeGen::println($parserCustOpt->{'skipper'});
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		SPL::CodeGen::println($parserCustOpt->{'skipper'});
 		
 		if ($attrName eq 'key') {
 			$keyDelimiter = $parserCustOpt->{'delimiter'};

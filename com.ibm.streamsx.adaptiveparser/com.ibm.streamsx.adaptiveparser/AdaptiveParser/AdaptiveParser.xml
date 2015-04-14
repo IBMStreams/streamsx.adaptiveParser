@@ -125,21 +125,12 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>blobDataAttr</name>
+        <name>dataAttr</name>
         <description></description>
-        <optional>true</optional>
+        <optional>false</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Attribute</expressionMode>
-        <type>blob</type>
-        <cardinality>1</cardinality>
-      </parameter>
-      <parameter>
-        <name>stringDataAttr</name>
-        <description></description>
-        <optional>true</optional>
-        <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>Attribute</expressionMode>
-        <type>rstring</type>
+        <type></type>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>

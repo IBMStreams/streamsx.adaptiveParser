@@ -3,13 +3,12 @@
 <%# [----- perl code -----]
 use AdaptiveParserCommon;
 
+my $dataAttrCppValue = $model->getParameterByName('dataAttr')->getValueAt(0)->getCppExpression();
+my $dataAttrSPLValue = (split /\./, $model->getParameterByName('dataAttr')->getValueAt(0)->getSPLExpression())[-1];
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
-my $blobDataAttr = ($_ = $model->getParameterByName('blobDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
-my $stringDataAttr = ($_ = $model->getParameterByName('stringDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
 
-SPL::CodeGen::errorln("'One of the parameters: blobDataAttr' or 'stringDataAttr' is missing", $model->getOutputPortAt(0)->getSourceLocation()) unless (length($blobDataAttr) || length($stringDataAttr));
-SPL::CodeGen::errorln("Only one of the parameters: 'blobDataAttr' or 'stringDataAttr' should be used", $model->getOutputPortAt(0)->getSourceLocation()) if (length($blobDataAttr) && length($stringDataAttr));
+SPL::CodeGen::checkMinimalSchema ($model->getInputPortAt(0), { name => "data", type => ["blob", "rstring"] });
 
 my $oTupleName = 'oport0';
 my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
@@ -25,18 +24,13 @@ void MY_OPERATOR::allPortsReady() {}
 void MY_OPERATOR::prepareToShutdown() {}
 
 void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
+
 	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);
 
-<%if ($blobDataAttr) {%>
-	const blob & raw =  <%=$blobDataAttr%>;
-	charPtr iter_start = raw.getData();
-	charPtr iter_end = raw.getData() + raw.getSize();
-<%}
-else {%>
-	const std::string & row =  <%=$stringDataAttr%>;
-	charPtr iter_start = (charPtr)row.data();
-	charPtr iter_end = (charPtr)(iter_start + row.size());
-<%}%>
+	charPtr iter_start;
+	charPtr iter_end;
+	
+	setInputIterators(<%=$dataAttrCppValue%>, iter_start, iter_end);
 
 <%if ($batch) {%>
 	while(iter_start < iter_end) {

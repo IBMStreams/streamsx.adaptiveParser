@@ -142,10 +142,7 @@
         <parameter cardinality="1" expressionMode="CustomLiteral" name="parsingMode" optional="true" type="Parsing">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="blobDataAttr" optional="true" type="blob">
-          <description/>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="stringDataAttr" optional="true" type="rstring">
+        <parameter cardinality="1" expressionMode="Attribute" name="dataAttr" optional="false" type="">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="comment" optional="true" type="rstring">

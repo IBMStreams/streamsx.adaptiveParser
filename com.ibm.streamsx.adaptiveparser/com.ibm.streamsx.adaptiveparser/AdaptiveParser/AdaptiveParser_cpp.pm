@@ -13,13 +13,12 @@ sub main::generate($$) {
    # [----- perl code -----]
    use AdaptiveParserCommon;
    
+   my $dataAttrCppValue = $model->getParameterByName('dataAttr')->getValueAt(0)->getCppExpression();
+   my $dataAttrSPLValue = (split /\./, $model->getParameterByName('dataAttr')->getValueAt(0)->getSPLExpression())[-1];
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
-   my $blobDataAttr = ($_ = $model->getParameterByName('blobDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
-   my $stringDataAttr = ($_ = $model->getParameterByName('stringDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
    
-   SPL::CodeGen::errorln("'One of the parameters: blobDataAttr' or 'stringDataAttr' is missing", $model->getOutputPortAt(0)->getSourceLocation()) unless (length($blobDataAttr) || length($stringDataAttr));
-   SPL::CodeGen::errorln("Only one of the parameters: 'blobDataAttr' or 'stringDataAttr' should be used", $model->getOutputPortAt(0)->getSourceLocation()) if (length($blobDataAttr) && length($stringDataAttr));
+   SPL::CodeGen::checkMinimalSchema ($model->getInputPortAt(0), { name => "data", type => ["blob", "rstring"] });
    
    my $oTupleName = 'oport0';
    my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
@@ -36,25 +35,15 @@ sub main::generate($$) {
    print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::prepareToShutdown() {}', "\n";
    print "\n";
    print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {', "\n";
+   print "\n";
    print '	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);', "\n";
    print "\n";
-   if ($blobDataAttr) {
-   print "\n";
-   print '	const blob & raw =  ';
-   print $blobDataAttr;
-   print ';', "\n";
-   print '	charPtr iter_start = raw.getData();', "\n";
-   print '	charPtr iter_end = raw.getData() + raw.getSize();', "\n";
-   }
-   else {
-   print "\n";
-   print '	const std::string & row =  ';
-   print $stringDataAttr;
-   print ';', "\n";
-   print '	charPtr iter_start = (charPtr)row.data();', "\n";
-   print '	charPtr iter_end = (charPtr)(iter_start + row.size());', "\n";
-   }
-   print "\n";
+   print '	charPtr iter_start;', "\n";
+   print '	charPtr iter_end;', "\n";
+   print '	', "\n";
+   print '	setInputIterators(';
+   print $dataAttrCppValue;
+   print ', iter_start, iter_end);', "\n";
    print "\n";
    if ($batch) {
    print "\n";

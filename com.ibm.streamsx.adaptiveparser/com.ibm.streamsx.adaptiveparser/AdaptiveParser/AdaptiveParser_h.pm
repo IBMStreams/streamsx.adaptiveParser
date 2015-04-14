@@ -150,9 +150,9 @@ sub main::generate($$) {
    print "\n";
    print "\n";
    print '//		timestamp = (long_ >> lit(_r1) >> uint_) [_val = construct<SPL::timestamp>(_1, _2, val(0))];', "\n";
+   print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
    print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];', "\n";
    print '		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
-   print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
    print '		timestampF = (skip(blank)[eps] >> STR_(,)) [_val = bind(&TupleParserGrammar<charPtr>::parseTS, _r1, construct<std::string>(bind(&iterator_range<charPtr>::begin,_1), bind(&iterator_range<charPtr>::end,_1)))];', "\n";
    print "\n";
    print '    	';
@@ -202,6 +202,16 @@ sub main::generate($$) {
    print "\n";
    print '  void process(Tuple const & tuple, uint32_t port);', "\n";
    print '  void process(Punctuation const & punct, uint32_t port);', "\n";
+   print "\n";
+   print '  inline void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {', "\n";
+   print '	iter_start = raw.getData();', "\n";
+   print '	iter_end = raw.getData() + raw.getSize();', "\n";
+   print '  }', "\n";
+   print '  ', "\n";
+   print '  inline void setInputIterators(const std::string & row, charPtr & iter_start, charPtr & iter_end) {', "\n";
+   print '	iter_start = (charPtr)row.data();', "\n";
+   print '	iter_end = (charPtr)(iter_start + row.size());', "\n";
+   print '  }', "\n";
    print "\n";
    print 'private:', "\n";
    print '	TupleParserGrammar<charPtr> tupleParser;', "\n";
