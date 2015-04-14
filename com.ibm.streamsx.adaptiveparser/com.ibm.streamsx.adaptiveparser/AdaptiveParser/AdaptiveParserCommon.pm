@@ -19,7 +19,11 @@ my %allowedParams = (
 					suffix => 'rstring',
 					skipper => 'Skipper.Skippers',
 					globalSkipper => 'Skipper.Skippers',
+					optional => 'boolean',
 					quotedStrings => 'boolean',
+					tsFormat => 'rstring',
+#					tsFormat => ['YYYYMMDDhhmmss','YYYY_MM_DD_hh_mm_ss','MM_DD_YYYY_hh_mm_ss','DD_MM_YYYY_hh_mm_ss',
+#								 'YYYY_MM_DD_hh_mm_ss_mmm','MM_DD_YYYY_hh_mm_ss_mmm','DD_MM_YYYY_hh_mm_ss_mmm'],
 					tsToken => 'rstring',
 					tupleId => 'boolean'
 				);
@@ -136,6 +140,7 @@ sub buildStructFromTuple(@) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 
 		$parser = "(attr_cast(undefined) | $parser)" if ($parserCustOpt->{'undefined'});
@@ -196,6 +201,7 @@ sub handleListOrSet(@) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 		
 		if ($bound) {
@@ -204,6 +210,7 @@ sub handleListOrSet(@) {
 		else {
 			$parser = "*(($parser >> eps) - eoi)";
 		}
+
 	}
 	
 	
@@ -300,6 +307,7 @@ sub handleMap(@) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 	
 		push @{$struct->{'ruleBody'}}, $parser;
@@ -330,7 +338,8 @@ sub handlePrimitive(@) {
 	}
 	elsif (Type::isBoolean($splType)) {
 		#$value = 'bool_';
-		$value = 'boolean';
+		#$value = 'boolean';
+		$value = getSkippedValue($parserOpt, 'boolean');
 	}
 	elsif(Type::isBString($splType)) {
 		my $bound = Type::getBound($splType);
@@ -346,11 +355,25 @@ sub handlePrimitive(@) {
 	}
 	elsif (Type::isEnum($splType)) {
 		$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType);
+		$value = getSkippedValue($parserOpt, $value);
 	}
 	elsif (Type::isTimestamp($splType)) {
-		$parserOpt->{'tsToken'} //= '","';
-		$value = "timestamp(val($parserOpt->{'tsToken'}))";
-		#$value = "raw[long_ >> $parserOpt->{'tsToken'} >> uint_ >> -($parserOpt->{'tsToken'} >> uint_)]";
+		if ($parserOpt->{'tsFormat'}) {
+			if ($parserOpt->{'tsFormat'} eq '"SPL"') {
+				$value = 'timestampS';
+			}
+			else {
+				my $cut = "lit($parserOpt->{'delimiter'}) | eoi" if ($parserOpt->{'delimiter'});
+				$cut //= $parserOpt->{'skipper'} ? "$parserOpt->{'skipper'} | eoi" : 'eoi';
+				$value = "reparse(char_ - ($cut))[timestampF(val($parserOpt->{'tsFormat'}))]";
+				#$value = "reparse(char_ - ($cut))[_val = bind(&TupleParserGrammar::parseTS, _1, val($parserOpt->{'tsFormat'}))]";
+			}
+		}
+		else {
+			$parserOpt->{'tsToken'} //= '"."';
+			$value = "timestamp(val($parserOpt->{'tsToken'}))";
+			#$value = "raw[long_ >> $parserOpt->{'tsToken'} >> uint_ >> -($parserOpt->{'tsToken'} >> uint_)]";
+		}
 	}
 	elsif (Type::isComplex($splType)) {
 		SPL::CodeGen::errorln("The type '%s' is not supported.", $splType, $srcLocation);
@@ -383,43 +406,43 @@ sub handlePrimitive(@) {
 	else {
 	
 		if (Type::isDecimal32($splType)) {
-			$value = 'float_';
+			$value = getSkippedValue($parserOpt, 'float_');
 		}
 		if (Type::isDecimal64($splType)) {
-			$value = 'double_';
+			$value = getSkippedValue($parserOpt, 'double_');
 		}
 		if (Type::isDecimal128($splType)) {
-			$value = 'long_double';
+			$value = getSkippedValue($parserOpt, 'long_double');
 		}
 		elsif (Type::isFloat32($splType)) {
-			$value = 'float_';
+			$value = getSkippedValue($parserOpt, 'float_');
 		}
 		elsif (Type::isFloat64($splType)) {
-			$value = 'double_';
+			$value = getSkippedValue($parserOpt, 'double_');
 		}
 		elsif (Type::isInt8($splType)) {
-			$value = 'short_';
+			$value = getSkippedValue($parserOpt, 'short_');
 		}
 		elsif (Type::isUint8($splType)) {
-			$value = 'ushort_';
+			$value = getSkippedValue($parserOpt, 'ushort_');
 		}
 		elsif (Type::isInt16($splType)) {
-			$value = 'short_';
+			$value = getSkippedValue($parserOpt, 'short_');
 		}
 		elsif (Type::isUint16($splType)) {
-			$value = 'ushort_';
+			$value = getSkippedValue($parserOpt, 'ushort_');
 		}
 		elsif (Type::isInt32($splType)) {
-			$value = 'int_';
+			$value = getSkippedValue($parserOpt, 'int_');
 		}
 		elsif (Type::isUint32($splType)) {
-			$value = 'uint_';
+			$value = getSkippedValue($parserOpt, 'uint_');
 		}
 		elsif (Type::isInt64($splType)) {
-			$value = 'long_';
+			$value = getSkippedValue($parserOpt, 'long_');
 		}
 		elsif (Type::isUint64($splType)) {
-			$value = 'ulong_';
+			$value = getSkippedValue($parserOpt, 'ulong_');
 		}
 	}
 	
@@ -427,6 +450,7 @@ sub handlePrimitive(@) {
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
 	#$value .= " >> ($parserOpt->{'delimiter'} | eoi)" if ($parserOpt->{'delimiter'});
+	$value = "-($value)" if ($parserOpt->{'optional'});
 	return $value;
 }
 
@@ -474,6 +498,15 @@ sub setParserCustOpt(@) {
 				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;
 			}
+#			elsif ($paramAttrNames->[$k] eq 'tsFormat') {
+#				my $tsFormatType =
+#'enum TimestampFormat {YYYYMMDDhhmmss,YYYY_MM_DD_hh_mm_ss,MM_DD_YYYY_hh_mm_ss,DD_MM_YYYY_hh_mm_ss,YYYY_MM_DD_hh_mm_ss_mmm,MM_DD_YYYY_hh_mm_ss_mmm,DD_MM_YYYY_hh_mm_ss_mmm}';
+#
+#				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
+#										$paramAttrNames->[$k], $paramAttrVals->[$k]->getValue(), $tsFormatType, $srcLocation)
+#					unless ($paramAttrVals->[$k]->getValue() ~~ $expectedAttrs->{$paramAttrNames->[$k]});
+#				$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue();
+#			}
 			else {
 				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
 										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), $expectedAttrs->{$paramAttrNames->[$k]}, $srcLocation)
@@ -508,13 +541,22 @@ sub getSkipper($) {
 	return $skippers{$skipper};
 }
 
+sub getSkippedValue(@) {
+	my ($parserOpt, $value) = @_;
+
+	if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'}) {
+		$value = "skip($parserOpt->{'skipper'})[$value]" if ($parserOpt->{'skipper'});
+		$value = "lexeme[$value]" unless ($parserOpt->{'skipper'});
+	}
+	
+	return $value;
+}
+
 sub getStringMacro(@) {
 	my ($parserOpt, $quotedStrings) = @_;
 	my $value = 'STR_';
 	my $delimiter = defined($parserOpt->{'suffix'}) ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
 
-	#SPL::CodeGen::errorln(Dumper($delimiter));
-	
 	if ($quotedStrings) {
 		$value .= 'D';
 		$value .= "(dq,'')";

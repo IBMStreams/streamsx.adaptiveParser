@@ -10,6 +10,10 @@
     <namespace name="com.ibm.streamsx.adaptiveparser">
       <primitiveOp language="Cpp" modelUriIndex="2" name="AdaptiveParser" public="true">
         <description/>
+        <customLiterals name="Parsing">
+          <value name="full"/>
+          <value name="partial"/>
+        </customLiterals>
         <customLiterals name="Skippers">
           <value name="none"/>
           <value name="blank"/>
@@ -133,6 +137,9 @@
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="binaryMode" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="CustomLiteral" name="parsingMode" optional="true" type="Parsing">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Attribute" name="blobDataAttr" optional="true" type="blob">

@@ -5,6 +5,11 @@
       <description></description>
       <customLiterals>
         <enumeration>
+          <name>Parsing</name>
+          <value>full</value>
+          <value>partial</value>
+        </enumeration>
+        <enumeration>
           <name>Skippers</name>
           <value>none</value>
           <value>blank</value>
@@ -87,7 +92,7 @@
       </libraryDependencies>
       <providesSingleThreadedContext>Always</providesSingleThreadedContext>
       <allowCustomLogic>false</allowCustomLogic>
-      <splExpressionTree output="true"/>
+      <splExpressionTree cppCode="false" output="true"/>
     </context>
     <parameters>
       <description></description>
@@ -108,6 +113,15 @@
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
         <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>parsingMode</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>CustomLiteral</expressionMode>
+        <type>Parsing</type>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>

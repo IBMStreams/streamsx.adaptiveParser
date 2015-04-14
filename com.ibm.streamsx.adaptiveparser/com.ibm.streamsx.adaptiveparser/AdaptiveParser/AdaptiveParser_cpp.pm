@@ -14,8 +14,8 @@ sub main::generate($$) {
    use AdaptiveParserCommon;
    
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
    my $blobDataAttr = ($_ = $model->getParameterByName('blobDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
-   my $comment = $model->getParameterByName('comment') ? 'true' : 'false';
    my $stringDataAttr = ($_ = $model->getParameterByName('stringDataAttr')) ? $_->getValueAt(0)->getCppExpression() : '';
    
    SPL::CodeGen::errorln("'One of the parameters: blobDataAttr' or 'stringDataAttr' is missing", $model->getOutputPortAt(0)->getSourceLocation()) unless (length($blobDataAttr) || length($stringDataAttr));
@@ -63,15 +63,12 @@ sub main::generate($$) {
    print "\n";
    print '		OPort0Type otuple;', "\n";
    print "\n";
-   print "\n";
-   print '		bool isCommented = ';
-   print $comment;
-   print ';', "\n";
+   print '		bool isCommented;', "\n";
    print '		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);', "\n";
    print "\n";
    print '		if(!isCommented) {', "\n";
    print '			if(!parsed ';
-   print $batch ? '' : '|| iter_start != iter_end';
+   print $batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end';
    print ')', "\n";
    print '				SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");', "\n";
    print '	', "\n";

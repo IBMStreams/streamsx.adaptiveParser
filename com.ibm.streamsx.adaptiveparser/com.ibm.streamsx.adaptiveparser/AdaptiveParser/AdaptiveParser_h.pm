@@ -9,6 +9,8 @@ sub main::generate($$) {
    $SPL::CodeGenHelper::verboseMode = $model->getContext()->isVerboseModeOn();
    print '#include <SPL/Runtime/Type/Enum.h>', "\n";
    print '#include <SPL/Runtime/Type/SPLType.h>', "\n";
+   print '#include <SPL/Runtime/Function/TimeFunctions.h>', "\n";
+   print '#include "time.h"', "\n";
    print "\n";
    # [----- perl code -----]
    BEGIN {*Type:: = *SPL::CodeGen::Type::};
@@ -24,7 +26,7 @@ sub main::generate($$) {
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
-    
+   
    my $oTupleCppType = 'oport0';
    my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
    my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
@@ -106,6 +108,20 @@ sub main::generate($$) {
    print "\n";
    print 'template <typename Iterator>', "\n";
    print 'struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {', "\n";
+   print "\n";
+   print '	static inline SPL::timestamp parseTS(const std::string& format, const std::string& ts) {', "\n";
+   print '//	inline SPL::timestamp parseTS(const TimestampFormat& format, std::string const & ts) {', "\n";
+   print '//		return toTimestamp(static_cast<SPL::uint32>(format), ts);', "\n";
+   print '//		strptime(ts, format, dateTime, numCharsProcessed);', "\n";
+   print '		struct tm sysTm;', "\n";
+   print '		if(strptime(ts.c_str(), format.c_str(), &sysTm)) {', "\n";
+   print '			return SPL::timestamp(mktime(&sysTm),0,0);', "\n";
+   print '		}', "\n";
+   print '		else {', "\n";
+   print '			return SPL::timestamp();', "\n";
+   print '		}', "\n";
+   print '	}', "\n";
+   print ' ', "\n";
    print '    TupleParserGrammar() : TupleParserGrammar::base_type(';
    print $baseRule;
    print ') {', "\n";
@@ -120,10 +136,11 @@ sub main::generate($$) {
    foreach my $struct (@{$structs}) {
    if (scalar %{$struct}) {
    	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
-   	my $ruleBody = join(" >> ", @{$struct->{'ruleBody'}});
-   	$ruleBody = "lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $ruleBody)" if ($parserOpt->{'comment'});
-   	my $rule = $skipper."[$ruleBody]";
+   	my $rule = join(" >> ", @{$struct->{'ruleBody'}});
+   	$rule = $skipper."[$rule]";
    	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple - no need from Streams 3.2.2
+   	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
+   	#$rule = "&lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $rule)" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
    print qq(
    		$struct->{'ruleName'} %= $rule;
    );
@@ -132,7 +149,11 @@ sub main::generate($$) {
    # [----- perl code -----]
    print "\n";
    print "\n";
-   print '		timestamp = lexeme[ (long_ >> string(_r1) >> uint_ >> eps[_a = val(0)] >> -(string(_r1) >> uint_[_a = _1]))[_val = construct<SPL::timestamp>(_1, _3, _a)] ];', "\n";
+   print '//		timestamp = (long_ >> lit(_r1) >> uint_) [_val = construct<SPL::timestamp>(_1, _2, val(0))];', "\n";
+   print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];', "\n";
+   print '		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
+   print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
+   print '		timestampF = (skip(blank)[eps] >> STR_(,)) [_val = bind(&TupleParserGrammar<charPtr>::parseTS, _r1, construct<std::string>(bind(&iterator_range<charPtr>::begin,_1), bind(&iterator_range<charPtr>::end,_1)))];', "\n";
    print "\n";
    print '    	';
    print $baseRule;
@@ -152,7 +173,9 @@ sub main::generate($$) {
    print '//			debug(oport0);', "\n";
    print '    }', "\n";
    print "\n";
-   print '	qi::rule<Iterator,  SPL::timestamp(std::string), locals<int> > timestamp;', "\n";
+   print '	qi::rule<Iterator,  SPL::timestamp(std::string)> timestamp;', "\n";
+   print '	qi::rule<Iterator,  SPL::timestamp()> timestampS;', "\n";
+   print '	qi::rule<Iterator,  SPL::timestamp(std::string)> timestampF;', "\n";
    print "\n";
    print '    qi::rule<Iterator, oport0(bool&)> oport0_base;', "\n";
    print '    ', "\n";
