@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="3.2.1.1" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="com.ibm.streamsx.adaptiveparser.cef" requiredProductVersion="3.2.0" version="1.0.0">
+    <description/>
+    <uriTable>
+      <uri index="1" value="com.ibm.streamsx.adaptiveparser.cef/CEFParser.spl"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.adaptiveparser.cef">
+      <compositeOp column="18" line="16" name="CEFParser" potentialMain="false" public="true" uriIndex="1">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="CEFEvent" portIndex="0"/>
+        <type column="9" line="22" name="CEFSeverity_e" static="true" type="enum { Low, Medium, High }" uriIndex="1"/>
+        <type column="9" line="24" name="CEFHeader_t" static="true" type="uint16 version, rstring deviceVendor, rstring deviceProduct, rstring deviceVersion, rstring signatureID, rstring name, CEFSeverity_e severity" uriIndex="1"/>
+        <type column="9" line="32" name="CEFExtension_t" static="true" type="map&lt;rstring, rstring> properties" uriIndex="1"/>
+        <enumLiterals column="31" line="22" static="true" typeName="CEFSeverity_e" uriIndex="1">
+          <enum>Low</enum>
+          <enum>Medium</enum>
+          <enum>High</enum>
+        </enumLiterals>
+      </compositeOp>
+    </namespace>
+    <dependency>
+      <common:name>com.ibm.streamsx.adaptiveparser</common:name>
+      <common:version>1.1.0</common:version>
+    </dependency>
+  </toolkit>
+
+</toolkitModel>
