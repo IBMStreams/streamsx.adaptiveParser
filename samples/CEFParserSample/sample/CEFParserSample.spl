@@ -1,0 +1,30 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser.cef::*;
+
+composite CEFParserSample {
+graph
+	stream<rstring data> File = FileSource() {
+        param
+            file : "CEFData.txt";
+        	format : line;
+    }
+    
+	/*
+	 *  CEFParserSample uses CEFParser toolkit that uses AdaptiveParser as dependency
+	 *  CEFParser expects the input attribute to be of type blob or rstring
+	 *  CEFParser output port type expected to be: tuple<CEFParser.CEFHeader_t, CEFParser.CEFExtension_t>
+	 */
+    stream<CEFParser.CEFHeader_t, CEFParser.CEFExtension_t> CEFEvent = CEFParser(File) {
+    	param
+//    		batch : false; // set true if there is more than one record in the input
+    		dataAttr : data;
+    }
+    
+    () as DSink = FileSink(CEFEvent)   {
+        param
+        	file : "/dev/stdout";
+        	flush : 1u;
+        	format : txt;
+	    }
+}
