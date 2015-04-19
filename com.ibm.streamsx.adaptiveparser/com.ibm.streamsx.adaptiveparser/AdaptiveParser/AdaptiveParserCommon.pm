@@ -22,8 +22,6 @@ my %allowedParams = (
 					optional => 'boolean',
 					quotedStrings => 'boolean',
 					tsFormat => 'rstring',
-#					tsFormat => ['YYYYMMDDhhmmss','YYYY_MM_DD_hh_mm_ss','MM_DD_YYYY_hh_mm_ss','DD_MM_YYYY_hh_mm_ss',
-#								 'YYYY_MM_DD_hh_mm_ss_mmm','MM_DD_YYYY_hh_mm_ss_mmm','DD_MM_YYYY_hh_mm_ss_mmm'],
 					tsToken => 'rstring',
 					tupleId => 'boolean'
 				);
@@ -336,8 +334,6 @@ sub handlePrimitive(@) {
 		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 0);
 	}
 	elsif (Type::isBoolean($splType)) {
-		#$value = 'bool_';
-		#$value = 'boolean';
 		$value = getSkippedValue($parserOpt, 'boolean');
 	}
 	elsif(Type::isBString($splType)) {
@@ -362,16 +358,12 @@ sub handlePrimitive(@) {
 				$value = 'timestampS';
 			}
 			else {
-				#my $cut = "lit($parserOpt->{'delimiter'}) | eoi" if ($parserOpt->{'delimiter'});
-				#$cut //= $parserOpt->{'skipper'} ? "$parserOpt->{'skipper'} | eoi" : 'eoi';
-				#$value = "reparse(char_ - ($cut))[timestampF(val($parserOpt->{'tsFormat'}))]";
 				$value = "timestampFMT(val($parserOpt->{'tsFormat'}))";
 			}
 		}
 		else {
 			$parserOpt->{'tsToken'} //= '"."';
 			$value = "timestamp(val($parserOpt->{'tsToken'}))";
-			#$value = "raw[long_ >> $parserOpt->{'tsToken'} >> uint_ >> -($parserOpt->{'tsToken'} >> uint_)]";
 		}
 	}
 	elsif (Type::isComplex($splType)) {
@@ -448,7 +440,6 @@ sub handlePrimitive(@) {
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
-	#$value .= " >> ($parserOpt->{'delimiter'} | eoi)" if ($parserOpt->{'delimiter'});
 	$value = "-($value)" if ($parserOpt->{'optional'});
 	return $value;
 }
@@ -497,15 +488,6 @@ sub setParserCustOpt(@) {
 				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;
 			}
-#			elsif ($paramAttrNames->[$k] eq 'tsFormat') {
-#				my $tsFormatType =
-#'enum TimestampFormat {YYYYMMDDhhmmss,YYYY_MM_DD_hh_mm_ss,MM_DD_YYYY_hh_mm_ss,DD_MM_YYYY_hh_mm_ss,YYYY_MM_DD_hh_mm_ss_mmm,MM_DD_YYYY_hh_mm_ss_mmm,DD_MM_YYYY_hh_mm_ss_mmm}';
-#
-#				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
-#										$paramAttrNames->[$k], $paramAttrVals->[$k]->getValue(), $tsFormatType, $srcLocation)
-#					unless ($paramAttrVals->[$k]->getValue() ~~ $expectedAttrs->{$paramAttrNames->[$k]});
-#				$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue();
-#			}
 			else {
 				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
 										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), $expectedAttrs->{$paramAttrNames->[$k]}, $srcLocation)
