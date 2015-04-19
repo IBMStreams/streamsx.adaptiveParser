@@ -50,9 +50,6 @@ sub main::generate($$) {
    print "\n";
    print '#define foreach STREAMS_BOOST_FOREACH', "\n";
    print "\n";
-   print 'typedef const unsigned char* charPtr;', "\n";
-   print 'typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;', "\n";
-   print "\n";
    SPL::CodeGen::headerPrologue($model);
    print "\n";
    print ' ', "\n";
@@ -150,7 +147,7 @@ sub main::generate($$) {
    print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
    print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];', "\n";
    print '		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
-   print '		timestampF = (skip(blank)[eps] >> STR_(,)) [_val = bind(&TupleParserGrammar<charPtr>::parseTS, _r1, construct<std::string>(bind(&iterator_range<charPtr>::begin,_1), bind(&iterator_range<charPtr>::end,_1)))];', "\n";
+   print '//		timestampF = (skip(blank)[eps] >> STR_(,)) [_val = bind(&TupleParserGrammar<charPtr>::parseTS, _r1, construct<std::string>(bind(&iterator_range<charPtr>::begin,_1), bind(&iterator_range<charPtr>::end,_1)))];', "\n";
    print "\n";
    print '    	';
    print $baseRule;

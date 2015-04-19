@@ -21,7 +21,10 @@
 #include <streams_boost/fusion/include/std_pair.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
 #include <streams_boost/spirit/include/qi_match.hpp>
+#include <streams_boost/type_traits/add_reference.hpp>
+#include <streams_boost/type_traits/add_const.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
+#include "time.h"
 
 namespace extension = streams_boost::fusion::extension;
 namespace fusion = streams_boost::fusion;
@@ -46,6 +49,8 @@ using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
 using streams_boost::iterator_range;
 using namespace qi::labels;
 
+typedef const unsigned char* charPtr;
+typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
 
 namespace ext {
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse);
@@ -126,6 +131,44 @@ namespace ext {
 		RangeSkipper rangeSkipper;
 		ReverseSkipper reverseSkipper;
 	};
+
+
+	STREAMS_BOOST_SPIRIT_TERMINAL_EX(timestampFMT);
+
+    struct timestampFMT_parser : qi::primitive_parser<timestampFMT_parser> {
+        template <typename Context, typename Iterator>
+        struct attribute {
+            typedef SPL::timestamp type;
+        };
+
+        timestampFMT_parser(const char* value) : value_(value) {}
+
+        template <typename Iterator, typename Context, typename Skipper, typename Attribute>
+        bool parse(Iterator& first, Iterator const& last, Context&, Skipper const& skipper, Attribute& attr) const {
+        	qi::skip_over(first, last, skipper);
+
+    		struct tm sysTm;
+    		const char* tsParsed = strptime(reinterpret_cast<const char*>(first), value_, &sysTm);
+
+    		if(tsParsed) {
+    			first = reinterpret_cast<charPtr>(tsParsed);
+				time_t rawtime = mktime(&sysTm);
+				if(rawtime >= 0) {
+					traits::assign_to(SPL::timestamp(rawtime,0,0), attr);
+					return true;
+				}
+    		}
+
+			return false;
+        }
+
+		template <typename Context>
+		streams_boost::spirit::info what(Context&) const {
+			return streams_boost::spirit::info("timestampFMT");
+		}
+
+        const char* value_;
+	};
 }
 
 
@@ -142,6 +185,14 @@ namespace streams_boost { namespace spirit {
 
     template <>
 	struct use_lazy_directive<qi::domain, ext::tag::reverse, 2> : mpl::true_ {};
+
+
+    template <>
+    struct use_terminal<qi::domain, terminal_ex<ext::tag::timestampFMT, fusion::vector1<const char*> > > : mpl::true_ {};
+
+    template <>
+    struct use_lazy_terminal<qi::domain, ext::tag::timestampFMT, 1> : mpl::true_ {};
+
 }}
 
 namespace streams_boost { namespace spirit { namespace qi {
@@ -168,6 +219,18 @@ namespace streams_boost { namespace spirit { namespace qi {
             return result_type(subject, compile<qi::domain>(fusion::at_c<0>(term.args), modifiers), compile<qi::domain>(fusion::at_c<1>(term.args), modifiers));
         }
     };
+
+
+    template <typename Modifiers>
+    struct make_primitive<terminal_ex<ext::tag::timestampFMT, fusion::vector1<const char*> >, Modifiers> {
+        typedef ext::timestampFMT_parser result_type;
+
+        template <typename Terminal>
+        result_type operator()(Terminal const& term, unused_type) const {
+            return result_type(fusion::at_c<0>(term.args));
+        }
+    };
+
 }}}
 
 namespace streams_boost { namespace spirit { namespace traits {
@@ -219,13 +282,6 @@ namespace streams_boost { namespace spirit { namespace traits {
 			attr = SPL::spl_cast<SPL::ustring, SPL::rstring>::cast(SPL::rstring(first,last));
 	    }
 	};
-
-//	template <typename Iterator>
-//	struct assign_to_attribute_from_iterators<SPL::timestamp, Iterator> {
-//	    static void call(Iterator const& first, Iterator const& last, SPL::timestamp & attr) {
-//			attr = SPL::spl_cast<SPL::timestamp, SPL::rstring>::cast("(" + SPL::rstring(first,last) + ")");
-//	    }
-//	};
 
 
     template <typename K, typename V, int N>

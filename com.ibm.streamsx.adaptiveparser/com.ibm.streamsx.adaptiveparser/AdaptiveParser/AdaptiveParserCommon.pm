@@ -272,10 +272,8 @@ sub handleMap(@) {
 			}
 		}
 
-		SPL::CodeGen::println($parserCustOpt->{'skipper'});
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
-		SPL::CodeGen::println($parserCustOpt->{'skipper'});
 		
 		if ($attrName eq 'key') {
 			$keyDelimiter = $parserCustOpt->{'delimiter'};
@@ -364,10 +362,10 @@ sub handlePrimitive(@) {
 				$value = 'timestampS';
 			}
 			else {
-				my $cut = "lit($parserOpt->{'delimiter'}) | eoi" if ($parserOpt->{'delimiter'});
-				$cut //= $parserOpt->{'skipper'} ? "$parserOpt->{'skipper'} | eoi" : 'eoi';
-				$value = "reparse(char_ - ($cut))[timestampF(val($parserOpt->{'tsFormat'}))]";
-				#$value = "reparse(char_ - ($cut))[_val = bind(&TupleParserGrammar::parseTS, _1, val($parserOpt->{'tsFormat'}))]";
+				#my $cut = "lit($parserOpt->{'delimiter'}) | eoi" if ($parserOpt->{'delimiter'});
+				#$cut //= $parserOpt->{'skipper'} ? "$parserOpt->{'skipper'} | eoi" : 'eoi';
+				#$value = "reparse(char_ - ($cut))[timestampF(val($parserOpt->{'tsFormat'}))]";
+				$value = "timestampFMT(val($parserOpt->{'tsFormat'}))";
 			}
 		}
 		else {
