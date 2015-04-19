@@ -87,17 +87,6 @@ print qq(
 
 template <typename Iterator>
 struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
-
-	static inline SPL::timestamp parseTS(const std::string& format, const std::string& ts) {
-		struct tm sysTm;
-		if(strptime(ts.c_str(), format.c_str(), &sysTm)) {
-			return SPL::timestamp(mktime(&sysTm),0,0);
-		}
-		else {
-			return SPL::timestamp();
-		}
-	}
- 
     TupleParserGrammar() : TupleParserGrammar::base_type(<%=$baseRule%>) {
     	using namespace ::ext;
 //    	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;

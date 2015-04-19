@@ -105,17 +105,6 @@ sub main::generate($$) {
    print "\n";
    print 'template <typename Iterator>', "\n";
    print 'struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {', "\n";
-   print "\n";
-   print '	static inline SPL::timestamp parseTS(const std::string& format, const std::string& ts) {', "\n";
-   print '		struct tm sysTm;', "\n";
-   print '		if(strptime(ts.c_str(), format.c_str(), &sysTm)) {', "\n";
-   print '			return SPL::timestamp(mktime(&sysTm),0,0);', "\n";
-   print '		}', "\n";
-   print '		else {', "\n";
-   print '			return SPL::timestamp();', "\n";
-   print '		}', "\n";
-   print '	}', "\n";
-   print ' ', "\n";
    print '    TupleParserGrammar() : TupleParserGrammar::base_type(';
    print $baseRule;
    print ') {', "\n";
