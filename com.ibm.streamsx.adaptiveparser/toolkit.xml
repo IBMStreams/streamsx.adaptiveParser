@@ -10,6 +10,10 @@
     <namespace name="com.ibm.streamsx.adaptiveparser">
       <primitiveOp language="Cpp" modelUriIndex="2" name="AdaptiveParser" public="true">
         <description/>
+        <customLiterals name="ParseAs">
+          <value name="plainTuple"/>
+          <value name="keyValue"/>
+        </customLiterals>
         <customLiterals name="Parsing">
           <value name="full"/>
           <value name="partial"/>
@@ -48,95 +52,15 @@
             <parameter name="options" type="T1"/>
             <parameter name="deepOptions" type="T2"/>
           </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Padders, rstring prefix, rstring suffix)</prototype>
-            <parameter name="__p1" type="Param.Padders"/>
-            <parameter name="prefix" type="rstring"/>
-            <parameter name="suffix" type="rstring"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
-            <parameter name="__p1" type="Param.Formatters"/>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.TupleId, boolean tupleId)</prototype>
-            <parameter name="__p1" type="Param.TupleId"/>
-            <parameter name="tupleId" type="boolean"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
-            <parameter name="__p1" type="Param.Padders"/>
-            <parameter name="prefix" type="rstring"/>
-            <parameter name="suffix" type="rstring"/>
-            <parameter name="__p4" type="Param.Formatters"/>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.TupleId, boolean tupleId)</prototype>
-            <parameter name="__p1" type="Param.Padders"/>
-            <parameter name="prefix" type="rstring"/>
-            <parameter name="suffix" type="rstring"/>
-            <parameter name="__p4" type="Param.TupleId"/>
-            <parameter name="tupleId" type="boolean"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
-            <parameter name="__p1" type="Param.Formatters"/>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-            <parameter name="__p4" type="Param.TupleId"/>
-            <parameter name="tupleId" type="boolean"/>
-          </function>
-          <function name="CustomParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
-            <parameter name="__p1" type="Param.Padders"/>
-            <parameter name="prefix" type="rstring"/>
-            <parameter name="suffix" type="rstring"/>
-            <parameter name="__p4" type="Param.Formatters"/>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-            <parameter name="__p7" type="Param.TupleId"/>
-            <parameter name="tupleId" type="boolean"/>
-          </function>
-          <function name="CustomListParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomListParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-            <parameter name="endMarker" type="rstring"/>
-          </function>
-          <function name="CustomSetParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomSetParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
-            <parameter name="delimiter" type="rstring"/>
-            <parameter name="skipper" type="Skipper.Skippers"/>
-            <parameter name="endMarker" type="rstring"/>
-          </function>
-          <function name="CustomMapParser" returnType="T">
-            <description/>
-            <prototype>&lt;any T&gt; T CustomMapParser(rstring keyDelimiter, Skipper.Skippers keySkipper, rstring valueDelimiter, Skipper.Skippers valueSkipper, rstring endMarker)</prototype>
-            <parameter name="keyDelimiter" type="rstring"/>
-            <parameter name="keySkipper" type="Skipper.Skippers"/>
-            <parameter name="valueDelimiter" type="rstring"/>
-            <parameter name="valueSkipper" type="Skipper.Skippers"/>
-            <parameter name="endMarker" type="rstring"/>
-          </function>
         </outputFunctions>
         <parametersDescription/>
         <parameter cardinality="1" expressionMode="Constant" name="batch" optional="true" type="boolean">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="binaryMode" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="CustomLiteral" name="parseAs" optional="true" type="ParseAs">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="CustomLiteral" name="parsingMode" optional="true" type="Parsing">
@@ -174,9 +98,16 @@
           <description/>
         </outputPort>
       </primitiveOp>
-      <compositeOp column="18" line="3" name="Skipper" potentialMain="true" public="true" uriIndex="1">
-        <type column="10" line="5" name="Skippers" static="true" type="enum { none, blank, endl, whitespace }" uriIndex="1"/>
-        <enumLiterals column="26" line="5" static="true" typeName="Skippers" uriIndex="1">
+      <compositeOp column="18" line="3" name="CustomParser" potentialMain="true" public="true" uriIndex="1">
+        <type column="10" line="5" name="CustomParsers" static="true" type="enum { plainTuple, keyValue }" uriIndex="1"/>
+        <enumLiterals column="31" line="5" static="true" typeName="CustomParsers" uriIndex="1">
+          <enum>plainTuple</enum>
+          <enum>keyValue</enum>
+        </enumLiterals>
+      </compositeOp>
+      <compositeOp column="18" line="8" name="Skipper" potentialMain="true" public="true" uriIndex="1">
+        <type column="10" line="10" name="Skippers" static="true" type="enum { none, blank, endl, whitespace }" uriIndex="1"/>
+        <enumLiterals column="26" line="10" static="true" typeName="Skippers" uriIndex="1">
           <enum>none</enum>
           <enum>blank</enum>
           <enum>endl</enum>

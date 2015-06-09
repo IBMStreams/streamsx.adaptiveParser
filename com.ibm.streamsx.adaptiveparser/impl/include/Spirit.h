@@ -1,14 +1,14 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
-#define STR_(DELIM,SKIPPER) (raw[skip(char_ - eoi)[eps]])
-#define STR_W(DELIM,SKIPPER) (lexeme[raw[skip(char_ - eoi)[eps]]])
-#define STR_S(DELIM,SKIPPER) (raw[skip(char_ - SKIPPER)[eps]])
-#define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(char_ - SKIPPER)[eps]] >> eps])
-#define STR_D(DELIM,SKIPPER) (raw[skip(char_ - DELIM)[eps]])
-#define STR_DW(DELIM,SKIPPER) (lexeme[raw[skip(char_ - DELIM)[eps]]])
-#define STR_DS(DELIM,SKIPPER) (raw[skip(char_ - (skip(SKIPPER)[DELIM]))[eps]])
-#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(char_ - (skip(SKIPPER)[DELIM]))[eps]] >> eps])
+#define STR_(DELIM,SKIPPER) (raw[skip(byte_ - eoi)[eps]])
+#define STR_W(DELIM,SKIPPER) (lexeme[raw[skip(byte_ - eoi)[eps]]])
+#define STR_S(DELIM,SKIPPER) (raw[skip(byte_ - SKIPPER)[eps]])
+#define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - SKIPPER)[eps]] >> eps])
+#define STR_D(DELIM,SKIPPER) (raw[skip(byte_ - DELIM)[eps]])
+#define STR_DW(DELIM,SKIPPER) (lexeme[raw[skip(byte_ - DELIM)[eps]]])
+#define STR_DS(DELIM,SKIPPER) (raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]])
+#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix_bind.hpp>
@@ -23,6 +23,7 @@
 #include <streams_boost/spirit/include/qi_match.hpp>
 #include <streams_boost/type_traits/add_reference.hpp>
 #include <streams_boost/type_traits/add_const.hpp>
+#include <streams_boost/variant.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -46,7 +47,7 @@ using qi::eoi; using qi::eol; using qi::eps; using qi::lit;
 using qi::debug; using qi::fail; using qi::on_error;
 using qi::attr; using qi::attr_cast; using qi::lazy; using qi::lexeme;
 using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
-using streams_boost::iterator_range;
+using streams_boost::iterator_range; using streams_boost::variant;
 using namespace qi::labels;
 
 typedef const unsigned char* charPtr;
