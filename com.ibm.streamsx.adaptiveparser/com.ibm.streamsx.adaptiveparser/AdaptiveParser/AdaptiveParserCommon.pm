@@ -20,16 +20,25 @@ my %allowedParams = (
 					skipper => 'Skipper.Skippers',
 					globalSkipper => 'Skipper.Skippers',
 					optional => 'boolean',
+					parseAs => 'CustomParser.CustomParsers',
 					quotedStrings => 'boolean',
 					tsFormat => 'rstring',
 					tsToken => 'rstring',
 					tupleId => 'boolean'
 				);
 
+my %customParsers = (
+	plainTuple => '',
+	keyValue => 'keyValue'
+);
+
 my %skippers = (
 	none => '',
 	blank => 'blank',
+	control => 'cntrl',
 	endl => 'eol',
+	punct => 'punct',
+	tab => 'char_(9)',
 	whitespace => 'space'
 );
 
@@ -127,10 +136,10 @@ sub buildStructFromTuple(@) {
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
 
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 
 		if (Type::isComposite($attrTypes[$i])) {
@@ -188,10 +197,10 @@ sub handleListOrSet(@) {
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
 	
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 
 		if (Type::isComposite($valueType)) {
@@ -285,7 +294,7 @@ sub handleMap(@) {
 				
 				$parserCustOpt->{'skipper'} = '';
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
-				$parser = "reparse(char_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> lit($keyDelimiter) | eoi)))[$parser]";
+				$parser = "reparse(byte_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> lit($keyDelimiter) | eoi)))[$parser]";
 			}
 			else {
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -294,10 +303,10 @@ sub handleMap(@) {
 
 		my $attrType = ($attrName eq 'key') ? $keyType : $valueType;
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 		
 		if (Type::isComposite($attrType)) {
@@ -340,7 +349,7 @@ sub handlePrimitive(@) {
 		my $bound = Type::getBound($splType);
 		
 		$value = "raw[repeat($bound)[char_]]";
-		$value = "dq >> $value >> skip(char_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
+		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
 		
 	}
 	elsif (Type::isRString($splType) || Type::isUString($splType) || Type::isXml($splType)) {
@@ -488,6 +497,11 @@ sub setParserCustOpt(@) {
 				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;
 			}
+			elsif ($paramAttrNames->[$k] eq 'parseAs') {
+				my $customParser = AdaptiveParserCommon::getCustomParser( $paramAttrVals->[$k]->getValue());
+				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: CustomParser.CustomParsers.", $paramAttrNames->[$k], $srcLocation) unless (defined($customParser));
+				$parserCustOpt->{$paramAttrNames->[$k]} = $customParser;
+			}
 			else {
 				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
 										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), $expectedAttrs->{$paramAttrNames->[$k]}, $srcLocation)
@@ -514,6 +528,12 @@ sub getStringValue($) {
 	my ($str) = @_;
 	
 	return ($str eq '""' ? '' : $str);
+}
+
+sub getCustomParser($) {
+	my ($customParser) = @_;
+	
+	return $customParsers{$customParser};
 }
 
 sub getSkipper($) {

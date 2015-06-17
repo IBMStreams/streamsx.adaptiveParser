@@ -25,6 +25,7 @@ sub main::generate($$) {
    $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   #$parserOpt->{'parseAs'} = ($_ = $model->getParameterByName('parseAs')) ? AdaptiveParserCommon::getCustomParser($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
    
    my $oTupleCppType = 'oport0';
@@ -121,7 +122,7 @@ sub main::generate($$) {
    	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
    	my $rule = join(" >> ", @{$struct->{'ruleBody'}});
    	$rule = $skipper."[$rule]";
-   	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple - no need from Streams 3.2.2
+   	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple
    	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
    	#$rule = "&lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $rule)" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
    print qq(
@@ -132,9 +133,7 @@ sub main::generate($$) {
    # [----- perl code -----]
    print "\n";
    print "\n";
-   print '//		timestamp = (long_ >> lit(_r1) >> uint_) [_val = construct<SPL::timestamp>(_1, _2, val(0))];', "\n";
-   print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
-   print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];', "\n";
+   print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1*1000)];', "\n";
    print '		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
    print "\n";
    print '    	';

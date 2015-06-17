@@ -18,7 +18,10 @@
           <name>Skippers</name>
           <value>none</value>
           <value>blank</value>
+          <value>control</value>
           <value>endl</value>
+          <value>punct</value>
+          <value>tab</value>
           <value>whitespace</value>
         </enumeration>
       </customLiterals>

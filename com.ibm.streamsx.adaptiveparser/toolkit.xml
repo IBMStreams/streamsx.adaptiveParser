@@ -21,7 +21,10 @@
         <customLiterals name="Skippers">
           <value name="none"/>
           <value name="blank"/>
+          <value name="control"/>
           <value name="endl"/>
+          <value name="punct"/>
+          <value name="tab"/>
           <value name="whitespace"/>
         </customLiterals>
         <outputFunctions name="AdaptiveParserFS">
@@ -106,11 +109,14 @@
         </enumLiterals>
       </compositeOp>
       <compositeOp column="18" line="8" name="Skipper" potentialMain="true" public="true" uriIndex="1">
-        <type column="10" line="10" name="Skippers" static="true" type="enum { none, blank, endl, whitespace }" uriIndex="1"/>
+        <type column="10" line="10" name="Skippers" static="true" type="enum { none, blank, control, endl, punct, tab, whitespace }" uriIndex="1"/>
         <enumLiterals column="26" line="10" static="true" typeName="Skippers" uriIndex="1">
           <enum>none</enum>
           <enum>blank</enum>
+          <enum>control</enum>
           <enum>endl</enum>
+          <enum>punct</enum>
+          <enum>tab</enum>
           <enum>whitespace</enum>
         </enumLiterals>
       </compositeOp>

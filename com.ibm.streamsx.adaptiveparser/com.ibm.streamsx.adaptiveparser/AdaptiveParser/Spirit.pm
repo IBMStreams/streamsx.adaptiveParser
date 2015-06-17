@@ -70,7 +70,7 @@ namespace streams_boost { namespace fusion { namespace extension {
 
 }
 
-# Workaround for a known Spirit bug - should be removed in Streams 3.2.2 (boost 1.55)
+# Workaround for a known Spirit bug
 sub ext_defDummyStructMember(@) {
 	my ($adapt, $cppType) = @_;
 	

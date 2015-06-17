@@ -1,6 +1,11 @@
 namespace com.ibm.streamsx.adaptiveparser;
 
+public composite CustomParser {
+	type
+		static CustomParsers = enum{plainTuple, keyValue};
+}
+
 public composite Skipper {
 	type
-		static Skippers = enum{none, blank, endl, whitespace};
+		static Skippers = enum{none, blank, control, endl, punct, tab, whitespace};
 }
