@@ -27,7 +27,7 @@ type
 								rstring deviceVersion, 
 								rstring signatureID, 
 								rstring name, 
-								CEFSeverity_e severity;
+								CEFParser.CEFSeverity_e severity;
 
 	static CEFExtension_t	=	map<rstring,rstring> properties;
 	
@@ -38,11 +38,10 @@ graph
     		batch : $batch;
     		dataAttr : $dataAttr;
     		globalDelimiter : "|";
-    		globalSkipper : none;
 		output
 			CEFEvent :
 				version = Param({prefix = "CEF:"}),
-				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = "", globalSkipper = Skipper.whitespace},
+				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = ""},
 					  				{key = ParamN({delimiter = "="}), value = ParamN({cutCharsetDelim = "a-zA-Z0-9_.)(-"})});
     }
 }
