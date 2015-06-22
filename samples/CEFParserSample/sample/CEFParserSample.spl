@@ -23,7 +23,7 @@ graph
     
     () as DSink = FileSink(CEFEvent)   {
         param
-        	file : "/dev/stdout";
+        	file : "/dev/pts/0";
         	flush : 1u;
         	format : txt;
 	    }
