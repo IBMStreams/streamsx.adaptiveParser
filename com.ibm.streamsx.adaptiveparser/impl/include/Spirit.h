@@ -1,14 +1,14 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
-#define STR_(DELIM,SKIPPER) (raw[skip(byte_ - eoi)[eps]])
-#define STR_W(DELIM,SKIPPER) (lexeme[raw[skip(byte_ - eoi)[eps]]])
+#define STR_(DELIM,SKIPPER) (raw[*(byte_ - eoi)])
+#define STR_W(DELIM,SKIPPER) (no_skip[raw[*(byte_ - eoi)]])
 #define STR_S(DELIM,SKIPPER) (raw[skip(byte_ - SKIPPER)[eps]])
 #define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - SKIPPER)[eps]] >> eps])
-#define STR_D(DELIM,SKIPPER) (raw[skip(byte_ - DELIM)[eps]])
-#define STR_DW(DELIM,SKIPPER) (lexeme[raw[skip(byte_ - DELIM)[eps]]])
-#define STR_DS(DELIM,SKIPPER) (raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]])
-#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]] >> eps])
+#define STR_D(DELIM,SKIPPER) (raw[*(byte_ - DELIM)])
+#define STR_DW(DELIM,SKIPPER) (no_skip[raw[*(byte_ - DELIM)]])
+#define STR_DS(DELIM,SKIPPER) (raw[*(byte_ - skip(SKIPPER)[DELIM])])
+#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[*(byte_ - skip(SKIPPER)[DELIM])] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix_bind.hpp>
@@ -21,9 +21,6 @@
 #include <streams_boost/fusion/include/std_pair.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
 #include <streams_boost/spirit/include/qi_match.hpp>
-#include <streams_boost/type_traits/add_reference.hpp>
-#include <streams_boost/type_traits/add_const.hpp>
-#include <streams_boost/variant.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -45,9 +42,9 @@ using qi::ushort_; using qi::uint_; using qi::ulong_;
 using qi::byte_; using qi::word; using qi::dword; using qi::qword;
 using qi::eoi; using qi::eol; using qi::eps; using qi::lit;
 using qi::debug; using qi::fail; using qi::on_error;
-using qi::attr; using qi::attr_cast; using qi::lazy; using qi::lexeme;
-using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
-using streams_boost::iterator_range; using streams_boost::variant;
+using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using qi::lazy;
+using qi::lexeme; using qi::no_skip; using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
+using streams_boost::iterator_range;
 using namespace qi::labels;
 
 typedef const unsigned char* charPtr;
@@ -259,7 +256,7 @@ namespace streams_boost { namespace spirit { namespace traits {
 	template <>
 	struct assign_to_attribute_from_value<long double, SPL::decimal128> {
 		static void call(long double& val, SPL::decimal128& attr) {
-			attr = SPL::spl_cast<SPL::decimal128, long double>::cast(val);
+			attr = SPL::spl_cast<SPL::decimal128, long double>::cast(1);
 		}
 	};
 

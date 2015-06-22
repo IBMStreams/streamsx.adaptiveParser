@@ -3,6 +3,8 @@
 #include <SPL/Runtime/Function/TimeFunctions.h>
 #include "time.h"
 
+// #define STREAMS_BOOST_SPIRIT_QI_DEBUG
+
 <%# [----- perl code -----]
 BEGIN {*Type:: = *SPL::CodeGen::Type::};
 use AdaptiveParserCommon;
@@ -31,6 +33,7 @@ AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSp
 # [----- perl code -----]%>
 
 #define FUSION_MAX_VECTOR_SIZE <%=$FUSION_MAX_VECTOR_SIZE > 50 ? 50 : $FUSION_MAX_VECTOR_SIZE%>
+#define STREAMS_FUSION_MAX_VECTOR_SIZE FUSION_MAX_VECTOR_SIZE
 
 #include "Spirit.h"
 #include <streams_boost/typeof/typeof.hpp>
@@ -41,6 +44,10 @@ AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSp
 <%SPL::CodeGen::headerPrologue($model);%>
  
 typedef MY_BASE_OPERATOR::OPort0Type oport0;
+
+struct dummy_ {
+	qi::unused_type unused;
+} dummy;
 
 struct boolean_ : qi::symbols<char, bool> {
 	boolean_() {
@@ -93,7 +100,7 @@ struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
 //    	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
 
     	const std::string dq = "\"";
-
+ 
 <%# [----- perl code -----]
 
 foreach my $struct (@{$structs}) {
@@ -101,9 +108,8 @@ if (scalar %{$struct}) {
 	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
 	my $rule = join(" >> ", @{$struct->{'ruleBody'}});
 	$rule = $skipper."[$rule]";
-	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple - no need from Streams 3.2.2
+	$rule .= " >> eps" if ($struct->{'size'} <= 1); # patch for single element tuple
 	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
-	#$rule = "&lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $rule)" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
 print qq(
 		$struct->{'ruleName'} %= $rule;
 );
@@ -111,12 +117,10 @@ print qq(
 }
 # [----- perl code -----]%>
 
-//		timestamp = (long_ >> lit(_r1) >> uint_) [_val = construct<SPL::timestamp>(_1, _2, val(0))];
-//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];
-		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];
+		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1*1000)];
 		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";
 
-    	<%=$baseRule%>.name("oport0");
+//    	<%=$baseRule%>.name("oport0");
 
 //		on_error<fail> (<%=$baseRule%>, std::cout
 //				<< val("Error! Expecting ")
@@ -127,7 +131,7 @@ print qq(
 //				<< std::endl
 //		);
 
-//			debug(oport0);
+//		STREAMS_BOOST_SPIRIT_DEBUG_NODE(<%=$baseRule%>);
     }
 
 	qi::rule<Iterator,  SPL::timestamp(std::string)> timestamp;

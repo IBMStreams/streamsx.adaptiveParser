@@ -1,6 +1,6 @@
 
 package AdaptiveParser_h;
-use strict; use Cwd 'realpath';  use File::Basename;  use lib dirname(__FILE__);  use SPL::Operator::Instance::OperatorInstance; use SPL::Operator::Instance::Context; use SPL::Operator::Instance::Expression; use SPL::Operator::Instance::ExpressionTree; use SPL::Operator::Instance::ExpressionTreeVisitor; use SPL::Operator::Instance::ExpressionTreeCppGenVisitor; use SPL::Operator::Instance::InputAttribute; use SPL::Operator::Instance::InputPort; use SPL::Operator::Instance::OutputAttribute; use SPL::Operator::Instance::OutputPort; use SPL::Operator::Instance::Parameter; use SPL::Operator::Instance::StateVariable; use SPL::Operator::Instance::Window; 
+use strict; use Cwd 'realpath';  use File::Basename;  use lib dirname(__FILE__);  use SPL::Operator::Instance::OperatorInstance; use SPL::Operator::Instance::Annotation; use SPL::Operator::Instance::Context; use SPL::Operator::Instance::Expression; use SPL::Operator::Instance::ExpressionTree; use SPL::Operator::Instance::ExpressionTreeEvaluator; use SPL::Operator::Instance::ExpressionTreeVisitor; use SPL::Operator::Instance::ExpressionTreeCppGenVisitor; use SPL::Operator::Instance::InputAttribute; use SPL::Operator::Instance::InputPort; use SPL::Operator::Instance::OutputAttribute; use SPL::Operator::Instance::OutputPort; use SPL::Operator::Instance::Parameter; use SPL::Operator::Instance::StateVariable; use SPL::Operator::Instance::TupleValue; use SPL::Operator::Instance::Window; 
 sub main::generate($$) {
    my ($xml, $signature) = @_;  
    print "// $$signature\n";
@@ -11,6 +11,8 @@ sub main::generate($$) {
    print '#include <SPL/Runtime/Type/SPLType.h>', "\n";
    print '#include <SPL/Runtime/Function/TimeFunctions.h>', "\n";
    print '#include "time.h"', "\n";
+   print "\n";
+   print '// #define STREAMS_BOOST_SPIRIT_QI_DEBUG', "\n";
    print "\n";
    # [----- perl code -----]
    BEGIN {*Type:: = *SPL::CodeGen::Type::};
@@ -43,6 +45,7 @@ sub main::generate($$) {
    print '#define FUSION_MAX_VECTOR_SIZE ';
    print $FUSION_MAX_VECTOR_SIZE > 50 ? 50 : $FUSION_MAX_VECTOR_SIZE;
    print "\n";
+   print '#define STREAMS_FUSION_MAX_VECTOR_SIZE FUSION_MAX_VECTOR_SIZE', "\n";
    print "\n";
    print '#include "Spirit.h"', "\n";
    print '#include <streams_boost/typeof/typeof.hpp>', "\n";
@@ -54,6 +57,10 @@ sub main::generate($$) {
    print "\n";
    print ' ', "\n";
    print 'typedef MY_BASE_OPERATOR::OPort0Type oport0;', "\n";
+   print "\n";
+   print 'struct dummy_ {', "\n";
+   print '	qi::unused_type unused;', "\n";
+   print '} dummy;', "\n";
    print "\n";
    print 'struct boolean_ : qi::symbols<char, bool> {', "\n";
    print '	boolean_() {', "\n";
@@ -113,7 +120,7 @@ sub main::generate($$) {
    print '//    	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
    print "\n";
    print '    	const std::string dq = "\\"";', "\n";
-   print "\n";
+   print ' ', "\n";
    # [----- perl code -----]
    
    foreach my $struct (@{$structs}) {
@@ -121,9 +128,8 @@ sub main::generate($$) {
    	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
    	my $rule = join(" >> ", @{$struct->{'ruleBody'}});
    	$rule = $skipper."[$rule]";
-   	$rule .= " >> attr(0)" if ($struct->{'size'} <= 1); # patch for single element tuple - no need from Streams 3.2.2
+   	$rule .= " >> eps" if ($struct->{'size'} <= 1); # patch for single element tuple
    	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
-   	#$rule = "&lit($parserOpt->{'comment'})[_r1 = val(true)] | (eps[_r1 = val(false)] >> $rule)" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
    print qq(
    		$struct->{'ruleName'} %= $rule;
    );
@@ -132,12 +138,10 @@ sub main::generate($$) {
    # [----- perl code -----]
    print "\n";
    print "\n";
-   print '//		timestamp = (long_ >> lit(_r1) >> uint_) [_val = construct<SPL::timestamp>(_1, _2, val(0))];', "\n";
-   print '//		timestampS = skip(blank)[eps] >> ("(" >> long_ >> "," >> uint_ >> "," >> uint_ >> ")") [_val = construct<SPL::timestamp>(_1, _2, _3)];', "\n";
-   print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)];', "\n";
+   print '		timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1*1000)];', "\n";
    print '		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
    print "\n";
-   print '    	';
+   print '//    	';
    print $baseRule;
    print '.name("oport0");', "\n";
    print "\n";
@@ -152,7 +156,9 @@ sub main::generate($$) {
    print '//				<< std::endl', "\n";
    print '//		);', "\n";
    print "\n";
-   print '//			debug(oport0);', "\n";
+   print '//		STREAMS_BOOST_SPIRIT_DEBUG_NODE(';
+   print $baseRule;
+   print ');', "\n";
    print '    }', "\n";
    print "\n";
    print '	qi::rule<Iterator,  SPL::timestamp(std::string)> timestamp;', "\n";

@@ -12,10 +12,10 @@ sub symbols_defEnum(@) {
 	}
 	else {
 		(my $enumName = $cppType) =~ s/::/_/g;
-		my @symbols = map {qq( ("$_", $cppType\::$_) )} Type::getEnumValues($splType);
+		my @symbols = map {qq( ("$_", $cppType\::$_\.getIndex()) )} Type::getEnumValues($splType);
 		$adapt->{'symbols'}->{$splType}->{$enumName} = 
 qq(
-struct $enumName\_ : qi::symbols<char, $cppType> {
+struct $enumName\_ : qi::symbols<char, uint32_t> {
     $enumName\_() {
         add @symbols;
     }
@@ -44,7 +44,6 @@ struct assign_to_attribute_from_iterators<$cppType, Iterator> {
 );
 
 	}
-
 }
 
 sub traits_defStruct(@) {
@@ -52,56 +51,29 @@ sub traits_defStruct(@) {
 
 	$adapt->{'traits'} =
 qq(
-namespace streams_boost { namespace fusion { namespace traits {
-	template<> struct tag_of<$cppType> { typedef struct_tag type; };
-}}}
-);
-
-}
-
-sub ext_defStructSize(@) {
-	my ($adapt, $cppType, $tupleSize) = @_;
-	
-	$adapt->{'extension'} =
-qq(
-namespace streams_boost { namespace fusion { namespace extension {
-	template<> struct struct_size<$cppType> : mpl::int_<$tupleSize> {};
-);
-
-}
-
-# Workaround for a known Spirit bug - should be removed in Streams 3.2.2 (boost 1.55)
-sub ext_defDummyStructMember(@) {
-	my ($adapt, $cppType) = @_;
-	
-	$adapt->{'extension'} .=
-qq(
-	template<>
-	struct struct_member<$cppType, 1> {
-		typedef qi::unused_type type;
-		//typedef char type;
-		static type dummy;
-		
-		static type& call($cppType& struct_) {
-			return dummy;
-		};
-	};
+STREAMS_BOOST_FUSION_ADAPT_STRUCT\(
+	$cppType,
 );
 
 }
 
 sub ext_defStructMember(@) {
-	my ($adapt, $attrName, $cppType, $i) = @_;
+	my ($adapt, $attrName, $cppType) = @_;
 	
 	$adapt->{'extension'} .=
 qq(
-	template<>
-	struct struct_member<$cppType, $i> {
-		typedef $cppType\::$attrName\_type type;
-		static type& call($cppType& struct_) {
-			return struct_.get_$attrName();
-		};
-	};
+    ($cppType\::$attrName\_type, get_$attrName())
+);
+
+}
+
+# Workaround for a known Spirit bug
+sub ext_defDummyStructMember(@) {
+	my ($adapt) = @_;
+
+	$adapt->{'extension'} .=
+qq(
+    (qi::unused_type, unused())
 );
 
 }

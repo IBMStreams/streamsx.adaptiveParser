@@ -29,7 +29,10 @@ my %allowedParams = (
 my %skippers = (
 	none => '',
 	blank => 'blank',
+	control => 'cntrl',
 	endl => 'eol',
+	punct => 'punct',
+	tab => 'char_(9)',
 	whitespace => 'space'
 );
 
@@ -61,7 +64,6 @@ sub buildStructFromTuple(@) {
 	my $adapt = {};
 	
 	Spirit::traits_defStruct($adapt, $cppType);
-	Spirit::ext_defStructSize($adapt, $cppType, ($tupleSize > 1) ? $tupleSize : 2);
 
 	$adapt->{'cppType'} = $cppType;
 	$adapt->{'ruleName'} = $ruleName;
@@ -88,7 +90,7 @@ sub buildStructFromTuple(@) {
 	}
 	
 	for (my $i = 0; $i < $tupleSize; $i++) {
-		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType, $i);
+		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType);
 
 		my $parserCustOpt;
 		@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
@@ -121,16 +123,17 @@ sub buildStructFromTuple(@) {
 				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
 			}
 		}
+		
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 				
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
 
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 
 		if (Type::isComposite($attrTypes[$i])) {
@@ -139,15 +142,13 @@ sub buildStructFromTuple(@) {
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
-
-		$parser = "(attr_cast(undefined) | $parser)" if ($parserCustOpt->{'undefined'});
 		
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
+
+	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
 	
-	Spirit::ext_defDummyStructMember($struct, $cppType) if ($tupleSize == 1);
-	
-	$struct->{'extension'} .= "}}} \n";
+	$struct->{'extension'} .= ")";
 	return $ruleName;
 }
 
@@ -188,10 +189,10 @@ sub handleListOrSet(@) {
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
 	
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 
 		if (Type::isComposite($valueType)) {
@@ -207,7 +208,6 @@ sub handleListOrSet(@) {
 		else {
 			$parser = "*(($parser >> eps) - eoi)";
 		}
-
 	}
 	
 	
@@ -285,7 +285,7 @@ sub handleMap(@) {
 				
 				$parserCustOpt->{'skipper'} = '';
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
-				$parser = "reparse(char_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> lit($keyDelimiter) | eoi)))[$parser]";
+				$parser = "reparse(byte_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> lit($keyDelimiter) | eoi)))[$parser]";
 			}
 			else {
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -294,10 +294,10 @@ sub handleMap(@) {
 
 		my $attrType = ($attrName eq 'key') ? $keyType : $valueType;
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(char_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
-			$parser = "eps >> reparse(char_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
+			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
 		}
 		
 		if (Type::isComposite($attrType)) {
@@ -340,7 +340,7 @@ sub handlePrimitive(@) {
 		my $bound = Type::getBound($splType);
 		
 		$value = "raw[repeat($bound)[char_]]";
-		$value = "dq >> $value >> skip(char_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
+		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
 		
 	}
 	elsif (Type::isRString($splType) || Type::isUString($splType) || Type::isXml($splType)) {
@@ -437,6 +437,7 @@ sub handlePrimitive(@) {
 		}
 	}
 	
+	$value = "(attr_cast(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
@@ -541,7 +542,7 @@ sub getStringMacro(@) {
 	if ($quotedStrings) {
 		$value .= 'D';
 		$value .= "(dq,'')";
-		$value = "lexeme[dq >> $value >> dq]";
+		$value = "no_skip[dq >> $value >> dq]";
 	}
 	else {
 		$value .= 'D' if ($delimiter);
