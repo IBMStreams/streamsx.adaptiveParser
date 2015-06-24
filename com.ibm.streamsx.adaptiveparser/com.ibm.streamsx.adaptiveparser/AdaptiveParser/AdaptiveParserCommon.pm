@@ -136,7 +136,7 @@ sub buildStructFromTuple(@) {
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
 
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (val($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
 			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
@@ -145,7 +145,7 @@ sub buildStructFromTuple(@) {
 		if (Type::isComposite($attrTypes[$i])) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
-			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "$parser >> -lit(val($parserCustOpt->{'delimiter'}))" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 
@@ -197,7 +197,7 @@ sub handleListOrSet(@) {
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
 	
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (val($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
 			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
@@ -206,7 +206,7 @@ sub handleListOrSet(@) {
 		if (Type::isComposite($valueType)) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
-			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "$parser >> -lit(val($parserCustOpt->{'delimiter'}))" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 		
@@ -294,7 +294,7 @@ sub handleMap(@) {
 				
 				$parserCustOpt->{'skipper'} = '';
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
-				$parser = "reparse(byte_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> lit($keyDelimiter) | eoi)))[$parser]";
+				$parser = "reparse(byte_ - ($valueSkipper >> (+char_($parserCustOpt->{'cutCharsetDelim'}) >> val($keyDelimiter) | eoi)))[$parser]";
 			}
 			else {
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -303,7 +303,7 @@ sub handleMap(@) {
 
 		my $attrType = ($attrName eq 'key') ? $keyType : $valueType;
 		if ($parserCustOpt->{'cutStringDelim'}) {
-			$parser = "reparse(byte_ - (lit($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
+			$parser = "reparse(byte_ - (val($parserCustOpt->{'cutStringDelim'}) | eoi))[$parser]";
 		}
 		elsif ($parserCustOpt->{'cutSkipper'}) {
 			$parser = "eps >> reparse(byte_ - ($parserCustOpt->{'cutSkipper'} | eoi))[$parser]";
@@ -312,7 +312,7 @@ sub handleMap(@) {
 		if (Type::isComposite($attrType)) {
 			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
 			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
-			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
+			$parser = "$parser >> -lit(val($parserCustOpt->{'delimiter'}))" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 	
@@ -448,7 +448,7 @@ sub handlePrimitive(@) {
 	
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
-	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
+	$value .= " >> -lit(val($parserOpt->{'delimiter'}))" if ($parserOpt->{'delimiter'});
 	$value = "-($value)" if ($parserOpt->{'optional'});
 	return $value;
 }
