@@ -7,7 +7,7 @@ graph
 	stream<rstring data> CSVStream = Custom() {
         logic
             onProcess : {
-                submit({data = "1427889600.657267, (1427889600,657267,0), Apr 1 2015 14:33:10, text, 42, 3.14"}, CSVStream);
+                submit({data = "1427889600.657267, (1427889600,657267123,0), Apr 1 2015 14:33:10, text, 42, 3.14"}, CSVStream);
             }
     }
     
