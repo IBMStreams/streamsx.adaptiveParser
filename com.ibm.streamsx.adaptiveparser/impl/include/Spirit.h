@@ -31,7 +31,7 @@ namespace ascii = streams_boost::spirit::ascii;
 namespace qi = streams_boost::spirit::qi;
 namespace traits = streams_boost::spirit::traits;
 
-using ascii::char_; using ascii::space;
+using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
 using fusion::at_c; using qi::locals; using qi::_val;
 using phoenix::bind; using phoenix::construct; using phoenix::ref; using phoenix::val;
 using qi::alnum; using qi::alpha; using qi::blank; using qi::string; using qi::symbols;
@@ -51,6 +51,23 @@ typedef const unsigned char* charPtr;
 typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
 
 namespace ext {
+
+	struct boolean_ : qi::symbols<char, bool> {
+		boolean_() {
+			add
+				("T", true)
+				("F", false)
+				("t", true)
+				("f", false)
+				("TRUE", true)
+				("FALSE", false)
+				("true", true)
+				("false", false)
+				("1", true)
+				("0", false);
+		}
+	};
+
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse);
 
 	template <typename Subject, typename RangeSkipper>
