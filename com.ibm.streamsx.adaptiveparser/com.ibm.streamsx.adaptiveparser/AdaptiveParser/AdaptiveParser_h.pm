@@ -56,22 +56,6 @@ sub main::generate($$) {
    print ' ', "\n";
    print 'typedef MY_BASE_OPERATOR::OPort0Type oport0;', "\n";
    print "\n";
-   print 'struct boolean_ : qi::symbols<char, bool> {', "\n";
-   print '	boolean_() {', "\n";
-   print '		add', "\n";
-   print '			("T", true)', "\n";
-   print '			("F", false)', "\n";
-   print '			("t", true)', "\n";
-   print '			("f", false)', "\n";
-   print '			("TRUE", true)', "\n";
-   print '			("FALSE", false)', "\n";
-   print '			("true", true)', "\n";
-   print '			("false", false)', "\n";
-   print '			("1", true)', "\n";
-   print '			("0", false);', "\n";
-   print '	}', "\n";
-   print '} boolean;', "\n";
-   print "\n";
    if ($parserOpt->{'undefined'}) {
    	my $undefValue;
    	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
@@ -104,16 +88,18 @@ sub main::generate($$) {
    # [----- perl code -----]
    print "\n";
    print "\n";
+   print 'using namespace ::ext;', "\n";
+   print "\n";
+   print 'const boolean_ boolean;', "\n";
+   print 'const std::string dq = "\\"";', "\n";
+   print '//const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;', "\n";
+   print '//const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
+   print "\n";
    print 'template <typename Iterator>', "\n";
    print 'struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {', "\n";
    print '    TupleParserGrammar() : TupleParserGrammar::base_type(';
    print $baseRule;
    print ') {', "\n";
-   print '    	using namespace ::ext;', "\n";
-   print '//    	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;', "\n";
-   print '//    	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
-   print "\n";
-   print '    	const std::string dq = "\\"";', "\n";
    print "\n";
    # [----- perl code -----]
    

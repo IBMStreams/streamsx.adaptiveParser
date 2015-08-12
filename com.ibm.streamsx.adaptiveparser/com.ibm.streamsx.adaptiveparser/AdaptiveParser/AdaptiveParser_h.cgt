@@ -43,22 +43,6 @@ AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSp
  
 typedef MY_BASE_OPERATOR::OPort0Type oport0;
 
-struct boolean_ : qi::symbols<char, bool> {
-	boolean_() {
-		add
-			("T", true)
-			("F", false)
-			("t", true)
-			("f", false)
-			("TRUE", true)
-			("FALSE", false)
-			("true", true)
-			("false", false)
-			("1", true)
-			("0", false);
-	}
-} boolean;
-
 <%if ($parserOpt->{'undefined'}) {
 	my $undefValue;
 	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
@@ -86,14 +70,16 @@ print qq(
  
 # [----- perl code -----]%>
 
+using namespace ::ext;
+
+const boolean_ boolean;
+const std::string dq = "\"";
+//const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
+//const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
+
 template <typename Iterator>
 struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
     TupleParserGrammar() : TupleParserGrammar::base_type(<%=$baseRule%>) {
-    	using namespace ::ext;
-//    	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
-//    	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
-
-    	const std::string dq = "\"";
 
 <%# [----- perl code -----]
 
