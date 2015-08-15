@@ -55,6 +55,10 @@ typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterT
 
 namespace ext {
 
+	struct dummy_ {
+		qi::unused_type unused;
+	};
+
 	struct boolean_ : qi::symbols<char, bool> {
 		boolean_() {
 			add
@@ -70,6 +74,7 @@ namespace ext {
 				("0", false);
 		}
 	};
+
 
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse);
 

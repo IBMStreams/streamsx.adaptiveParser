@@ -7,21 +7,14 @@ sub symbols_defEnum(@) {
 	my ($adapt, $cppType, $splType) = @_;
 
 	if (defined($adapt->{'symbols'}->{$splType})) {
-		my @enumName = keys %{$adapt->{'symbols'}->{$splType}};
-		return $enumName[0];
+		return $adapt->{'symbols'}->{$splType}->{'enumName'};
 	}
 	else {
 		(my $enumName = $cppType) =~ s/::/_/g;
 		my @symbols = map {qq( ("$_", $cppType\::$_) )} Type::getEnumValues($splType);
-		$adapt->{'symbols'}->{$splType}->{$enumName} = 
-qq(
-struct $enumName\_ : qi::symbols<char, $cppType> {
-    $enumName\_() {
-        add @symbols;
-    }
-
-} $enumName;
-);
+		$adapt->{'symbols'}->{$splType}->{'enumName'} = $enumName;
+		$adapt->{'symbols'}->{$splType}->{'enumType'} = $cppType;
+		$adapt->{'symbols'}->{$splType}->{'enumValues'} = \@symbols;
 		return $enumName;
 	}
 
