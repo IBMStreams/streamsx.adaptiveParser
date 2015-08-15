@@ -42,52 +42,36 @@ AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSp
 #define foreach STREAMS_BOOST_FOREACH
 
 <%SPL::CodeGen::headerPrologue($model);%>
- 
-typedef MY_BASE_OPERATOR::OPort0Type oport0;
-
-struct dummy_ {
-	qi::unused_type unused;
-} dummy;
-
-<%if ($parserOpt->{'undefined'}) {
-	my $undefValue;
-	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
-	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);%>
-
-struct undefined_ : qi::symbols<char, qi::unused_type> {
-	undefined_() {
-		
-		add <%=@undefinedValues%> ;
-	}
-} undefined;
-
-<%}%>
-
-
-<%# [----- perl code -----]
-my $baseRule = 'oport0_base';
-
-for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
-	my @symbol = values %{$symbols};
-print qq(
-	@symbol
-);
-}
- 
-# [----- perl code -----]%>
+<%my $baseRule = 'oport0_base';%>
 
 using namespace ::ext;
 
-const boolean_ boolean;
+typedef MY_BASE_OPERATOR::OPort0Type oport0;
+
 const std::string dq = "\"";
-//const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
-//const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
 
 template <typename Iterator>
 struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
     TupleParserGrammar() : TupleParserGrammar::base_type(<%=$baseRule%>) {
- 
+
 <%# [----- perl code -----]
+
+for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+print qq(
+		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} ;
+);
+}
+ 
+if ($parserOpt->{'undefined'}) {
+	my $undefValue;
+	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
+	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);
+
+print qq(
+		undefined.add @undefinedValues;
+);
+
+}
 
 foreach my $struct (@{$structs}) {
 if (scalar %{$struct}) {
@@ -135,6 +119,23 @@ print qq(
 }
 }
 # [----- perl code -----]%>
+
+private:
+//	const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
+//	const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
+ 
+	boolean_ boolean;
+	dummy_ dummy;
+	qi::symbols<char, qi::unused_type> undefined;
+
+<%# [----- perl code -----]
+	for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+print qq(
+	qi::symbols<char, $symbols->{'enumType'}> $symbols->{'enumName'};
+);
+	}
+# [----- perl code -----]%>
+
 };
 
 class MY_OPERATOR : public MY_BASE_OPERATOR {
