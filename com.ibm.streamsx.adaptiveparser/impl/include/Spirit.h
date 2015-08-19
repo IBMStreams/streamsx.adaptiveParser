@@ -7,8 +7,8 @@
 #define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - SKIPPER)[eps]] >> eps])
 #define STR_D(DELIM,SKIPPER) (raw[skip(byte_ - DELIM)[eps]])
 #define STR_DW(DELIM,SKIPPER) (lexeme[raw[skip(byte_ - DELIM)[eps]]])
-#define STR_DS(DELIM,SKIPPER) (raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]])
-#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - (skip(SKIPPER)[DELIM]))[eps]] >> eps])
+#define STR_DS(DELIM,SKIPPER) (raw[skip(byte_ - (skip(SKIPPER)[DELIM|eoi]))[eps]])
+#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - (skip(SKIPPER)[DELIM|eoi]))[eps]] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix_bind.hpp>

@@ -53,47 +53,14 @@ sub main::generate($$) {
    print "\n";
    SPL::CodeGen::headerPrologue($model);
    print "\n";
-   print ' ', "\n";
-   print 'typedef MY_BASE_OPERATOR::OPort0Type oport0;', "\n";
-   print "\n";
-   if ($parserOpt->{'undefined'}) {
-   	my $undefValue;
-   	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
-   	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);
-   print "\n";
-   print "\n";
-   print 'struct undefined_ : qi::symbols<char, qi::unused_type> {', "\n";
-   print '	undefined_() {', "\n";
-   print '		', "\n";
-   print '		add ';
-   print @undefinedValues;
-   print ' ;', "\n";
-   print '	}', "\n";
-   print '} undefined;', "\n";
-   print "\n";
-   }
-   print "\n";
-   print "\n";
-   print "\n";
-   # [----- perl code -----]
    my $baseRule = 'oport0_base';
-   
-   for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
-   	my @symbol = values %{$symbols};
-   print qq(
-   	@symbol
-   );
-   }
-    
-   # [----- perl code -----]
    print "\n";
-   print "\n";
+   print ' ', "\n";
    print 'using namespace ::ext;', "\n";
    print "\n";
-   print 'const boolean_ boolean;', "\n";
+   print 'typedef MY_BASE_OPERATOR::OPort0Type oport0;', "\n";
+   print "\n";
    print 'const std::string dq = "\\"";', "\n";
-   print '//const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;', "\n";
-   print '//const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
    print "\n";
    print 'template <typename Iterator>', "\n";
    print 'struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {', "\n";
@@ -102,6 +69,23 @@ sub main::generate($$) {
    print ') {', "\n";
    print "\n";
    # [----- perl code -----]
+   
+    for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+    print qq(
+   		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} ;
+    );
+    }
+     
+    if ($parserOpt->{'undefined'}) {
+   	my $undefValue;
+   	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
+   	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);
+   
+    print qq(
+   		undefined.add @undefinedValues;
+    );
+   
+    }
    
    foreach my $struct (@{$structs}) {
    if (scalar %{$struct}) {
@@ -155,6 +139,24 @@ sub main::generate($$) {
    }
    }
    # [----- perl code -----]
+   print "\n";
+   print "\n";
+   print 'private:', "\n";
+   print '//	const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;', "\n";
+   print '//	const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
+   print ' ', "\n";
+   print '	boolean_ boolean;', "\n";
+   print '	dummy_ dummy;', "\n";
+   print '	qi::symbols<char, qi::unused_type> undefined;', "\n";
+   print "\n";
+   # [----- perl code -----]
+   	for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+   print qq(
+   	qi::symbols<char, $symbols->{'enumType'}> $symbols->{'enumName'};
+   );
+   	}
+   # [----- perl code -----]
+   print "\n";
    print "\n";
    print '};', "\n";
    print "\n";
