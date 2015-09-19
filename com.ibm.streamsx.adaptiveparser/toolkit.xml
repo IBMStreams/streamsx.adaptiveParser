@@ -136,6 +136,9 @@
           </function>
         </outputFunctions>
         <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Constant" name="attrNameAsPrefix" optional="true" type="boolean">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="batch" optional="true" type="boolean">
           <description/>
         </parameter>
@@ -145,10 +148,13 @@
         <parameter cardinality="1" expressionMode="CustomLiteral" name="parsingMode" optional="true" type="Parsing">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Attribute" name="dataAttr" optional="false" type="">
+        <parameter cardinality="1" expressionMode="Attribute" name="dataAttr" optional="true" type="">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="comment" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="attrNameDelimiter" optional="true" type="rstring">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="globalDelimiter" optional="true" type="rstring">

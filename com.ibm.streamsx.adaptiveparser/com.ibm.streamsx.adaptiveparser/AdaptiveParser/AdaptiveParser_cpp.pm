@@ -13,12 +13,22 @@ sub main::generate($$) {
    # [----- perl code -----]
    use AdaptiveParserCommon;
    
-   my $dataAttrCppValue = $model->getParameterByName('dataAttr')->getValueAt(0)->getCppExpression();
-   my $dataAttrSPLValue = (split /\./, $model->getParameterByName('dataAttr')->getValueAt(0)->getSPLExpression())[-1];
+   my $inputPort = $model->getInputPortAt(0);
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
+   my $dataAttr = $model->getParameterByName('dataAttr');
+   if ($dataAttr) {
+   	my $dataAttrSPLValue = (split /\./, $dataAttr->getValueAt(0)->getSPLExpression())[-1];
+   	SPL::CodeGen::checkMinimalSchema ($inputPort, { name => $dataAttrSPLValue, type => ["blob", "rstring"] });
+   }
+   elsif ($inputPort->getNumberOfAttributes == 1) {
+   	SPL::CodeGen::checkMaximalSchema ($inputPort, { type => ["blob", "rstring"] });
+   }
+   else {
+   	SPL::CodeGen::exitln("Input port has more than 1 attribute - specify dataAttr parameter", $inputPort->getSourceLocation());
+   }
    
-   SPL::CodeGen::checkMinimalSchema ($model->getInputPortAt(0), { name => $dataAttrSPLValue, type => ["blob", "rstring"] });
+   my $dataAttrCppValue = $dataAttr ? $dataAttr->getValueAt(0)->getCppExpression() : 'iport$0.get_'.$inputPort->getAttributeAt(0)->getName().'()';
    
    my $oTupleName = 'oport0';
    my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();

@@ -101,6 +101,15 @@
       <description></description>
       <allowAny>false</allowAny>
       <parameter>
+        <name>attrNameAsPrefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
         <name>batch</name>
         <description></description>
         <optional>true</optional>
@@ -130,7 +139,7 @@
       <parameter>
         <name>dataAttr</name>
         <description></description>
-        <optional>false</optional>
+        <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Attribute</expressionMode>
         <type></type>
@@ -138,6 +147,15 @@
       </parameter>
       <parameter>
         <name>comment</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>attrNameDelimiter</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>

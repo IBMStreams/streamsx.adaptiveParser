@@ -11,16 +11,12 @@
 #define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[*(byte_ - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
-#include <streams_boost/spirit/include/phoenix_bind.hpp>
-#include <streams_boost/spirit/include/phoenix_core.hpp>
-#include <streams_boost/spirit/include/phoenix_fusion.hpp>
-#include <streams_boost/spirit/include/phoenix_operator.hpp>
-#include <streams_boost/spirit/include/phoenix_object.hpp>
-#include <streams_boost/spirit/include/phoenix_stl.hpp>
+#include <streams_boost/spirit/include/phoenix.hpp>
 #include <streams_boost/fusion/include/adapt_struct.hpp>
 #include <streams_boost/fusion/include/std_pair.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
-#include <streams_boost/spirit/include/qi_match.hpp>
+#include <streams_boost/spirit/repository/include/qi_kwd.hpp>
+#include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -29,6 +25,7 @@ namespace fusion = streams_boost::fusion;
 namespace phoenix = streams_boost::phoenix;
 namespace ascii = streams_boost::spirit::ascii;
 namespace qi = streams_boost::spirit::qi;
+namespace repo = streams_boost::spirit::repository::qi;
 namespace traits = streams_boost::spirit::traits;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
@@ -42,12 +39,12 @@ using qi::ushort_; using qi::uint_; using qi::ulong_;
 using qi::byte_; using qi::word; using qi::dword; using qi::qword;
 using qi::eoi; using qi::eol; using qi::eps; using qi::lit;
 using qi::debug; using qi::fail; using qi::on_error;
-using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using qi::lazy;
+using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using qi::lazy; using repo::kwd;
 using qi::lexeme; using qi::no_skip; using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
 using streams_boost::iterator_range;
 using namespace qi::labels;
 
-typedef const unsigned char* charPtr;
+typedef const char* charPtr;
 typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
 
 namespace ext {

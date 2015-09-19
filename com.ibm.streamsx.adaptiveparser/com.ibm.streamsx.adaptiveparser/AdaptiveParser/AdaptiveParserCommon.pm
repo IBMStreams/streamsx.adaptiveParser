@@ -6,11 +6,13 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('binaryMode','quotedStrings','globalDelimiter','globalSkipper','undefined');
+my @inheritedParams = ('attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalSkipper','undefined');
 
 my %allowedParams = (
+					attrNameAsPrefix => 'boolean',
 					binaryMode => 'boolean',
 					delimiter => 'rstring',
+					attrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
 					cutCharsetDelim => 'rstring',
 					cutStringDelim => 'rstring',
@@ -68,6 +70,7 @@ sub buildStructFromTuple(@) {
 	$adapt->{'cppType'} = $cppType;
 	$adapt->{'ruleName'} = $ruleName;
 	$adapt->{'ruleBody'} = [];
+	$adapt->{'attrNameAsPrefix'} = $parserOpt->{'attrNameAsPrefix'};
 	$adapt->{'skipper'} = $parserOpt->{'skipper'};
 	$adapt->{'size'} = $tupleSize;
 	$adapt->{'symbols'} = {};
@@ -143,6 +146,12 @@ sub buildStructFromTuple(@) {
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 		
+		if ($parserCustOpt->{'attrNameAsPrefix'}) {
+			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
+			$attrNameDelimiter ||= $parserCustOpt->{'delimiter'};
+			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
+			$parser = qq(kwd("$attrNames[$i]",0,1)[$parser]);
+		}
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
 
@@ -437,7 +446,7 @@ sub handlePrimitive(@) {
 		}
 	}
 	
-	$value = "(attr_cast(undefined) | $value)" if ($parserOpt->{'undefined'});
+	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
