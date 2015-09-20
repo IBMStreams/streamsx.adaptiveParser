@@ -3,6 +3,7 @@ namespace com.ibm.streamsx.adaptiveparser.cef;
 use com.ibm.streamsx.adaptiveparser::*;
 
 /*
+ *  AdaptiveParser input port type expects dataAttr parameter holding an input attribute to parse
  *  AdaptiveParser output port type generates the CEF parser
  *  As an option, CEF header can be represented as list<rstring>[7] instead of tuple<...>
  *  Parameters define general behavior: global delimiter is '|' and no skipping (otherwise enabled by default)
