@@ -11,7 +11,7 @@ graph
     }
     
 	/*
-	 *  CEFParserSample uses CEFParser toolkit that uses AdaptiveParser as dependency
+	 *  CEFParserSample uses CEFParser toolkit with AdaptiveParser as dependency
 	 *  CEFParser expects the input attribute to be of type blob or rstring
 	 *  CEFParser output port type expected to be: tuple<CEFParser.CEFHeader_t, CEFParser.CEFExtension_t>
 	 */
@@ -23,7 +23,7 @@ graph
     
     () as DSink = FileSink(CEFEvent)   {
         param
-        	file : "/dev/pts/0";
+        	file : "/dev/stdout";
         	flush : 1u;
         	format : txt;
 	    }
