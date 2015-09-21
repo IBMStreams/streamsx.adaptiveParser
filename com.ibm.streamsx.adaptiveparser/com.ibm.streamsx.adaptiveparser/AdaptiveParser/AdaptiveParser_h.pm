@@ -114,9 +114,9 @@ sub main::generate($$) {
    }
    # [----- perl code -----]
    print "\n";
-   print "\n";
-   print '	timestamp = skip(blank)[eps] >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1*1000)];', "\n";
-   print '	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&SPL::timestamp::setSeconds,_val,_1)] >> "," >> uint_[bind(&SPL::timestamp::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&SPL::timestamp::setMachineId,_val,_1)] >> ")";', "\n";
+   print ' ', "\n";
+   print '	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];', "\n";
+   print '	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";', "\n";
    print "\n";
    print '//    	';
    print $baseRule;
@@ -147,8 +147,8 @@ sub main::generate($$) {
    print '	dummy_ dummy;', "\n";
    print '	qi::symbols<char, qi::unused_type> undefined;', "\n";
    print "\n";
-   print '	qi::rule<Iterator,  SPL::timestamp(std::string)> timestamp;', "\n";
-   print '	qi::rule<Iterator,  SPL::timestamp()> timestampS;', "\n";
+   print '	qi::rule<Iterator,  ts(std::string)> timestamp;', "\n";
+   print '	qi::rule<Iterator,  ts()> timestampS;', "\n";
    print '    ', "\n";
    # [----- perl code -----]
    

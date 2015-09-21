@@ -27,6 +27,7 @@ namespace ascii = streams_boost::spirit::ascii;
 namespace qi = streams_boost::spirit::qi;
 namespace repo = streams_boost::spirit::repository::qi;
 namespace traits = streams_boost::spirit::traits;
+namespace math = SPL::Functions::Math;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
 using fusion::at_c; using qi::locals; using qi::_val;
@@ -46,6 +47,7 @@ using namespace qi::labels;
 
 typedef const char* charPtr;
 typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
+typedef SPL::timestamp ts;
 
 namespace ext {
 

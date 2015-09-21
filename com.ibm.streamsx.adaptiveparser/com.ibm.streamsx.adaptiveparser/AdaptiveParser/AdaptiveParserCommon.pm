@@ -416,9 +416,11 @@ sub handlePrimitive(@) {
 		}
 		elsif (Type::isFloat32($splType)) {
 			$value = getSkippedValue($parserOpt, 'float_');
+			$value = "($value | attr(math::nanw()))";
 		}
 		elsif (Type::isFloat64($splType)) {
 			$value = getSkippedValue($parserOpt, 'double_');
+			$value = "($value | attr(math::nanl()))";
 		}
 		elsif (Type::isInt8($splType)) {
 			$value = getSkippedValue($parserOpt, 'short_');
