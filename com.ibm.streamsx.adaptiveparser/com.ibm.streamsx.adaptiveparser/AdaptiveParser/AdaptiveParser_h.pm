@@ -51,7 +51,7 @@ sub main::generate($$) {
    print "\n";
    print '//#define STREAMS_BOOST_FUSION_DONT_USE_PREPROCESSED_FILES', "\n";
    print "\n";
-    if ($parserOpt->{'attrNameAsPrefix'} && ($STREAMS_FUSION_MAX_VECTOR_SIZE > 20)) {
+    if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 20) {
    print "\n";
    print '#define STREAMS_BOOST_MPL_LIMIT_LIST_SIZE ';
    print int($STREAMS_FUSION_MAX_VECTOR_SIZE / 10 + 0.99)*10;
