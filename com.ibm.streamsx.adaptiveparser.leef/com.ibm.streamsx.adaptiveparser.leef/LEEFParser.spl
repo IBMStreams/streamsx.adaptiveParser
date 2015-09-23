@@ -1,0 +1,60 @@
+namespace com.ibm.streamsx.adaptiveparser.leef;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+/*
+ *  AdaptiveParser output port type generates the LEEF parser
+ *  As an option, LEEF header can be represented as list<rstring>[5] instead of tuple<LEEFHeader_t>
+ *  Parameters define general behavior: global delimiter is '|' and skipping is whitespace (enabled by default)
+ *  Custom formats can be handled by custom output functions:
+ *  'date' and 'ipAddress' disable globalDelimiter by setting 'delimiter = ""'
+ *  'date' parses string based on timestamp string format defined by 'tsFormat = "%b %d %Y %H:%M:%S"'
+ *  'version' parses string like 'LEEF:<ver>', so prefix 'LEEF:' needed
+ *  'eventAttributes' map does not need skipper and disables it for key/values by propogating new 'globalSkipper = Skipper.none'
+ *  'key' delimited by '='
+ *  'value' delimited by '\t' (skipper whitespace doesn't fit here because some fileds have spaces inside value) 
+ *  here two subsequent key/values sample: 'devTimeFormat=MMM dd yyyy HH:mm:ss	src=RZS.RWY.SQU.SR'
+ */
+public composite LEEFParser(input RawData; output LEEFEvent) {
+param
+	attribute $dataAttr;
+	expression<boolean> $batch : false;
+	type $customAttributesType : LEEFAttributes_t;
+
+type
+	static SyslogHeader_t	= 	timestamp date, rstring ipAddress;
+
+	static LEEFHeader_t		= 	float32 version,
+								rstring productVendor,
+								rstring productName,
+								rstring productVersion, 
+								rstring eventID;
+
+	static LEEFAttributes_t	=	rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev,
+								rstring src, rstring dst, uint16 srcPort, uint16 dstPort,
+								rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort,
+								rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort,
+								rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC,
+								rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName,
+								uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, 
+								rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm,
+								rstring policy, rstring resource, rstring url, rstring groupid, rstring domain,
+								boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp,
+								rstring calLanguage, rstring calCountryOrRegion;
+								
+	static LEEFMetaData_t	=	SyslogHeader_t syslog, LEEFHeader_t eventHeader;
+	
+graph
+    
+    stream<LEEFMetaData_t, tuple<$customAttributesType eventAttributes>> LEEFEvent = AdaptiveParser(RawData) {
+    	param
+    		batch : $batch;
+    		dataAttr : $dataAttr;
+    		globalSkipper : tab;
+		output
+			LEEFEvent :
+				syslog = Param({ globalSkipper = Skipper.whitespace}, { date = ParamN({ tsFormat = "%b %d %Y %H:%M:%S"}) }),
+				eventHeader = Param({ globalDelimiter = "|", prefix = "LEEF:"}),
+				eventAttributes = Param({ attrNameAsPrefix = true, attrNameDelimiter = "="});
+    }
+}
