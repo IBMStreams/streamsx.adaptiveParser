@@ -1,0 +1,45 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser.leef::*;
+
+composite LEEFParserSample {
+type
+	/*
+	 * LEEFEvent_t is an alias type to LEEFParser.LEEFAttributes_t and can be extended with custom attributes
+	 */
+	LEEFEvent_t = LEEFParser.LEEFAttributes_t;
+//	LEEFEvent_t = tuple<LEEFParser.LEEFAttributes_t, tuple<rstring filterMatched, rstring resolvedDomainName>>;
+
+graph
+	stream<rstring data> File = FileSource() {
+        param
+        	/*
+        	 * Use LEEFData.txt for the basic LEEFParser.LEEFAttributes_t type and LEEFDataExtended.txt for the extended type.
+        	 */
+			file : "LEEFData.txt";
+//			file : "LEEFDataExtended.txt";
+        	format : line;
+    }
+    
+	/*
+	 *  LEEFParserSample uses LEEFParser toolkit that uses AdaptiveParser as a dependency
+	 *  LEEFParser expects the input attribute to be of type blob or rstring
+	 *  LEEFParser output port type expected to be: tuple<LEEFParser.LEEFMetaData_t, tuple<LEEFEvent_t eventAttributes>>
+	 *  where LEEFEvent_t is an alias for LEEFParser.LEEFAttributes_t type (optionally extended)
+	 */
+    stream<LEEFParser.LEEFMetaData_t, tuple<LEEFEvent_t eventAttributes>> LEEFEvent = LEEFParser(File) {
+    	param
+    		dataAttr : data;
+    		/*
+    		 * Use customAttributesType parameter when LEEFParser.LEEFAttributes_t is extended
+    		 */
+//    		customAttributesType : LEEFEvent_t;
+    }
+    
+    () as DSink = FileSink(LEEFEvent)   {
+        param
+        	file : "/dev/stdout";
+        	flush : 1u;
+        	format : txt;
+	    }
+}
