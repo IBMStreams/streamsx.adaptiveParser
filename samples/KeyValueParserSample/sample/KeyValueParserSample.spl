@@ -1,0 +1,37 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite KeyValueMapParserSample {
+type
+	/*
+	 * Because a map cannot hold heterogeneous types - all the fields must be defined as rstring.
+	 */
+	MapProperties_t = map<rstring,rstring> properties;
+graph
+	stream<rstring data> CSVStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "prop10 = false, prop9 = 9, prop8 = 8, prop7 = 7, prop6 = 6, prop5 = 5, prop4 = 4, prop3 = 3, prop2 = 2, prop1 = true"}, CSVStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects a single input attribute or dataAttr param attribute to be of type blob or rstring
+	 *  Output SPL type generates the KeyValue parser and maps it to SPL map. 
+	 *  No parameters are defined but whitespaces are skipped by default
+	 */
+    stream<MapProperties_t> ParsedMapStream = AdaptiveParser(CSVStream) {
+    	output ParsedMapStream :
+    		properties = Param({delimiter = ","}, {key = ParamN({delimiter = "="}) });
+    }
+    
+    /*
+     * The implementation of SPL map is unordered map, so printing it shows fields in random order.
+     */
+    () as MapFSink = FileSink(ParsedMapStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}

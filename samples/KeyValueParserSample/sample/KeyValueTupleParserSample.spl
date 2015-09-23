@@ -1,0 +1,41 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+composite KeyValueTupleParserSample {
+type
+	/*
+	 * A tuple can hold heterogeneous types - each field can be defined as desired.
+	 */
+	TupleProperties_t = boolean prop1, rstring prop2, float32 prop3, int16 prop4, int32 prop5, uint32 prop6, uint16 prop7, float64 prop8, rstring prop9, boolean prop10;
+
+graph
+	stream<rstring data> CSVStream = Custom(){
+		logic
+			onProcess : {
+				submit({ data = "prop10 = false, prop9 = 9, prop8 = 8, prop7 = 7, prop6 = 6, prop5 = 5, prop4 = 4, prop3 = 3, prop2 = 2, prop1 = true" }, CSVStream);
+			}
+
+	}
+
+	/* AdaptiveParser expects a single input attribute or dataAttr param attribute to be of type blob or rstring		
+	 * Output SPL type generates the KeyValue parser and maps it to SPL tuple.		
+	 * Parameters define general behavior:  key (attribute) delimiter is "=", while value delimiter is ',', whitespaces are skipped by default		
+	 */
+	stream<TupleProperties_t> ParsedTupleStream = AdaptiveParser(CSVStream){
+		param
+			attrNameAsPrefix : true ;
+			attrNameDelimiter : "=" ;
+			globalDelimiter : "," ;
+	}
+
+    /*
+     * The implementation of SPL tuple is a sequence, so printing it shows fields in order as they stored in the tuple, not as they came from an input.
+     */
+	()as TupleFSink = FileSink(ParsedTupleStream){
+		param
+			file : "/dev/stdout" ;
+				flush : 1u ;
+		}
+
+}
