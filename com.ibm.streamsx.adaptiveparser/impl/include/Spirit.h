@@ -3,8 +3,8 @@
 
 #define STR_(DELIM,SKIPPER) (raw[*(byte_ - eoi)])
 #define STR_W(DELIM,SKIPPER) (no_skip[raw[*(byte_ - eoi)]])
-#define STR_S(DELIM,SKIPPER) (raw[skip(byte_ - SKIPPER)[eps]])
-#define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[skip(byte_ - SKIPPER)[eps]] >> eps])
+#define STR_S(DELIM,SKIPPER) (raw[lexeme[*(byte_ - SKIPPER)]])
+#define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[no_skip[*(byte_ - SKIPPER)]] >> eps])
 #define STR_D(DELIM,SKIPPER) (raw[*(byte_ - DELIM)])
 #define STR_DW(DELIM,SKIPPER) (no_skip[raw[*(byte_ - DELIM)]])
 #define STR_DS(DELIM,SKIPPER) (raw[*(byte_ - skip(SKIPPER)[DELIM|eoi])])
@@ -31,7 +31,7 @@ namespace math = SPL::Functions::Math;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
 using fusion::at_c; using qi::locals; using qi::_val;
-using phoenix::bind; using phoenix::construct; using phoenix::ref; using phoenix::val;
+using phoenix::bind; using phoenix::function; using phoenix::construct; using phoenix::ref; using phoenix::val;
 using qi::alnum; using qi::alpha; using qi::blank; using qi::string; using qi::symbols;
 using qi::bin; using qi::hex; using qi::oct;
 using qi::float_; using qi::double_; using qi::long_double;
@@ -71,6 +71,21 @@ namespace ext {
 		}
 	};
 
+	struct error_handler_ {
+		template <typename, typename, typename>
+		struct result { typedef void type; };
+
+		template <typename Iterator>
+		void operator()(qi::info const& what, Iterator err_pos, Iterator last) const {
+			std::cout
+				<< "Error! Expecting "
+				<< what                         // what failed?
+				<< " here: \""
+				<< std::string(err_pos, last)   // iterators to error-pos, end
+				<< "\""
+				<< std::endl;
+		}
+	};
 
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse);
 

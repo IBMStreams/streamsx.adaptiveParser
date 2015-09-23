@@ -145,8 +145,7 @@ sub buildStructFromTuple(@) {
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
-		
-		if ($parserCustOpt->{'attrNameAsPrefix'}) {
+		elsif ($parserCustOpt->{'attrNameAsPrefix'}) {
 			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
 			$attrNameDelimiter ||= $parserCustOpt->{'delimiter'};
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
