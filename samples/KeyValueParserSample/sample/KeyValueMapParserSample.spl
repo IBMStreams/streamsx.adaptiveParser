@@ -12,18 +12,22 @@ graph
 	stream<rstring data> CSVStream = Custom() {
         logic
             onProcess : {
-                submit({data = "prop10 = false, prop9 = 9, prop8 = 8, prop7 = 7, prop6 = 6, prop5 = 5, prop4 = 4, prop3 = 3, prop2 = 2, prop1 = true"}, CSVStream);
+            	/*
+            	 * For a map the order of input fields is not significant
+            	 */
+                submit({data = "boolean_10 = false, rstring_9 = nine, float64_8 = 8.0008, uint16_7 = 7, uint32_6 = 6, int32_5 = 5, int16_4 = 4, float32_3 = 3.3, rstring_2 = two, boolean_1 = true"}, CSVStream);
             }
     }
     
 	/*
 	 *  AdaptiveParser expects a single input attribute or dataAttr param attribute to be of type blob or rstring
 	 *  Output SPL type generates the KeyValue parser and maps it to SPL map. 
-	 *  No parameters are defined but whitespaces are skipped by default
+	 *  No parameters are defined but 'globalSkipper : whitespace' is applied implicitly
+	 *  Custom Output functions Param and ParamN (for nested attributes) can apply specific options for specific attributes
 	 */
     stream<MapProperties_t> ParsedMapStream = AdaptiveParser(CSVStream) {
     	output ParsedMapStream :
-    		properties = Param({delimiter = ","}, {key = ParamN({delimiter = "="}) });
+    		properties = Param({globalDelimiter = ","}, {key = ParamN({delimiter = "="}) });
     }
     
     /*
@@ -33,5 +37,6 @@ graph
         param
             file : "/dev/stdout";
             flush : 1u;
+            format : txt;
     }
 }
