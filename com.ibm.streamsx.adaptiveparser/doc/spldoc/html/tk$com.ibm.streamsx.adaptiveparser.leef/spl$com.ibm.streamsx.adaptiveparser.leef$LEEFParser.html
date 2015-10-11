@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File LEEFParser.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File LEEFParser.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">LEEFParser.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">SPL Documentation for LEEFParser toolkit</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef 1.0.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef</a> &gt; LEEFParser.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_operator__LEEFParser">LEEFParser</a></strong>
+</li>
+
+</ul>
+
+      </dd>
+
+    
+    
+      <dt class="dt dlterm splhead-2">Types</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_type__LEEFParser.LEEFAttributes_t">LEEFParser.LEEFAttributes_t</a></strong>
+</li>
+
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_type__LEEFParser.LEEFHeader_t">LEEFParser.LEEFHeader_t</a></strong>
+</li>
+
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_type__LEEFParser.LEEFMetaData_t">LEEFParser.LEEFMetaData_t</a></strong>
+</li>
+
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_type__LEEFParser.SyslogHeader_t">LEEFParser.SyslogHeader_t</a></strong>
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__LEEFParser"><h2 class="title sectiontitle splpart">composite LEEFParser(output LEEFEvent; input RawData)</h2>
+  
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Parameters</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">dataAttr</strong>
+</li>
+
+<li class="sli"><strong class="ph b">batch</strong>
+</li>
+
+<li class="sli"><strong class="ph b">customAttributesType</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Input Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">RawData</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Output Ports</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">LEEFEvent</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Static Types</h2>
+  
+</div>
+
+   <div class="section" id="spldoc_compilationunit__composite_type__LEEFParser.LEEFAttributes_t">
+     <dl class="dl">
+       
+         <dt class="dt dlterm">LEEFParser.LEEFAttributes_t = rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev, rstring src, rstring dst, uint16 srcPort, uint16 dstPort, rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort, rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort, rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC, rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName, uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm, rstring policy, rstring resource, rstring url, rstring groupid, rstring domain, boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp, rstring calLanguage, rstring calCountryOrRegion;</dt>
+
+         <dd class="dd"/>
+
+       
+     </dl>
+
+   </div>
+
+   <div class="section" id="spldoc_compilationunit__composite_type__LEEFParser.LEEFHeader_t">
+     <dl class="dl">
+       
+         <dt class="dt dlterm">LEEFParser.LEEFHeader_t = float32 version, rstring productVendor, rstring productName, rstring productVersion, rstring eventID;</dt>
+
+         <dd class="dd"/>
+
+       
+     </dl>
+
+   </div>
+
+   <div class="section" id="spldoc_compilationunit__composite_type__LEEFParser.LEEFMetaData_t">
+     <dl class="dl">
+       
+         <dt class="dt dlterm">LEEFParser.LEEFMetaData_t = SyslogHeader_t syslog, LEEFHeader_t eventHeader;</dt>
+
+         <dd class="dd"/>
+
+       
+     </dl>
+
+   </div>
+
+   <div class="section" id="spldoc_compilationunit__composite_type__LEEFParser.SyslogHeader_t">
+     <dl class="dl">
+       
+         <dt class="dt dlterm">LEEFParser.SyslogHeader_t = timestamp date, rstring ipAddress;</dt>
+
+         <dd class="dd"/>
+
+       
+     </dl>
+
+   </div>
+
+</div>
+
+
+</body>
+</html>
