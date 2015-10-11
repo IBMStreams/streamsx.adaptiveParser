@@ -43,46 +43,6 @@
             <description></description>
             <prototype>&lt;tuple T1, tuple T2> boolean ParamN(T1 options, T2 deepOptions)</prototype>
           </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.TupleId, boolean tupleId)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.TupleId, boolean tupleId)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomParser(Param.Padders, rstring prefix, rstring suffix, Param.Formatters, rstring delimiter, Skipper.Skippers skipper, Param.TupleId, boolean tupleId)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomListParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomSetParser(rstring delimiter, Skipper.Skippers skipper, rstring endMarker)</prototype>
-          </function>
-          <function pseudoFunction="true">
-            <description></description>
-            <prototype>&lt;any T> T CustomMapParser(rstring keyDelimiter, Skipper.Skippers keySkipper, rstring valueDelimiter, Skipper.Skippers valueSkipper, rstring endMarker)</prototype>
-          </function>
         </customOutputFunction>
       </customOutputFunctions>
       <libraryDependencies>
