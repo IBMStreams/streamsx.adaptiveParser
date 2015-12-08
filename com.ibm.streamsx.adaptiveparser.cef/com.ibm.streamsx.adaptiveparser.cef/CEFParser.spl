@@ -20,7 +20,7 @@ param
 	expression<boolean> $batch : false;
 
 type
-	static CEFSeverity_e	=	enum {Low, Medium, High};
+	static CEFSeverity_e	=	enum {Low, Medium, High, Unknown};
 	
 	static CEFHeader_t		= 	uint16 version,
 								rstring deviceVendor,
