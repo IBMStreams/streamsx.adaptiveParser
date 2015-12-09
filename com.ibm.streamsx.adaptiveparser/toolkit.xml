@@ -77,6 +77,9 @@
         <parameter cardinality="1" expressionMode="Constant" name="globalDelimiter" optional="true" type="rstring">
           <description/>
         </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="globalEscapeChar" optional="true" type="rstring">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="CustomLiteral" name="globalSkipper" optional="true" type="Skippers">
           <description/>
         </parameter>

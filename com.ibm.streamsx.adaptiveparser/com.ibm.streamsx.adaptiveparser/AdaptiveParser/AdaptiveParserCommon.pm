@@ -6,14 +6,16 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalSkipper','undefined');
+my @inheritedParams = ('attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
 
 my %allowedParams = (
 					attrNameAsPrefix => 'boolean',
 					binaryMode => 'boolean',
 					delimiter => 'rstring',
+					escapeChar => 'rstring',
 					attrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
+					globalEscapeChar => 'rstring',
 					cutCharsetDelim => 'rstring',
 					cutStringDelim => 'rstring',
 					cutSkipper => 'Skipper.Skippers',
@@ -128,6 +130,7 @@ sub buildStructFromTuple(@) {
 		}
 		
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 				
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
@@ -192,6 +195,7 @@ sub handleListOrSet(@) {
 		}
 		
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 		
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -279,6 +283,7 @@ sub handleMap(@) {
 		}
 
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 		
 		if ($attrName eq 'key') {
@@ -336,6 +341,7 @@ sub handlePrimitive(@) {
 	my $value = '';
 	
 	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 	
 	if (Type::isBlob($splType)) {
@@ -546,22 +552,34 @@ sub getSkippedValue(@) {
 
 sub getStringMacro(@) {
 	my ($parserOpt, $quotedStrings) = @_;
-	my $value = 'STR_';
+	my $macro = 'STR_';
 	my $delimiter = defined($parserOpt->{'suffix'}) ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
 
 	if ($quotedStrings) {
-		$value .= 'D';
-		$value .= "(dq,'')";
-		$value = "no_skip[dq >> $value >> dq]";
+		$macro .= 'D';
+
+		my $params = "dq,''";
+		$params = $parserOpt->{'escapeChar'}
+			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit(dq)) | byte_),$params"
+			: "byte_,$params";
+		
+		$macro = "no_skip[dq >> $macro($params) >> dq]";
 	}
 	else {
-		$value .= 'D' if ($delimiter);
-		$value .= 'S' if ($parserOpt->{'skipper'});
-		$value .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
-		$value .= "($delimiter,$parserOpt->{'skipper'})";
+		$macro .= 'D' if ($delimiter);
+		$macro .= 'S' if ($parserOpt->{'skipper'});
+		$macro .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
+		
+		my $params = "$delimiter,$parserOpt->{'skipper'}";
+		$params = ($delimiter && $parserOpt->{'escapeChar'})
+			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit($delimiter)) | byte_),$params"
+			: "byte_,$params";
+
+		$macro .= "($params)";
 	}
 	
-	return $value;
+	
+	return $macro;
 }
 
 1;

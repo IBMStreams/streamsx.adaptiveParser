@@ -25,6 +25,7 @@ sub main::generate($$) {
    $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'attrNameDelimiter'} = ($_ = $model->getParameterByName('attrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
    $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';

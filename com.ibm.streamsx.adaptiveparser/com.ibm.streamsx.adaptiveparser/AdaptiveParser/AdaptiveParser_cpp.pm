@@ -86,8 +86,6 @@ sub main::generate($$) {
    print "\n";
    SPL::CodeGen::implementationEpilogue($model);
    print "\n";
-   print "\n";
-   print '//qi::unused_type streams_boost::fusion::extension::struct_member<SPL::BeJwrMcwtLjbMBQAKbgKX, 1>::dummy;', "\n";
    CORE::exit $SPL::CodeGen::USER_ERROR if ($SPL::CodeGen::sawError);
 }
 1;

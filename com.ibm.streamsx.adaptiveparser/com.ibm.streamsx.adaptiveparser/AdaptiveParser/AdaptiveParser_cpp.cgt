@@ -66,5 +66,3 @@ void MY_OPERATOR::process(Punctuation const & punct, uint32_t port) {
 }
 
 <%SPL::CodeGen::implementationEpilogue($model);%>
-
-//qi::unused_type streams_boost::fusion::extension::struct_member<SPL::BeJwrMcwtLjbMBQAKbgKX, 1>::dummy;

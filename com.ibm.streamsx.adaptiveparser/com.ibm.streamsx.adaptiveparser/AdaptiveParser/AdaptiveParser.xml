@@ -133,6 +133,15 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
+        <name>globalEscapeChar</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
         <name>globalSkipper</name>
         <description></description>
         <optional>true</optional>

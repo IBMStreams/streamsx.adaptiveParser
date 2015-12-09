@@ -1,14 +1,14 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
-#define STR_(DELIM,SKIPPER) (raw[*(byte_ - eoi)])
-#define STR_W(DELIM,SKIPPER) (no_skip[raw[*(byte_ - eoi)]])
-#define STR_S(DELIM,SKIPPER) (raw[lexeme[*(byte_ - SKIPPER)]])
-#define STR_SW(DELIM,SKIPPER) (skip(SKIPPER)[raw[no_skip[*(byte_ - SKIPPER)]] >> eps])
-#define STR_D(DELIM,SKIPPER) (raw[*(byte_ - DELIM)])
-#define STR_DW(DELIM,SKIPPER) (no_skip[raw[*(byte_ - DELIM)]])
-#define STR_DS(DELIM,SKIPPER) (raw[*(byte_ - skip(SKIPPER)[DELIM|eoi])])
-#define STR_DSW(DELIM,SKIPPER) (skip(SKIPPER)[raw[*(byte_ - skip(SKIPPER)[DELIM|eoi])] >> eps])
+#define STR_(VALUE,DELIM,SKIPPER) (raw[*(VALUE - eoi)])
+#define STR_W(VALUE,DELIM,SKIPPER) (no_skip[raw[*(VALUE - eoi)]])
+#define STR_S(VALUE,DELIM,SKIPPER) (raw[lexeme[*(VALUE - SKIPPER)]])
+#define STR_SW(VALUE,DELIM,SKIPPER) (skip(SKIPPER)[raw[no_skip[*(VALUE - SKIPPER)]] >> eps])
+#define STR_D(VALUE,DELIM,SKIPPER) (raw[*(VALUE - DELIM)])
+#define STR_DW(VALUE,DELIM,SKIPPER) (no_skip[raw[*(VALUE - DELIM)]])
+#define STR_DS(VALUE,DELIM,SKIPPER) (raw[*(VALUE - skip(SKIPPER)[DELIM|eoi])])
+#define STR_DSW(VALUE,DELIM,SKIPPER) (skip(SKIPPER)[raw[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix.hpp>
