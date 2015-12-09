@@ -39,10 +39,11 @@ graph
     		batch : $batch;
     		dataAttr : $dataAttr;
     		globalDelimiter : "|";
+    		globalEscapeChar : "\\";
 		output
 			CEFEvent :
 				version = Param({prefix = "CEF:"}),
-				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = ""},
+				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = "", globalEscapeChar = ""},
 					  				{key = ParamN({delimiter = "="}), value = ParamN({cutCharsetDelim = "a-zA-Z0-9_.)(-"})});
     }
 }
