@@ -20,22 +20,19 @@ sub symbols_defEnum(@) {
 
 }
 
+sub traits_defEnum(@) {
+	my ($adapt, $cppType) = @_;
+
+	unless (defined($adapt->{'enum'}->{$cppType})) {
+		$adapt->{'enum'}->{$cppType} = $cppType;
+	}
+}
+
 sub traits_defXml(@) {
 	my ($adapt, $cppType) = @_;
 
 	unless (defined($adapt->{'xml'}->{$cppType})) {
-		$adapt->{'xml'}->{$cppType} = 
-qq(
-namespace streams_boost { namespace spirit { namespace traits {
-template <typename Iterator>
-struct assign_to_attribute_from_iterators<$cppType, Iterator> {
-    static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
-		attr = $cppType( SPL::rstring(first,last));
-    }
-};
-}}}
-);
-
+		$adapt->{'xml'}->{$cppType} = $cppType;
 	}
 }
 

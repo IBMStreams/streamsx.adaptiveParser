@@ -13,6 +13,7 @@ my %allowedParams = (
 					binaryMode => 'boolean',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
+					skipChars => 'rstring',
 					attrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
 					globalEscapeChar => 'rstring',
@@ -344,12 +345,20 @@ sub handlePrimitive(@) {
 	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 	
-	if (Type::isBlob($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 0);
-	}
-	elsif (Type::isBoolean($splType)) {
+	if (Type::isBoolean($splType)) {
 		$value = getSkippedValue($parserOpt, 'boolean');
 	}
+	elsif (Type::isBlob($splType)) {
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 0);
+	}
+	elsif (Type::isEnum($splType)) {
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
+		Spirit::traits_defEnum($structs->[-1], $cppType);
+	}
+	#elsif (Type::isEnum($splType)) {
+	#	$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType);
+	#	$value = getSkippedValue($parserOpt, $value);
+	#}
 	elsif(Type::isBString($splType)) {
 		my $bound = Type::getBound($splType);
 		
@@ -357,14 +366,12 @@ sub handlePrimitive(@) {
 		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
 		
 	}
-	elsif (Type::isRString($splType) || Type::isUString($splType) || Type::isXml($splType)) {
+	elsif (Type::isRString($splType) || Type::isUString($splType)) {
 		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
-		
-		Spirit::traits_defXml($structs->[-1], $cppType) if(Type::isXml($splType));
 	}
-	elsif (Type::isEnum($splType)) {
-		$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType);
-		$value = getSkippedValue($parserOpt, $value);
+	elsif (Type::isXml($splType)) {
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
+		Spirit::traits_defXml($structs->[-1], $cppType);
 	}
 	elsif (Type::isTimestamp($splType)) {
 		if ($parserOpt->{'tsFormat'}) {
@@ -554,16 +561,18 @@ sub getStringMacro(@) {
 	my ($parserOpt, $quotedStrings) = @_;
 	my $macro = 'STR_';
 	my $delimiter = defined($parserOpt->{'suffix'}) ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
+	my $operator = defined($parserOpt->{'skipChars'}) ? 'as_string' : 'raw';
 
 	if ($quotedStrings) {
 		$macro .= 'D';
 
 		my $params = "dq,''";
-		$params = $parserOpt->{'escapeChar'}
-			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit(dq)) | byte_),$params"
-			: "byte_,$params";
+		my $value = $parserOpt->{'escapeChar'}
+			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit(dq)) | byte_)"
+			: "byte_";
 		
-		$macro = "no_skip[dq >> $macro($params) >> dq]";
+		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
+		$macro = "no_skip[dq >> $macro($operator,$value,$params) >> dq]";
 	}
 	else {
 		$macro .= 'D' if ($delimiter);
@@ -571,13 +580,13 @@ sub getStringMacro(@) {
 		$macro .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
 		
 		my $params = "$delimiter,$parserOpt->{'skipper'}";
-		$params = ($delimiter && $parserOpt->{'escapeChar'})
-			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit($delimiter)) | byte_),$params"
-			: "byte_,$params";
+		my $value = ($delimiter && $parserOpt->{'escapeChar'})
+			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit($delimiter)) | byte_)"
+			: "byte_";
 
-		$macro .= "($params)";
+		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
+		$macro .= "($operator,$value,$params)";
 	}
-	
 	
 	return $macro;
 }

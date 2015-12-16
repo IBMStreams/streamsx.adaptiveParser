@@ -206,17 +206,58 @@ sub main::generate($$) {
    print ' oport0;', "\n";
    print "\n";
    # [----- perl code -----]
-   if (defined($structs->[-1]->{'xml'})) {
-   	my @xmlDefs = values %{$structs->[-1]->{'xml'}};
+   if (defined($structs->[-1]->{'enum'})) {
+   	my @enumDefs = values %{$structs->[-1]->{'enum'}};
    	
-   	foreach my $xml (@xmlDefs) {
+   	foreach my $cppType (@enumDefs) {
    print qq(
-   	$xml
+   	namespace streams_boost { namespace spirit { namespace traits {
+   	template <typename Iterator>
+   	struct assign_to_attribute_from_iterators<$cppType, Iterator> {
+   		static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
+   			const std::string enumValue(first,last);
+   			if(attr.isValidValue(enumValue)) {
+   				attr = enumValue;
+   			}
+   			else {
+   				SPLAPPLOG(L_ERROR, enumValue << " is not part of $cppType enum.", "AdaptiveParser");
+   			}
+   		}
+   	};
+   	
+   //	template <>
+   //	struct assign_to_attribute_from_value<std::string, $cppType> {
+   //		static void call(std::string & enumValue, $cppType & attr) {
+   //			std::cout << enumValue << std::endl;
+   //			if(attr.isValidValue(enumValue)) {
+   //				attr = enumValue;
+   //			}
+   //		}
+   //	};
+   	}}}
    );
    	}
    
    }
-    
+   
+   if (defined($structs->[-1]->{'xml'})) {
+   	my @xmlDefs = values %{$structs->[-1]->{'xml'}};
+   	
+   	foreach my $cppType (@xmlDefs) {
+   print qq(
+   	namespace streams_boost { namespace spirit { namespace traits {
+   	template <typename Iterator>
+   	struct assign_to_attribute_from_iterators<$cppType, Iterator> {
+   		static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
+   			attr = $cppType( SPL::rstring(first,last));
+   		}
+   	};
+   	}}}
+   );
+   	}
+   
+   }
+   
    foreach my $struct (@{$structs}) {
    print qq(
    	$struct->{'traits'}

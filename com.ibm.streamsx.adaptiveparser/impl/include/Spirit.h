@@ -1,14 +1,14 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
-#define STR_(VALUE,DELIM,SKIPPER) (raw[*(VALUE - eoi)])
-#define STR_W(VALUE,DELIM,SKIPPER) (no_skip[raw[*(VALUE - eoi)]])
-#define STR_S(VALUE,DELIM,SKIPPER) (raw[lexeme[*(VALUE - SKIPPER)]])
-#define STR_SW(VALUE,DELIM,SKIPPER) (skip(SKIPPER)[raw[no_skip[*(VALUE - SKIPPER)]] >> eps])
-#define STR_D(VALUE,DELIM,SKIPPER) (raw[*(VALUE - DELIM)])
-#define STR_DW(VALUE,DELIM,SKIPPER) (no_skip[raw[*(VALUE - DELIM)]])
-#define STR_DS(VALUE,DELIM,SKIPPER) (raw[*(VALUE - skip(SKIPPER)[DELIM|eoi])])
-#define STR_DSW(VALUE,DELIM,SKIPPER) (skip(SKIPPER)[raw[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
+#define STR_(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - eoi)])
+#define STR_W(OP,VALUE,DELIM,SKIPPER) (no_skip[OP[*(VALUE - eoi)]])
+#define STR_S(OP,VALUE,DELIM,SKIPPER) (OP[lexeme[*(VALUE - SKIPPER)]])
+#define STR_SW(OP,VALUE,DELIM,SKIPPER) (skip(SKIPPER)[OP[no_skip[*(VALUE - SKIPPER)]] >> eps])
+#define STR_D(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - DELIM)])
+#define STR_DW(OP,VALUE,DELIM,SKIPPER) (no_skip[OP[*(VALUE - DELIM)]])
+#define STR_DS(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])])
+#define STR_DSW(OP,VALUE,DELIM,SKIPPER) (skip(SKIPPER)[OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix.hpp>
@@ -22,6 +22,7 @@
 
 namespace extension = streams_boost::fusion::extension;
 namespace fusion = streams_boost::fusion;
+namespace mpl = streams_boost::mpl;
 namespace phoenix = streams_boost::phoenix;
 namespace ascii = streams_boost::spirit::ascii;
 namespace qi = streams_boost::spirit::qi;
@@ -42,7 +43,7 @@ using qi::eoi; using qi::eol; using qi::eps; using qi::lit;
 using qi::debug; using qi::fail; using qi::on_error;
 using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using qi::lazy; using repo::kwd;
 using qi::lexeme; using qi::no_skip; using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
-using streams_boost::iterator_range;
+using streams_boost::enable_if; using streams_boost::is_base_of; using streams_boost::iterator_range;
 using namespace qi::labels;
 
 typedef const char* charPtr;
@@ -302,6 +303,14 @@ namespace streams_boost { namespace spirit { namespace traits {
 			attr = SPL::blob(first, last - first);
 	    }
 	};
+
+//	template <typename Iterator, typename Enum>
+//	struct assign_to_attribute_from_iterators<Enum, Iterator, typename enable_if< typename is_base_of<SPL::Enum, Enum>::value>::type> {
+//	    static void call(Iterator const& first, Iterator const& last, Enum & attr) {
+//	    	STREAMS_BOOST_STATIC_ASSERT((is_base_of<Iterator, SPL::Enum>::value));
+//			attr = std::string(first,last);
+//	    }
+//	};
 
 	template <typename Iterator, int N>
 	struct assign_to_attribute_from_iterators<SPL::bstring<N>, Iterator> {
