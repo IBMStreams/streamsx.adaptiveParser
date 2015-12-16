@@ -12,13 +12,14 @@
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="CEFEvent" portIndex="0"/>
-        <type column="9" line="23" name="CEFSeverity_e" static="true" type="enum { Low, Medium, High, Unknown }" uriIndex="1"/>
+        <type column="9" line="23" name="CEFSeverity_e" static="true" type="enum { Low, Medium, High, VeryHigh, Unknown }" uriIndex="1"/>
         <type column="9" line="25" name="CEFHeader_t" static="true" type="uint16 version, rstring deviceVendor, rstring deviceProduct, rstring deviceVersion, rstring signatureID, rstring name, CEFParser.CEFSeverity_e severity" uriIndex="1"/>
         <type column="9" line="33" name="CEFExtension_t" static="true" type="map&lt;rstring, rstring> properties" uriIndex="1"/>
         <enumLiterals column="31" line="23" static="true" typeName="CEFSeverity_e" uriIndex="1">
           <enum>Low</enum>
           <enum>Medium</enum>
           <enum>High</enum>
+          <enum>VeryHigh</enum>
           <enum>Unknown</enum>
         </enumLiterals>
       </compositeOp>

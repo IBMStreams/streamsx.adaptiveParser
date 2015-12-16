@@ -20,7 +20,7 @@ param
 	expression<boolean> $batch : false;
 
 type
-	static CEFSeverity_e	=	enum {Low, Medium, High, Unknown};
+	static CEFSeverity_e	=	enum {Low, Medium, High, VeryHigh, Unknown};
 	
 	static CEFHeader_t		= 	uint16 version,
 								rstring deviceVendor,
@@ -43,6 +43,7 @@ graph
 		output
 			CEFEvent :
 				version = Param({prefix = "CEF:"}),
+				severity = Param({skipChars = "-"}),
 				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = "", globalEscapeChar = ""},
 					  				{key = ParamN({delimiter = "="}), value = ParamN({cutCharsetDelim = "a-zA-Z0-9_.)(-"})});
     }
