@@ -1,4 +1,4 @@
-CEF:0|Microsoft|DNS Trace Log||Response\|A|Response|High| eventID=1 deviceDirection=0 proto=UDP src=1.1.1.1 cs3=Some Text Here
+CEF:0|Microsoft|DNS Trace Log||Response\|A|Response|Very-High| eventID=1 deviceDirection=0 proto=UDP src=1.1.1.1 cs3=Some Text Here
 CEF:0|Microsoft|DNS Trace Log||Response:A|Response|High| eventID=2 deviceDirection=1 proto=UDP cs3=Text Here src=1.1.1.1 dst=2.2.2.2 srcPort=1111 dstPort=2222
 CEF:0|Microsoft|DNS Trace Log||Response:A|Response|High| eventID=3 deviceDirection=1 proto=UDP cs3=Here src=1.1.1.1 srcPort=3333 
 CEF:0|Microsoft|DNS Trace Log||Response:A|Response|Unknown| eventID=4 deviceDirection=0 proto=UDP cs3=Some Text src=1.1.1.1 requestClientApp=Mozilla/5.0 (Windows NT 6.1; rv:34.0) Gecko/20100101 Firefox/34.0
