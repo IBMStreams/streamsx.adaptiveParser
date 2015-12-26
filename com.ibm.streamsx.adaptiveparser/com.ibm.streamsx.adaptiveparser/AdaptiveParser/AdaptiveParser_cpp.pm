@@ -62,7 +62,7 @@ sub main::generate($$) {
    print "\n";
    print '		OPort0Type otuple;', "\n";
    print "\n";
-   print '		bool isCommented;', "\n";
+   print '		bool isCommented = false;', "\n";
    print '		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);', "\n";
    print "\n";
    print '		if(!isCommented) {', "\n";

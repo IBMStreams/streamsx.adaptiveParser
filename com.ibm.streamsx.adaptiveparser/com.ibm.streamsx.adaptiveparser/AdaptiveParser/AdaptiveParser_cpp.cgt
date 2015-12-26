@@ -47,7 +47,7 @@ void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 <%}%>
 		OPort0Type otuple;
 
-		bool isCommented;
+		bool isCommented = false;
 		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);
 
 		if(!isCommented) {
