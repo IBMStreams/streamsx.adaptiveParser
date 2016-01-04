@@ -14,6 +14,9 @@ sub main::generate($$) {
    use AdaptiveParserCommon;
    
    my $inputPort = $model->getInputPortAt(0);
+   my $outputPort = $model->getOutputPortAt(0);
+   my $outputPort2 = $model->getOutputPortAt(1) if ($model->getNumberOfOutputPorts() > 1) ;
+   
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
    my $dataAttr = $model->getParameterByName('dataAttr');
@@ -29,6 +32,8 @@ sub main::generate($$) {
    }
    
    my $dataAttrCppValue = $dataAttr ? $dataAttr->getValueAt(0)->getCppExpression() : 'iport$0.get_'.$inputPort->getAttributeAt(0)->getName().'()';
+   
+   SPL::CodeGen::exitln("Output ports schemas must match", $inputPort->getSourceLocation()) if($outputPort2 && $outputPort->getCppTupleType() ne $outputPort2->getCppTupleType());
    
    my $oTupleName = 'oport0';
    my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
@@ -62,16 +67,29 @@ sub main::generate($$) {
    print "\n";
    print '		OPort0Type otuple;', "\n";
    print "\n";
-   print '		bool isCommented;', "\n";
+   print '		bool isCommented = false;', "\n";
    print '		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);', "\n";
    print "\n";
    print '		if(!isCommented) {', "\n";
+   print '			int portNumber = 0;', "\n";
    print '			if(!parsed ';
    print $batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end';
-   print ')', "\n";
-   print '				SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");', "\n";
+   print ') {', "\n";
+   print '				';
+   if ($model->getNumberOfOutputPorts() > 1) {
+   print "\n";
+   print '					portNumber = 1;', "\n";
+   print '				';
+   }
+   				else {
+   print "\n";
+   print '					SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");', "\n";
+   print '				';
+   }
+   print "\n";
+   print '			}', "\n";
    print '	', "\n";
-   print '			submit(otuple, 0);', "\n";
+   print '			submit(otuple, portNumber);', "\n";
    print '		}', "\n";
    if ($batch) {
    print "\n";

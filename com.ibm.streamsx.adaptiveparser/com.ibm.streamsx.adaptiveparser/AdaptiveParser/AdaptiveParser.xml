@@ -217,6 +217,18 @@
         <cardinality>1</cardinality>
         <optional>false</optional>
       </outputPortSet>
+      <outputPortSet>
+        <description/>
+        <expressionMode>Expression</expressionMode>
+        <autoAssignment>false</autoAssignment>
+        <completeAssignment>false</completeAssignment>
+        <rewriteAllowed>true</rewriteAllowed>
+        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
+        <windowPunctuationInputPort>0</windowPunctuationInputPort>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <cardinality>1</cardinality>
+        <optional>true</optional>
+      </outputPortSet>
     </outputPorts>
   </cppOperatorModel>
 </operatorModel>

@@ -102,6 +102,9 @@
         <outputPort expressionMode="AttributeFree" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
           <description/>
         </outputPort>
+        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="true" windowPunctOutputMode="Preserving">
+          <description/>
+        </outputPort>
       </primitiveOp>
       <compositeOp column="18" line="3" name="Skipper" potentialMain="true" public="true" uriIndex="1">
         <type column="10" line="5" name="Skippers" static="true" type="enum { none, blank, control, endl, punct, tab, whitespace }" uriIndex="1"/>
