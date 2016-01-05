@@ -61,6 +61,15 @@
       <description></description>
       <allowAny>false</allowAny>
       <parameter>
+        <name>allowEmpty</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
         <name>attrNameAsPrefix</name>
         <description></description>
         <optional>true</optional>

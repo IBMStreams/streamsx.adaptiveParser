@@ -6,7 +6,7 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
+my @inheritedParams = ('allowEmpty','attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
 
 my %allowedParams = (
 					attrNameAsPrefix => 'boolean',
@@ -461,6 +461,7 @@ sub handlePrimitive(@) {
 	}
 	
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
+	$value = "($value | attr_cast<$cppType>(eps))" if ($parserOpt->{'allowEmpty'});
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
