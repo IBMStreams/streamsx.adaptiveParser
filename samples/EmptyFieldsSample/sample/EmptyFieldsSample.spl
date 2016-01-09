@@ -1,0 +1,32 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite EmptyFieldsSample {
+graph
+	stream<rstring data> NumStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "UNDEF,,3"}, NumStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects 3 comma delimited unsigned integers
+	 *  allowEmpty parameter enables parsing empty values and assigning defaults to the related atributes
+	 *  undefined parameter allows to define a list of undefined values that should be treated as empty ones 
+	 */
+    stream<uint32 number1, uint32 number2, uint32 number3> ParsedStream = AdaptiveParser(NumStream) {
+    	param
+    		globalDelimiter : ",";
+    		allowEmpty : true;
+    		undefined : "UNDEF";
+    }
+
+	() as PSink = Custom(ParsedStream)  {
+        logic
+            onTuple ParsedStream: {
+                println(ParsedStream);
+            }
+    }    
+}

@@ -1,0 +1,36 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite ErrorPortSample {
+graph
+	stream<rstring data> NumStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "42"}, NumStream);
+                submit({data = "3.14"}, NumStream);
+                submit({data = "text"}, NumStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type unsigned integer
+	 *  The second optional output port is used for all input tuples with parsing error
+	 */
+    (stream<uint32 number> ParsedStream; stream<uint32 number> ParsedErrorStream) = AdaptiveParser(NumStream) {}
+
+	() as PSink = Custom(ParsedStream; ParsedErrorStream)  {
+        logic
+            onTuple ParsedStream: {
+                printStringLn("Parsing completed successfully");
+                println(ParsedStream);
+                
+            }
+            
+            onTuple ParsedErrorStream: {
+                printStringLn("Parsing did not complete successfully");
+                println(ParsedErrorStream);
+                
+            }
+    }    
+}
