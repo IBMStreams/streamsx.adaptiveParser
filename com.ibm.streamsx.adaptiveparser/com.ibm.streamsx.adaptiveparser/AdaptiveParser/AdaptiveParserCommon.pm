@@ -461,7 +461,7 @@ sub handlePrimitive(@) {
 	}
 	
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
-	$value = "($value | attr_cast<$cppType>(eps))" if ($parserOpt->{'allowEmpty'});
+	$value = "($value | as<$cppType>()[eps])" if ($parserOpt->{'allowEmpty'});
 	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
