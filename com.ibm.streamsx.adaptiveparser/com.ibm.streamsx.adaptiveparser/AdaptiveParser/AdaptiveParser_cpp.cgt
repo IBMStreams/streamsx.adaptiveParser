@@ -4,6 +4,9 @@
 use AdaptiveParserCommon;
 
 my $inputPort = $model->getInputPortAt(0);
+my $outputPort = $model->getOutputPortAt(0);
+my $outputPort2 = $model->getOutputPortAt(1) if ($model->getNumberOfOutputPorts() > 1) ;
+
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
 my $dataAttr = $model->getParameterByName('dataAttr');
@@ -19,6 +22,8 @@ else {
 }
 
 my $dataAttrCppValue = $dataAttr ? $dataAttr->getValueAt(0)->getCppExpression() : 'iport$0.get_'.$inputPort->getAttributeAt(0)->getName().'()';
+
+SPL::CodeGen::exitln("Output ports schemas must match", $inputPort->getSourceLocation()) if($outputPort2 && $outputPort->getCppTupleType() ne $outputPort2->getCppTupleType());
 
 my $oTupleName = 'oport0';
 my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
@@ -51,10 +56,17 @@ void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);
 
 		if(!isCommented) {
-			if(!parsed <%=$batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end'%>)
-				SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");
+			int portNumber = 0;
+			if(!parsed <%=$batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end'%>) {
+				<%if ($model->getNumberOfOutputPorts() > 1) {%>
+					portNumber = 1;
+				<%}
+				else {%>
+					SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");
+				<%}%>
+			}
 	
-			submit(otuple, 0);
+			submit(otuple, portNumber);
 		}
 <%if ($batch) {%>
 	}
