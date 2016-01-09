@@ -53,6 +53,9 @@
           </function>
         </outputFunctions>
         <parametersDescription/>
+        <parameter cardinality="1" expressionMode="Constant" name="allowEmpty" optional="true" type="boolean">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="attrNameAsPrefix" optional="true" type="boolean">
           <description/>
         </parameter>
