@@ -17,7 +17,7 @@ graph
 	 *  AdaptiveParser expects the input attribute to be of type unsigned integer
 	 *  The second optional output port is used for all input tuples with parsing error
 	 */
-    (stream<uint32 number> ParsedStream; stream<uint32 number> ParsedErrorStream) = AdaptiveParser(NumStream) {}
+    (stream<uint32 number> ParsedStream; stream<rstring data> ParsedErrorStream) = AdaptiveParser(NumStream) {}
 
 	() as PSink = Custom(ParsedStream; ParsedErrorStream)  {
         logic
