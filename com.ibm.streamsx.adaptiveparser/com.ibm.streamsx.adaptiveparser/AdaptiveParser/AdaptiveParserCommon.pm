@@ -6,14 +6,16 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('allowEmpty','attrNameAsPrefix','attrNameDelimiter','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
+my @inheritedParams = ('allowEmpty','attrNameAsPrefix','attrNameDelimiter','attrNameQuoted','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
 
 my %allowedParams = (
 					attrNameAsPrefix => 'boolean',
+					attrNameQuoted => 'boolean',
 					binaryMode => 'boolean',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
 					skipChars => 'rstring',
+					attrFieldName => 'rstring',
 					attrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
 					globalEscapeChar => 'rstring',
@@ -152,8 +154,11 @@ sub buildStructFromTuple(@) {
 		elsif ($parserCustOpt->{'attrNameAsPrefix'}) {
 			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
 			$attrNameDelimiter ||= $parserCustOpt->{'delimiter'};
+			my $attrName =  $parserCustOpt->{'attrFieldName'} ? $parserCustOpt->{'attrFieldName'}  : $attrNames[$i];
+			$attrName =~ tr/\"//d;
+			$attrName =  '\"'.$attrName.'\"' if ($parserCustOpt->{'attrNameQuoted'});
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
-			$parser = qq(kwd("$attrNames[$i]",0,1)[$parser]);
+			$parser = qq(kwd("$attrName",0,1)[$parser]);
 		}
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
@@ -573,7 +578,7 @@ sub getStringMacro(@) {
 			: "byte_";
 		
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
-		$macro = "no_skip[dq >> $macro($operator,$value,$params) >> dq]";
+		$macro = "dq >> no_skip[$macro($operator,$value,$params)] >> dq";
 	}
 	else {
 		$macro .= 'D' if ($delimiter);

@@ -79,6 +79,15 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
+        <name>attrNameQuoted</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
         <name>batch</name>
         <description></description>
         <optional>true</optional>
@@ -227,7 +236,7 @@
         <optional>false</optional>
       </outputPortSet>
       <outputPortSet>
-        <description/>
+        <description></description>
         <expressionMode>Expression</expressionMode>
         <autoAssignment>false</autoAssignment>
         <completeAssignment>false</completeAssignment>

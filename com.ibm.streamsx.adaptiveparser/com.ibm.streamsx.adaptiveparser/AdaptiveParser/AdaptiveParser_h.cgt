@@ -12,6 +12,7 @@ use AdaptiveParserCommon;
 my $parserOpt = {};
 $parserOpt->{'allowEmpty'} = ($_ = $model->getParameterByName('allowEmpty')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'attrNameAsPrefix'} = ($_ = $model->getParameterByName('attrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+$parserOpt->{'attrNameQuoted'} = ($_ = $model->getParameterByName('attrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
@@ -86,6 +87,8 @@ if (scalar %{$struct}) {
 	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
 	my $operator = $struct->{'attrNameAsPrefix'} ? ' / ' : ' >> ';
 	my $rule = join($operator, @{$struct->{'ruleBody'}});
+	$rule = "reparse2(byte_ - (lit($parserOpt->{'suffix'}) | eoi))[$rule] >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
+	$rule = "skip(byte_ - (lit($parserOpt->{'prefix'}) | eoi))[$parserOpt->{'prefix'}] >> $rule" if ($parserOpt->{'prefix'});
 	$rule = $skipper."[$rule]";
 	$rule .= " >> eps" if ($struct->{'size'} <= 1); # patch for single element tuple
 	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});

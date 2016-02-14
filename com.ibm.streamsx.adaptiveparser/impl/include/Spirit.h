@@ -123,6 +123,45 @@ namespace ext {
 	};
 
 
+	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse2);
+
+	template <typename Subject, typename RangeSkipper>
+	struct reparse2_parser : qi::unary_parser<reparse2_parser<Subject, RangeSkipper> > {
+		typedef Subject subject_type;
+
+		template <typename Context, typename Iterator>
+		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+
+		reparse2_parser(Subject const& subject, RangeSkipper const& rangeSkipper) : subject(subject),  rangeSkipper(rangeSkipper) {}
+
+		template <typename Iterator, typename Context, typename Skipper, typename Attribute>
+		bool parse(Iterator& first, Iterator const& last, Context& context, Skipper const& skipper, Attribute& attr) const {
+			Iterator rangeFirst = first;
+
+			std::reverse_iterator<Iterator> rrangeFirst(last);
+			std::reverse_iterator<Iterator> rrangeLast(first);
+
+			qi::skip_over(rrangeFirst, rrangeLast, rangeSkipper);
+
+			Iterator rangeLast = (++rrangeFirst).base();
+			if( !subject.parse(rangeFirst, rangeLast, context, skipper, attr)) {
+				return false;
+			}
+
+			first = rangeLast;
+			return true;
+		}
+
+		template <typename Context>
+		streams_boost::spirit::info what(Context&) const {
+			return streams_boost::spirit::info("reparse2");
+		}
+
+		Subject subject;
+		RangeSkipper rangeSkipper;
+	};
+
+
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reverse);
 
 	template <typename Subject, typename RangeSkipper, typename ReverseSkipper>
@@ -182,12 +221,18 @@ namespace ext {
         bool parse(Iterator& first, Iterator const& last, Context&, Skipper const& skipper, Attribute& attr) const {
         	qi::skip_over(first, last, skipper);
 
-    		struct tm sysTm;
-    		const char* tsParsed = strptime(reinterpret_cast<const char*>(first), value_, &sysTm);
+    		struct tm parsedTm = {};
+    		const char* tsParsed = strptime(reinterpret_cast<const char*>(first), value_, &parsedTm);
 
     		if(tsParsed) {
     			first = reinterpret_cast<charPtr>(tsParsed);
-				time_t rawtime = mktime(&sysTm);
+    			// Set current year if no year found in ts
+    			if(parsedTm.tm_year == 0) {
+    				time_t currTime = time(NULL);
+    				struct tm *currTm = localtime(&currTime);
+    				parsedTm.tm_year = currTm->tm_year;
+    			}
+				time_t rawtime = mktime(&parsedTm);
 				if(rawtime >= 0) {
 					traits::assign_to(SPL::timestamp(rawtime,0,0), attr);
 					return true;
@@ -215,6 +260,13 @@ namespace streams_boost { namespace spirit {
 	struct use_lazy_directive<qi::domain, ext::tag::reparse, 1> : mpl::true_ {};
 
 
+    template <typename RangeSkipper>
+	struct use_directive<qi::domain, terminal_ex<ext::tag::reparse2, fusion::vector1<RangeSkipper> > > : mpl::true_ {};
+
+    template <>
+	struct use_lazy_directive<qi::domain, ext::tag::reparse2, 1> : mpl::true_ {};
+
+
     template <typename RangeSkipper, typename ReverseSkipper>
 	struct use_directive<qi::domain, terminal_ex<ext::tag::reverse, fusion::vector2<RangeSkipper, ReverseSkipper> > > : mpl::true_ {};
 
@@ -235,6 +287,18 @@ namespace streams_boost { namespace spirit { namespace qi {
     struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
         typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
         typedef ext::reparse_parser<Subject, rangeSkipper_type> result_type;
+
+        template <typename Terminal>
+        result_type operator()(Terminal const& term, Subject const& subject, Modifiers const& modifiers) const {
+            return result_type(subject, compile<qi::domain>(fusion::at_c<0>(term.args), modifiers));
+        }
+    };
+
+
+	template <typename RangeSkipper, typename Subject, typename Modifiers>
+    struct make_directive<terminal_ex<ext::tag::reparse2, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
+        typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
+        typedef ext::reparse2_parser<Subject, rangeSkipper_type> result_type;
 
         template <typename Terminal>
         result_type operator()(Terminal const& term, Subject const& subject, Modifiers const& modifiers) const {
@@ -271,6 +335,9 @@ namespace streams_boost { namespace spirit { namespace qi {
 namespace streams_boost { namespace spirit { namespace traits {
 	template <typename Subject, typename RangeSkipper>
     struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
+
+	template <typename Subject, typename RangeSkipper>
+    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper, typename ReverseSkipper>
     struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};

@@ -59,6 +59,9 @@
         <parameter cardinality="1" expressionMode="Constant" name="attrNameAsPrefix" optional="true" type="boolean">
           <description/>
         </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="attrNameQuoted" optional="true" type="boolean">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="batch" optional="true" type="boolean">
           <description/>
         </parameter>
