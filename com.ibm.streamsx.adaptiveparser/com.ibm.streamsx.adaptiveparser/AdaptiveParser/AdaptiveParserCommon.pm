@@ -483,7 +483,7 @@ sub getFuncNameParams(@) {
 		$funcName =~ s/^.+:://;
 		my $funcArity = scalar @{$attr->getAssignmentOutputFunctionParameterValues()};
 		
-		SPL::CodeGen::errorln("Only AsIs() or ParamN() are allowed as top level custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','Param']);
+		SPL::CodeGen::errorln("Only AsIs() or Param() are allowed as top level custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','Param']);
 
 		$$param1 = $attr->getAssignmentOutputFunctionParameterValueAt(0)->getSPLExpressionTree();
 		$$param2 = $attr->getAssignmentOutputFunctionParameterValueAt(1)->getSPLExpressionTree() if ($funcArity > 1);
