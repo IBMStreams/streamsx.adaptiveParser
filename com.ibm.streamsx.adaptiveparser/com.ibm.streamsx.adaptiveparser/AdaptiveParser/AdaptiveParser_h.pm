@@ -18,20 +18,27 @@ sub main::generate($$) {
    BEGIN {*Type:: = *SPL::CodeGen::Type::};
    use AdaptiveParserCommon;
    
+   my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   
    my $parserOpt = {};
    $parserOpt->{'allowEmpty'} = ($_ = $model->getParameterByName('allowEmpty')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-   $parserOpt->{'attrNameAsPrefix'} = ($_ = $model->getParameterByName('attrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-   $parserOpt->{'attrNameQuoted'} = ($_ = $model->getParameterByName('attrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   $parserOpt->{'globalAttrNameAsPrefix'} = ($_ = $model->getParameterByName('globalAttrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   $parserOpt->{'globalAttrNameQuoted'} = ($_ = $model->getParameterByName('globalAttrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'attrNameDelimiter'} = ($_ = $model->getParameterByName('attrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'globalAttrNameDelimiter'} = ($_ = $model->getParameterByName('globalAttrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
    $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
-   $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'listPrefix'} = ($_ = $model->getParameterByName('listPrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'listSuffix'} = ($_ = $model->getParameterByName('listSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'mapPrefix'} = ($_ = $model->getParameterByName('mapPrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'mapSuffix'} = ($_ = $model->getParameterByName('mapSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'tuplePrefix'} = ($_ = $model->getParameterByName('tuplePrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
    
    my $oTupleCppType = 'oport0';
@@ -105,12 +112,16 @@ sub main::generate($$) {
    foreach my $struct (@{$structs}) {
    if (scalar %{$struct}) {
    	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
-   	my $operator = $struct->{'attrNameAsPrefix'} ? ' / ' : ' >> ';
+   	my $operator = $struct->{'globalAttrNameAsPrefix'} ? ' / ' : ' >> ';
    	my $rule = join($operator, @{$struct->{'ruleBody'}});
-   	$rule = "reparse2(byte_ - (lit($parserOpt->{'suffix'}) | eoi))[$rule] >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
-   	$rule = "skip(byte_ - (lit($parserOpt->{'prefix'}) | eoi))[$parserOpt->{'prefix'}] >> $rule" if ($parserOpt->{'prefix'});
-   	$rule = $skipper."[$rule]";
+   	$rule = "$parserOpt->{'tuplePrefix'} >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
+   	if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tupleSuffix'}) {
+   		$rule = "$rule >> $parserOpt->{'tupleSuffix'}" if ($batch);
+   		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> $parserOpt->{'tupleSuffix'}" unless ($batch);
+   	}
    	$rule .= " >> eps" if ($struct->{'size'} <= 1); # patch for single element tuple
+   	$rule = $skipper."[$rule]";
+   	$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $startFrom);
    	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
    print qq(
    		$struct->{'ruleName'} %= $rule;
@@ -119,7 +130,7 @@ sub main::generate($$) {
    }
    # [----- perl code -----]
    print "\n";
-   print ' ', "\n";
+   print "\n";
    print '	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];', "\n";
    print '	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";', "\n";
    print "\n";

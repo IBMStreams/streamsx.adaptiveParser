@@ -56,12 +56,6 @@
         <parameter cardinality="1" expressionMode="Constant" name="allowEmpty" optional="true" type="boolean">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="attrNameAsPrefix" optional="true" type="boolean">
-          <description/>
-        </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="attrNameQuoted" optional="true" type="boolean">
-          <description/>
-        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="batch" optional="true" type="boolean">
           <description/>
         </parameter>
@@ -77,7 +71,13 @@
         <parameter cardinality="1" expressionMode="Constant" name="comment" optional="true" type="rstring">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="attrNameDelimiter" optional="true" type="rstring">
+        <parameter cardinality="1" expressionMode="Constant" name="globalAttrNameAsPrefix" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="globalAttrNameQuoted" optional="true" type="boolean">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="globalAttrNameDelimiter" optional="true" type="rstring">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="globalDelimiter" optional="true" type="rstring">
@@ -89,10 +89,25 @@
         <parameter cardinality="1" expressionMode="CustomLiteral" name="globalSkipper" optional="true" type="Skippers">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="prefix" optional="true" type="rstring">
+        <parameter cardinality="1" expressionMode="Constant" name="startFrom" optional="true" type="rstring">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="suffix" optional="true" type="rstring">
+        <parameter cardinality="1" expressionMode="Constant" name="listPrefix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="listSuffix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="mapPrefix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="mapSuffix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="tuplePrefix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="tupleSuffix" optional="true" type="rstring">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="quotedStrings" optional="true" type="boolean">

@@ -6,17 +6,18 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('allowEmpty','attrNameAsPrefix','attrNameDelimiter','attrNameQuoted','binaryMode','quotedStrings','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
+my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapPrefix','mapSuffix','tuplePrefix','tupleSuffix','quotedStrings','globalAttrNameAsPrefix','globalAttrNameDelimiter','globalAttrNameQuoted','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
 
 my %allowedParams = (
-					attrNameAsPrefix => 'boolean',
-					attrNameQuoted => 'boolean',
 					binaryMode => 'boolean',
+					attrNameAsPrefix => 'boolean',
+					globalAttrNameAsPrefix => 'boolean',
+					globalAttrNameQuoted => 'boolean',
+					attrFieldName => 'rstring',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
 					skipChars => 'rstring',
-					attrFieldName => 'rstring',
-					attrNameDelimiter => 'rstring',
+					globalAttrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
 					globalEscapeChar => 'rstring',
 					cutCharsetDelim => 'rstring',
@@ -24,6 +25,12 @@ my %allowedParams = (
 					cutSkipper => 'Skipper.Skippers',
 					prefix => 'rstring',
 					suffix => 'rstring',
+					listPrefix => 'rstring',
+					listSuffix => 'rstring',
+					mapPrefix => 'rstring',
+					mapSuffix => 'rstring',
+					tuplePrefix => 'rstring',
+					tupleSuffix => 'rstring',
 					skipper => 'Skipper.Skippers',
 					globalSkipper => 'Skipper.Skippers',
 					optional => 'boolean',
@@ -75,7 +82,7 @@ sub buildStructFromTuple(@) {
 	$adapt->{'cppType'} = $cppType;
 	$adapt->{'ruleName'} = $ruleName;
 	$adapt->{'ruleBody'} = [];
-	$adapt->{'attrNameAsPrefix'} = $parserOpt->{'attrNameAsPrefix'};
+	$adapt->{'globalAttrNameAsPrefix'} = $parserOpt->{'globalAttrNameAsPrefix'};
 	$adapt->{'skipper'} = $parserOpt->{'skipper'};
 	$adapt->{'size'} = $tupleSize;
 	$adapt->{'symbols'} = {};
@@ -96,7 +103,7 @@ sub buildStructFromTuple(@) {
 			
 		}
 	}
-	
+
 	for (my $i = 0; $i < $tupleSize; $i++) {
 		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType);
 
@@ -132,6 +139,9 @@ sub buildStructFromTuple(@) {
 			}
 		}
 		
+		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
+		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
+		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
@@ -146,26 +156,37 @@ sub buildStructFromTuple(@) {
 		}
 
 		if (Type::isComposite($attrTypes[$i])) {
-			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
-		elsif ($parserCustOpt->{'attrNameAsPrefix'}) {
+		
+		if ($parserCustOpt->{'attrNameAsPrefix'}) {
 			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
 			$attrNameDelimiter ||= $parserCustOpt->{'delimiter'};
 			my $attrName =  $parserCustOpt->{'attrFieldName'} ? $parserCustOpt->{'attrFieldName'}  : $attrNames[$i];
 			$attrName =~ tr/\"//d;
-			$attrName =  '\"'.$attrName.'\"' if ($parserCustOpt->{'attrNameQuoted'});
+			$attrName =  qq(\\"$attrName\\") if ($parserCustOpt->{'attrNameQuoted'});
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
 			$parser = qq(kwd("$attrName",0,1)[$parser]);
 		}
+		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'}) {
+			SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
+		}
+		
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
 
 	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
 	
 	$struct->{'extension'} .= ")";
+
+	#$ruleName = "as<$cppType>()[$ruleName]" if ($tupleSize == 1);
+	$ruleName = "attr_cast<$cppType>($ruleName)" if ($tupleSize == 1);
+	$ruleName = "$parserOpt->{'tuplePrefix'} >> $ruleName" if ($parserOpt->{'tuplePrefix'});
+	$ruleName .= " >> $parserOpt->{'tupleSuffix'}" if ($parserOpt->{'tupleSuffix'});
+
 	return $ruleName;
 }
 
@@ -174,7 +195,8 @@ sub handleListOrSet(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size) = @_;
 	my $bound = Type::getBound($splType);
 	my $valueType = Type::getElementType($splType);
-	
+	my $parser;
+
 	my $parserCustOpt;
 	@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
 	$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipperLast'};
@@ -184,7 +206,6 @@ sub handleListOrSet(@) {
 						
 	my $param1;
 	my $param2;
-	my $parser;
 	
 	{
 		if ($oAttrParams) {
@@ -200,6 +221,9 @@ sub handleListOrSet(@) {
 			}
 		}
 		
+		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
+		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
+		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
@@ -214,8 +238,8 @@ sub handleListOrSet(@) {
 		}
 
 		if (Type::isComposite($valueType)) {
-			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -228,6 +252,8 @@ sub handleListOrSet(@) {
 		}
 	}
 	
+	$parser = "$parserOpt->{'listPrefix'} >> $parser" if ($parserOpt->{'listPrefix'});
+	$parser .= " >> $parserOpt->{'listSuffix'}" if ($parserOpt->{'listSuffix'});
 	
 	return $parser;
 }
@@ -288,6 +314,9 @@ sub handleMap(@) {
 			}
 		}
 
+		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
+		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
+		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
@@ -320,8 +349,8 @@ sub handleMap(@) {
 		}
 		
 		if (Type::isComposite($attrType)) {
-			$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -338,6 +367,9 @@ sub handleMap(@) {
 		$parser = "*(($ruleName >> eps) - eoi)";
 	}
 	
+	$parser = "$parserOpt->{'mapPrefix'} >> $parser" if ($parserOpt->{'mapPrefix'});
+	$parser .= " >> $parserOpt->{'mapSuffix'}" if ($parserOpt->{'mapSuffix'});
+
 	return $parser;
 }
 
@@ -346,6 +378,9 @@ sub handlePrimitive(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
 	my $value = '';
 	
+	$parserOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
+	$parserOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
+	$parserOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};

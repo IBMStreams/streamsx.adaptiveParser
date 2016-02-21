@@ -70,24 +70,6 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>attrNameAsPrefix</name>
-        <description></description>
-        <optional>true</optional>
-        <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>Constant</expressionMode>
-        <type>boolean</type>
-        <cardinality>1</cardinality>
-      </parameter>
-      <parameter>
-        <name>attrNameQuoted</name>
-        <description></description>
-        <optional>true</optional>
-        <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>Constant</expressionMode>
-        <type>boolean</type>
-        <cardinality>1</cardinality>
-      </parameter>
-      <parameter>
         <name>batch</name>
         <description></description>
         <optional>true</optional>
@@ -133,7 +115,25 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>attrNameDelimiter</name>
+        <name>globalAttrNameAsPrefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>globalAttrNameQuoted</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>boolean</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>globalAttrNameDelimiter</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
@@ -169,7 +169,7 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>prefix</name>
+        <name>startFrom</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
@@ -178,7 +178,52 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>suffix</name>
+        <name>listPrefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>listSuffix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>mapPrefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>mapSuffix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>tuplePrefix</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>rstring</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>tupleSuffix</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
