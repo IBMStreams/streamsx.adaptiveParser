@@ -1,0 +1,27 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser.bro::* ;
+
+composite BroHTTPParserSample {
+	graph
+		stream<rstring data> File = FileSource(){
+			param
+				file : "http_eth0.04_00_00-05_00_00.log" ;
+				format : line ;
+		}
+
+		stream<BroHTTP_t> BroRecord = BroHTTPParser(File){
+			param
+				dataAttr : data ;
+		}
+
+		()as DSink = FileSink(BroRecord){
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+				format : txt ;
+		}
+
+}
+
+

@@ -1,0 +1,1443 @@
+#separator \x09
+#set_separator	,
+#empty_field	(empty)
+#unset_field	-
+#path	communication
+#open	2015-12-22-03-00-03
+#fields	ts	peer	src_name	connected_peer_desc	connected_peer_addr	connected_peer_port	level	message
+#types	time	string	string	string	addr	port	string	string
+1450753203.124123	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=73K/6K chunks=492/102 io=224/23 bytes/io=0.33K/0.28K events=26/40 operations=0/0
+1450753203.124123	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=16K/0K chunks=127/8 io=63/5 bytes/io=0.27K/0.04K
+1450753203.124123	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=51K/6K chunks=235/92 io=114/47 bytes/io=0.45K/0.13K
+1450753204.647371	manager	child	-	-	-	info	selects=5000000 canwrites=0 timeouts=4999800
+1450753194.635306	proxy	child	-	-	-	info	selects=4900000 canwrites=0 timeouts=4899917
+1450753195.845716	secononoin-eth0-1	child	-	-	-	info	selects=4900000 canwrites=0 timeouts=4899868
+1450753206.523696	secononoin-eth0-1	child	-	-	-	info	selects=5000000 canwrites=0 timeouts=4999860
+1450753207.553638	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=14K/52K chunks=246/254 io=95/112 bytes/io=0.15K/0.47K events=40/26 operations=6/1
+1450753207.553638	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=6K/51K chunks=92/237 io=26/119 bytes/io=0.24K/0.44K
+1450753207.553638	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/0K chunks=22/11 io=3/6 bytes/io=1.10K/0.07K
+1450753215.663108	manager	child	-	-	-	info	selects=5100000 canwrites=0 timeouts=5099797
+1450753205.148031	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=5K/20K chunks=149/153 io=67/64 bytes/io=0.08K/0.32K events=0/0 operations=1/6
+1450753205.148031	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/16K chunks=8/127 io=5/64 bytes/io=0.04K/0.26K
+1450753205.148031	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=0K/3K chunks=11/22 io=6/12 bytes/io=0.07K/0.27K
+1450753205.654890	proxy	child	-	-	-	info	selects=5000000 canwrites=0 timeouts=4999914
+1450753218.159112	secononoin-eth0-1	child	-	-	-	info	selects=5100000 canwrites=0 timeouts=5099855
+1450753227.552341	manager	child	-	-	-	info	selects=5200000 canwrites=0 timeouts=5199794
+1450753216.970739	proxy	child	-	-	-	info	selects=5100000 canwrites=0 timeouts=5099914
+1450753238.536527	manager	child	-	-	-	info	selects=5300000 canwrites=0 timeouts=5299792
+1450753228.709311	proxy	child	-	-	-	info	selects=5200000 canwrites=0 timeouts=5199913
+1450753229.614935	secononoin-eth0-1	child	-	-	-	info	selects=5200000 canwrites=0 timeouts=5199853
+1450753240.904734	secononoin-eth0-1	child	-	-	-	info	selects=5300000 canwrites=0 timeouts=5299852
+1450753250.958907	manager	child	-	-	-	info	selects=5400000 canwrites=0 timeouts=5399787
+1450753239.860825	proxy	child	-	-	-	info	selects=5300000 canwrites=0 timeouts=5299912
+1450753253.355601	secononoin-eth0-1	child	-	-	-	info	selects=5400000 canwrites=0 timeouts=5399845
+1450753263.123920	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=93K/6K chunks=548/102 io=252/23 bytes/io=0.37K/0.28K events=26/40 operations=0/0
+1450753263.123920	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=18K/0K chunks=137/8 io=68/5 bytes/io=0.27K/0.04K
+1450753263.123920	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=69K/6K chunks=269/92 io=131/47 bytes/io=0.53K/0.13K
+1450753263.246202	manager	child	-	-	-	info	selects=5500000 canwrites=0 timeouts=5499779
+1450753252.305335	proxy	child	-	-	-	info	selects=5400000 canwrites=0 timeouts=5399911
+1450753265.537318	secononoin-eth0-1	child	-	-	-	info	selects=5500000 canwrites=0 timeouts=5499842
+1450753275.272037	manager	child	-	-	-	info	selects=5600000 canwrites=0 timeouts=5599776
+1450753264.572872	proxy	child	-	-	-	info	selects=5500000 canwrites=0 timeouts=5499910
+1450753265.148232	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=5K/21K chunks=163/165 io=74/70 bytes/io=0.08K/0.31K events=0/0 operations=1/6
+1450753265.148232	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/18K chunks=8/139 io=5/70 bytes/io=0.04K/0.26K
+1450753265.148232	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=0K/3K chunks=11/22 io=6/12 bytes/io=0.07K/0.27K
+1450753267.553481	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=14K/71K chunks=258/288 io=101/129 bytes/io=0.14K/0.55K events=40/26 operations=6/1
+1450753267.553481	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=6K/70K chunks=92/271 io=26/136 bytes/io=0.24K/0.52K
+1450753267.553481	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/0K chunks=22/11 io=3/6 bytes/io=1.10K/0.07K
+1450753277.600413	secononoin-eth0-1	child	-	-	-	info	selects=5600000 canwrites=0 timeouts=5599839
+1450753287.549862	manager	child	-	-	-	info	selects=5700000 canwrites=0 timeouts=5699773
+1450753276.617298	proxy	child	-	-	-	info	selects=5600000 canwrites=0 timeouts=5599908
+1450753299.609091	manager	child	-	-	-	info	selects=5800000 canwrites=0 timeouts=5799771
+1450753288.862098	proxy	child	-	-	-	info	selects=5700000 canwrites=0 timeouts=5699907
+1450753289.807785	secononoin-eth0-1	child	-	-	-	info	selects=5700000 canwrites=0 timeouts=5699837
+1450753301.442363	secononoin-eth0-1	child	-	-	-	info	selects=5800000 canwrites=0 timeouts=5799836
+1450753311.497518	manager	child	-	-	-	info	selects=5900000 canwrites=0 timeouts=5899763
+1450753300.583187	proxy	child	-	-	-	info	selects=5800000 canwrites=0 timeouts=5799906
+1450753313.550597	secononoin-eth0-1	child	-	-	-	info	selects=5900000 canwrites=0 timeouts=5899825
+1450753322.590373	manager	child	-	-	-	info	selects=6000000 canwrites=0 timeouts=5999745
+1450753323.124318	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=445K/43K chunks=646/122 io=298/32 bytes/io=1.50K/1.36K events=36/50 operations=0/0
+1450753323.124318	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=19K/0K chunks=147/8 io=73/5 bytes/io=0.27K/0.04K
+1450753323.124318	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=420K/43K chunks=343/112 io=168/57 bytes/io=2.50K/0.76K
+1450753312.692554	proxy	child	-	-	-	info	selects=5900000 canwrites=0 timeouts=5899895
+1450753324.405614	secononoin-eth0-1	child	-	-	-	info	selects=6000000 canwrites=0 timeouts=5999754
+1450753323.624077	proxy	child	-	-	-	info	selects=6000000 canwrites=0 timeouts=5999866
+1450753327.553625	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=54K/665K chunks=296/504 io=120/216 bytes/io=0.46K/3.08K events=53/39 operations=6/66
+1450753327.553625	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=46K/649K chunks=118/357 io=39/179 bytes/io=1.18K/3.63K
+1450753327.553625	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/16K chunks=22/141 io=3/71 bytes/io=1.10K/0.23K
+1450753333.429170	manager	child	-	-	-	info	selects=6100000 canwrites=0 timeouts=6099711
+1450753325.147830	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=20K/23K chunks=289/175 io=129/75 bytes/io=0.16K/0.31K events=0/0 operations=58/6
+1450753325.147830	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/19K chunks=8/149 io=5/75 bytes/io=0.04K/0.26K
+1450753325.147830	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=14K/3K chunks=125/22 io=63/12 bytes/io=0.23K/0.27K
+1450753335.283804	secononoin-eth0-1	child	-	-	-	info	selects=6100000 canwrites=0 timeouts=6099733
+1450753345.008876	manager	child	-	-	-	info	selects=6200000 canwrites=0 timeouts=6199702
+1450753334.539979	proxy	child	-	-	-	info	selects=6100000 canwrites=0 timeouts=6099837
+1450753346.825616	secononoin-eth0-1	child	-	-	-	info	selects=6200000 canwrites=0 timeouts=6199726
+1450753356.748999	manager	child	-	-	-	info	selects=6300000 canwrites=0 timeouts=6299694
+1450753346.088312	proxy	child	-	-	-	info	selects=6200000 canwrites=0 timeouts=6199836
+1450753358.594488	secononoin-eth0-1	child	-	-	-	info	selects=6300000 canwrites=0 timeouts=6299719
+1450753368.697657	manager	child	-	-	-	info	selects=6400000 canwrites=0 timeouts=6399689
+1450753357.900887	proxy	child	-	-	-	info	selects=6300000 canwrites=0 timeouts=6299835
+1450753370.487179	secononoin-eth0-1	child	-	-	-	info	selects=6400000 canwrites=0 timeouts=6399714
+1450753380.439474	manager	child	-	-	-	info	selects=6500000 canwrites=0 timeouts=6499681
+1450753369.856587	proxy	child	-	-	-	info	selects=6400000 canwrites=0 timeouts=6399834
+1450753383.123935	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=863K/46K chunks=756/128 io=353/35 bytes/io=2.45K/1.32K events=39/53 operations=0/0
+1450753383.123935	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=21K/0K chunks=161/8 io=80/5 bytes/io=0.27K/0.04K
+1450753383.123935	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=836K/46K chunks=427/118 io=210/60 bytes/io=3.98K/0.77K
+1450753382.169751	secononoin-eth0-1	child	-	-	-	info	selects=6500000 canwrites=0 timeouts=6499706
+1450753381.604733	proxy	child	-	-	-	info	selects=6500000 canwrites=0 timeouts=6499833
+1450753387.553594	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=55K/853K chunks=308/580 io=126/254 bytes/io=0.44K/3.36K events=53/39 operations=6/67
+1450753387.553594	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=46K/837K chunks=118/431 io=39/216 bytes/io=1.18K/3.88K
+1450753387.553594	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/16K chunks=22/143 io=3/72 bytes/io=1.10K/0.23K
+1450753391.954402	manager	child	-	-	-	info	selects=6600000 canwrites=0 timeouts=6599672
+1450753385.147730	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=22K/24K chunks=319/187 io=144/81 bytes/io=0.16K/0.30K events=0/0 operations=67/6
+1450753385.147730	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/21K chunks=8/161 io=5/81 bytes/io=0.04K/0.26K
+1450753385.147730	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=16K/3K chunks=143/22 io=72/12 bytes/io=0.23K/0.27K
+1450753393.673239	secononoin-eth0-1	child	-	-	-	info	selects=6600000 canwrites=0 timeouts=6599699
+1450753403.823880	manager	child	-	-	-	info	selects=6700000 canwrites=0 timeouts=6699665
+1450753393.076221	proxy	child	-	-	-	info	selects=6600000 canwrites=0 timeouts=6599830
+1450753405.430931	secononoin-eth0-1	child	-	-	-	info	selects=6700000 canwrites=0 timeouts=6699693
+1450753415.633773	manager	child	-	-	-	info	selects=6800000 canwrites=0 timeouts=6799660
+1450753404.950285	proxy	child	-	-	-	info	selects=6700000 canwrites=0 timeouts=6699828
+1450753417.283532	secononoin-eth0-1	child	-	-	-	info	selects=6800000 canwrites=0 timeouts=6799688
+1450753427.548586	manager	child	-	-	-	info	selects=6900000 canwrites=0 timeouts=6899654
+1450753416.747789	proxy	child	-	-	-	info	selects=6800000 canwrites=0 timeouts=6799827
+1450753429.168510	secononoin-eth0-1	child	-	-	-	info	selects=6900000 canwrites=0 timeouts=6899683
+1450753439.245146	manager	child	-	-	-	info	selects=7000000 canwrites=0 timeouts=6999646
+1450753428.660488	proxy	child	-	-	-	info	selects=6900000 canwrites=0 timeouts=6899825
+1450753440.745554	secononoin-eth0-1	child	-	-	-	info	selects=7000000 canwrites=0 timeouts=6999674
+1450753443.124205	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=942K/47K chunks=838/130 io=394/36 bytes/io=2.39K/1.31K events=40/54 operations=0/0
+1450753443.124205	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=22K/0K chunks=173/8 io=86/5 bytes/io=0.26K/0.04K
+1450753443.124205	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=913K/46K chunks=485/120 io=239/61 bytes/io=3.82K/0.77K
+1450753440.263563	proxy	child	-	-	-	info	selects=7000000 canwrites=0 timeouts=6999822
+1450753447.553663	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=56K/931K chunks=322/646 io=133/286 bytes/io=0.43K/3.26K events=54/40 operations=6/71
+1450753447.553663	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=46K/914K chunks=120/489 io=40/245 bytes/io=1.17K/3.73K
+1450753447.553663	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/17K chunks=22/151 io=3/76 bytes/io=1.10K/0.23K
+1450753450.742217	manager	child	-	-	-	info	selects=7100000 canwrites=0 timeouts=7099636
+1450753445.148490	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=23K/26K chunks=339/199 io=154/87 bytes/io=0.15K/0.30K events=0/0 operations=71/6
+1450753445.148490	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/22K chunks=8/173 io=5/87 bytes/io=0.04K/0.26K
+1450753445.148490	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=17K/3K chunks=151/22 io=76/12 bytes/io=0.23K/0.27K
+1450753452.264869	secononoin-eth0-1	child	-	-	-	info	selects=7100000 canwrites=0 timeouts=7099667
+1450753462.635534	manager	child	-	-	-	info	selects=7200000 canwrites=0 timeouts=7199629
+1450753451.815778	proxy	child	-	-	-	info	selects=7100000 canwrites=0 timeouts=7099819
+1450753464.091695	secononoin-eth0-1	child	-	-	-	info	selects=7200000 canwrites=0 timeouts=7199662
+1450753474.237244	manager	child	-	-	-	info	selects=7300000 canwrites=0 timeouts=7299621
+1450753463.689673	proxy	child	-	-	-	info	selects=7200000 canwrites=0 timeouts=7199816
+1450753475.657531	secononoin-eth0-1	child	-	-	-	info	selects=7300000 canwrites=0 timeouts=7299654
+1450753485.969194	manager	child	-	-	-	info	selects=7400000 canwrites=0 timeouts=7399614
+1450753475.292470	proxy	child	-	-	-	info	selects=7300000 canwrites=0 timeouts=7299815
+1450753487.442086	secononoin-eth0-1	child	-	-	-	info	selects=7400000 canwrites=0 timeouts=7399640
+1450753498.172143	manager	child	-	-	-	info	selects=7500000 canwrites=0 timeouts=7499606
+1450753487.098366	proxy	child	-	-	-	info	selects=7400000 canwrites=0 timeouts=7399804
+1450753499.575114	secononoin-eth0-1	child	-	-	-	info	selects=7500000 canwrites=0 timeouts=7499632
+1450753503.124412	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=1048K/49K chunks=958/174 io=448/45 bytes/io=2.34K/1.11K events=55/76 operations=0/0
+1450753503.124412	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=24K/0K chunks=185/8 io=92/5 bytes/io=0.26K/0.04K
+1450753503.124412	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=1017K/49K chunks=581/164 io=282/83 bytes/io=3.61K/0.60K
+1450753499.285914	proxy	child	-	-	-	info	selects=7500000 canwrites=0 timeouts=7499803
+1450753508.102096	manager	child	-	-	-	info	selects=7600000 canwrites=0 timeouts=7599568
+1450753505.148220	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=26K/27K chunks=375/211 io=172/93 bytes/io=0.15K/0.30K events=0/0 operations=83/6
+1450753505.148220	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/24K chunks=8/185 io=5/93 bytes/io=0.04K/0.26K
+1450753505.148220	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=19K/3K chunks=175/22 io=88/12 bytes/io=0.22K/0.27K
+1450753507.553643	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=59K/1038K chunks=378/770 io=152/344 bytes/io=0.39K/3.02K events=76/55 operations=6/83
+1450753507.553643	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=49K/1019K chunks=164/589 io=51/295 bytes/io=0.97K/3.45K
+1450753507.553643	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/19K chunks=22/175 io=3/88 bytes/io=1.10K/0.22K
+1450753509.478040	secononoin-eth0-1	child	-	-	-	info	selects=7600000 canwrites=0 timeouts=7599601
+1450753520.254773	manager	child	-	-	-	info	selects=7700000 canwrites=0 timeouts=7699562
+1450753509.198824	proxy	child	-	-	-	info	selects=7600000 canwrites=0 timeouts=7599801
+1450753521.603563	secononoin-eth0-1	child	-	-	-	info	selects=7700000 canwrites=0 timeouts=7699597
+1450753532.583773	manager	child	-	-	-	info	selects=7800000 canwrites=0 timeouts=7799559
+1450753521.379838	proxy	child	-	-	-	info	selects=7700000 canwrites=0 timeouts=7699800
+1450753533.892533	secononoin-eth0-1	child	-	-	-	info	selects=7800000 canwrites=0 timeouts=7799594
+1450753544.932385	manager	child	-	-	-	info	selects=7900000 canwrites=0 timeouts=7899549
+1450753533.721284	proxy	child	-	-	-	info	selects=7800000 canwrites=0 timeouts=7799799
+1450753546.115998	secononoin-eth0-1	child	-	-	-	info	selects=7900000 canwrites=0 timeouts=7899585
+1450753557.132396	manager	child	-	-	-	info	selects=8000000 canwrites=0 timeouts=7999541
+1450753545.998678	proxy	child	-	-	-	info	selects=7900000 canwrites=0 timeouts=7899795
+1450753558.231255	secononoin-eth0-1	child	-	-	-	info	selects=8000000 canwrites=0 timeouts=7999571
+1450753563.124351	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=1406K/53K chunks=1052/182 io=494/49 bytes/io=2.85K/1.09K events=59/80 operations=0/0
+1450753563.124351	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=25K/0K chunks=197/8 io=98/5 bytes/io=0.26K/0.04K
+1450753563.124351	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=1373K/53K chunks=651/172 io=317/87 bytes/io=4.33K/0.61K
+1450753558.145217	proxy	child	-	-	-	info	selects=8000000 canwrites=0 timeouts=7999787
+1450753567.911050	manager	child	-	-	-	info	selects=8100000 canwrites=0 timeouts=8099522
+1450753567.554002	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=64K/1667K chunks=400/942 io=163/422 bytes/io=0.40K/3.95K events=81/60 operations=6/132
+1450753567.554002	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=54K/1637K chunks=174/663 io=56/332 bytes/io=0.97K/4.93K
+1450753567.554002	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3K/29K chunks=22/273 io=3/137 bytes/io=1.10K/0.22K
+1450753565.148256	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=35K/28K chunks=469/223 io=219/99 bytes/io=0.16K/0.29K events=0/0 operations=124/6
+1450753565.148256	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/25K chunks=8/197 io=5/99 bytes/io=0.04K/0.26K
+1450753565.148256	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=28K/3K chunks=257/22 io=129/12 bytes/io=0.22K/0.27K
+1450753568.888481	secononoin-eth0-1	child	-	-	-	info	selects=8100000 canwrites=0 timeouts=8099513
+1450753578.809694	manager	child	-	-	-	info	selects=8200000 canwrites=0 timeouts=8199505
+1450753568.821286	proxy	child	-	-	-	info	selects=8100000 canwrites=0 timeouts=8099741
+1450753579.840508	secononoin-eth0-1	child	-	-	-	info	selects=8200000 canwrites=0 timeouts=8199474
+1450753590.056742	manager	child	-	-	-	info	selects=8300000 canwrites=0 timeouts=8299489
+1450753579.820999	proxy	child	-	-	-	info	selects=8200000 canwrites=0 timeouts=8199716
+1450753591.078102	secononoin-eth0-1	child	-	-	-	info	selects=8300000 canwrites=0 timeouts=8299465
+1450753601.591193	manager	child	-	-	-	info	selects=8400000 canwrites=0 timeouts=8399483
+1450753591.099922	proxy	child	-	-	-	info	selects=8300000 canwrites=0 timeouts=8299714
+1450753602.532054	secononoin-eth0-1	child	-	-	-	info	selects=8400000 canwrites=0 timeouts=8399459
+1450753613.305860	manager	child	-	-	-	info	selects=8500000 canwrites=0 timeouts=8499476
+1450753602.590527	proxy	child	-	-	-	info	selects=8400000 canwrites=0 timeouts=8399713
+1450753614.194959	secononoin-eth0-1	child	-	-	-	info	selects=8500000 canwrites=0 timeouts=8499453
+1450753623.124688	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=2485K/58K chunks=1176/194 io=556/55 bytes/io=4.47K/1.07K events=65/86 operations=0/0
+1450753623.124688	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=27K/0K chunks=209/8 io=104/5 bytes/io=0.26K/0.04K
+1450753623.124688	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=2450K/58K chunks=751/184 io=367/93 bytes/io=6.68K/0.63K
+1450753624.894934	manager	child	-	-	-	info	selects=8600000 canwrites=0 timeouts=8599467
+1450753614.287077	proxy	child	-	-	-	info	selects=8500000 canwrites=0 timeouts=8499712
+1450753625.698392	secononoin-eth0-1	child	-	-	-	info	selects=8600000 canwrites=0 timeouts=8599402
+1450753627.554115	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=78K/2497K chunks=518/1114 io=222/495 bytes/io=0.35K/5.05K events=86/65 operations=53/171
+1450753627.554115	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=58K/2459K chunks=184/757 io=61/379 bytes/io=0.96K/6.49K
+1450753627.554115	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11K/37K chunks=116/351 io=50/176 bytes/io=0.23K/0.21K
+1450753636.369906	manager	child	-	-	-	info	selects=8700000 canwrites=0 timeouts=8699458
+1450753625.148755	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=44K/38K chunks=559/329 io=263/107 bytes/io=0.17K/0.36K events=0/0 operations=163/53
+1450753625.148755	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/27K chunks=8/209 io=5/105 bytes/io=0.04K/0.26K
+1450753625.148755	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=36K/11K chunks=335/116 io=168/59 bytes/io=0.22K/0.20K
+1450753625.820230	proxy	child	-	-	-	info	selects=8600000 canwrites=0 timeouts=8599707
+1450753637.158465	secononoin-eth0-1	child	-	-	-	info	selects=8700000 canwrites=0 timeouts=8699391
+1450753647.800927	manager	child	-	-	-	info	selects=8800000 canwrites=0 timeouts=8799448
+1450753637.303618	proxy	child	-	-	-	info	selects=8700000 canwrites=0 timeouts=8699697
+1450753648.465598	secononoin-eth0-1	child	-	-	-	info	selects=8800000 canwrites=0 timeouts=8799366
+1450753659.530206	manager	child	-	-	-	info	selects=8900000 canwrites=0 timeouts=8899437
+1450753648.665497	proxy	child	-	-	-	info	selects=8800000 canwrites=0 timeouts=8799682
+1450753660.209658	secononoin-eth0-1	child	-	-	-	info	selects=8900000 canwrites=0 timeouts=8899354
+1450753671.342618	manager	child	-	-	-	info	selects=9000000 canwrites=0 timeouts=8999429
+1450753660.443763	proxy	child	-	-	-	info	selects=8900000 canwrites=0 timeouts=8899680
+1450753671.941956	secononoin-eth0-1	child	-	-	-	info	selects=9000000 canwrites=0 timeouts=8999347
+1450753682.781036	manager	child	-	-	-	info	selects=9100000 canwrites=0 timeouts=9099421
+1450753683.124893	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=2827K/59K chunks=1288/198 io=612/56 bytes/io=4.62K/1.06K events=66/88 operations=0/0
+1450753683.124893	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=28K/0K chunks=219/8 io=109/5 bytes/io=0.26K/0.04K
+1450753683.124893	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=2790K/58K chunks=839/188 io=411/95 bytes/io=6.79K/0.62K
+1450753683.324897	secononoin-eth0-1	child	-	-	-	info	selects=9100000 canwrites=0 timeouts=9099338
+1450753672.202271	proxy	child	-	-	-	info	selects=9000000 canwrites=0 timeouts=8999679
+1450753683.604224	proxy	child	-	-	-	info	selects=9100000 canwrites=0 timeouts=9099677
+1450753687.554071	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=79K/2839K chunks=536/1238 io=231/555 bytes/io=0.34K/5.12K events=88/66 operations=54/190
+1450753687.554071	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=58K/2797K chunks=188/843 io=63/422 bytes/io=0.94K/6.63K
+1450753687.554071	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11K/41K chunks=118/389 io=51/195 bytes/io=0.23K/0.21K
+1450753694.325122	manager	child	-	-	-	info	selects=9200000 canwrites=0 timeouts=9199407
+1450753685.148506	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=49K/40K chunks=627/343 io=289/114 bytes/io=0.17K/0.36K events=0/0 operations=190/54
+1450753685.148506	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/28K chunks=8/221 io=5/111 bytes/io=0.04K/0.26K
+1450753685.148506	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=41K/11K chunks=389/118 io=195/60 bytes/io=0.21K/0.20K
+1450753694.798887	secononoin-eth0-1	child	-	-	-	info	selects=9200000 canwrites=0 timeouts=9199321
+1450753705.609781	manager	child	-	-	-	info	selects=9300000 canwrites=0 timeouts=9299396
+1450753695.121233	proxy	child	-	-	-	info	selects=9200000 canwrites=0 timeouts=9199657
+1450753706.043928	secononoin-eth0-1	child	-	-	-	info	selects=9300000 canwrites=0 timeouts=9299291
+1450753717.011758	manager	child	-	-	-	info	selects=9400000 canwrites=0 timeouts=9399379
+1450753706.311101	proxy	child	-	-	-	info	selects=9300000 canwrites=0 timeouts=9299648
+1450753717.433869	secononoin-eth0-1	child	-	-	-	info	selects=9400000 canwrites=0 timeouts=9399273
+1450753728.856092	manager	child	-	-	-	info	selects=9500000 canwrites=0 timeouts=9499374
+1450753717.825220	proxy	child	-	-	-	info	selects=9400000 canwrites=0 timeouts=9399642
+1450753729.207191	secononoin-eth0-1	child	-	-	-	info	selects=9500000 canwrites=0 timeouts=9499268
+1450753740.749599	manager	child	-	-	-	info	selects=9600000 canwrites=0 timeouts=9599370
+1450753729.646602	proxy	child	-	-	-	info	selects=9500000 canwrites=0 timeouts=9499640
+1450753741.075568	secononoin-eth0-1	child	-	-	-	info	selects=9600000 canwrites=0 timeouts=9599264
+1450753743.124952	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=3381K/62K chunks=1398/206 io=667/60 bytes/io=5.07K/1.05K events=70/92 operations=0/0
+1450753743.124952	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=30K/0K chunks=233/8 io=116/5 bytes/io=0.26K/0.04K
+1450753743.124952	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3342K/62K chunks=923/196 io=453/99 bytes/io=7.38K/0.63K
+1450753741.554626	proxy	child	-	-	-	info	selects=9600000 canwrites=0 timeouts=9599638
+1450753747.554193	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=83K/3392K chunks=558/1386 io=242/625 bytes/io=0.34K/5.43K events=92/70 operations=55/223
+1450753747.554193	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=62K/3343K chunks=196/925 io=67/463 bytes/io=0.93K/7.22K
+1450753747.554193	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=12K/48K chunks=120/455 io=52/228 bytes/io=0.23K/0.21K
+1450753752.229037	manager	child	-	-	-	info	selects=9700000 canwrites=0 timeouts=9699361
+1450753745.149114	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=57K/42K chunks=705/357 io=327/121 bytes/io=0.18K/0.35K events=0/0 operations=223/55
+1450753745.149114	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/30K chunks=8/233 io=5/117 bytes/io=0.04K/0.26K
+1450753745.149114	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=48K/12K chunks=455/120 io=228/61 bytes/io=0.21K/0.20K
+1450753752.542271	secononoin-eth0-1	child	-	-	-	info	selects=9700000 canwrites=0 timeouts=9699257
+1450753764.136666	manager	child	-	-	-	info	selects=9800000 canwrites=0 timeouts=9799354
+1450753764.390151	secononoin-eth0-1	child	-	-	-	info	selects=9800000 canwrites=0 timeouts=9799250
+1450753753.032292	proxy	child	-	-	-	info	selects=9700000 canwrites=0 timeouts=9699635
+1450753775.845228	manager	child	-	-	-	info	selects=9900000 canwrites=0 timeouts=9899344
+1450753764.915456	proxy	child	-	-	-	info	selects=9800000 canwrites=0 timeouts=9799634
+1450753776.057770	secononoin-eth0-1	child	-	-	-	info	selects=9900000 canwrites=0 timeouts=9899237
+1450753785.920964	manager	child	-	-	-	info	selects=10000000 canwrites=0 timeouts=9999333
+1450753776.597836	proxy	child	-	-	-	info	selects=9900000 canwrites=0 timeouts=9899624
+1450753786.106017	secononoin-eth0-1	child	-	-	-	info	selects=10000000 canwrites=0 timeouts=9999203
+1450753796.844819	manager	child	-	-	-	info	selects=10100000 canwrites=0 timeouts=10099322
+1450753796.930736	secononoin-eth0-1	child	-	-	-	info	selects=10100000 canwrites=0 timeouts=10099190
+1450753786.590003	proxy	child	-	-	-	info	selects=10000000 canwrites=0 timeouts=9999616
+1450753803.125032	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=3837K/65K chunks=1534/240 io=731/65 bytes/io=5.25K/1.01K events=81/109 operations=0/0
+1450753803.125032	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=31K/0K chunks=245/8 io=122/5 bytes/io=0.26K/0.04K
+1450753803.125032	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=3796K/65K chunks=1035/230 io=506/116 bytes/io=7.50K/0.56K
+1450753797.415895	proxy	child	-	-	-	info	selects=10100000 canwrites=0 timeouts=10099612
+1450753806.760876	manager	child	-	-	-	info	selects=10200000 canwrites=0 timeouts=10199301
+1450753805.148472	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=61K/45K chunks=751/391 io=349/129 bytes/io=0.18K/0.35K events=0/0 operations=240/66
+1450753805.148472	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/31K chunks=8/245 io=5/123 bytes/io=0.04K/0.26K
+1450753805.148472	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=52K/14K chunks=489/142 io=245/72 bytes/io=0.21K/0.20K
+1450753806.846108	secononoin-eth0-1	child	-	-	-	info	selects=10200000 canwrites=0 timeouts=10199165
+1450753807.554197	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=88K/3880K chunks=628/1536 io=269/702 bytes/io=0.33K/5.53K events=109/81 operations=66/240
+1450753807.554197	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=65K/3827K chunks=230/1041 io=76/521 bytes/io=0.86K/7.35K
+1450753807.554197	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=14K/52K chunks=142/489 io=63/245 bytes/io=0.22K/0.21K
+1450753817.887927	manager	child	-	-	-	info	selects=10300000 canwrites=0 timeouts=10299290
+1450753817.955294	secononoin-eth0-1	child	-	-	-	info	selects=10300000 canwrites=0 timeouts=10299151
+1450753807.217660	proxy	child	-	-	-	info	selects=10200000 canwrites=0 timeouts=10199609
+1450753828.497915	manager	child	-	-	-	info	selects=10400000 canwrites=0 timeouts=10399278
+1450753828.524345	secononoin-eth0-1	child	-	-	-	info	selects=10400000 canwrites=0 timeouts=10399133
+1450753818.367380	proxy	child	-	-	-	info	selects=10300000 canwrites=0 timeouts=10299604
+1450753839.377493	manager	child	-	-	-	info	selects=10500000 canwrites=0 timeouts=10499267
+1450753828.992506	proxy	child	-	-	-	info	selects=10400000 canwrites=0 timeouts=10399595
+1450753839.347350	secononoin-eth0-1	child	-	-	-	info	selects=10500000 canwrites=0 timeouts=10499122
+1450753850.950040	manager	child	-	-	-	info	selects=10600000 canwrites=0 timeouts=10599259
+1450753839.866230	proxy	child	-	-	-	info	selects=10500000 canwrites=0 timeouts=10499594
+1450753850.871971	secononoin-eth0-1	child	-	-	-	info	selects=10600000 canwrites=0 timeouts=10599112
+1450753862.951678	manager	child	-	-	-	info	selects=10700000 canwrites=0 timeouts=10699246
+1450753863.125730	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=4710K/66K chunks=1660/248 io=794/68 bytes/io=5.93K/0.97K events=84/113 operations=0/0
+1450753863.125730	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=32K/0K chunks=257/8 io=128/5 bytes/io=0.26K/0.04K
+1450753863.125730	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=4668K/65K chunks=1135/238 io=556/120 bytes/io=8.40K/0.55K
+1450753851.436081	proxy	child	-	-	-	info	selects=10600000 canwrites=0 timeouts=10599590
+1450753863.470485	proxy	child	-	-	-	info	selects=10700000 canwrites=0 timeouts=10699588
+1450753862.828407	secononoin-eth0-1	child	-	-	-	info	selects=10700000 canwrites=0 timeouts=10699103
+1450753867.554373	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=96K/4733K chunks=726/1684 io=318/765 bytes/io=0.30K/6.19K events=113/84 operations=105/266
+1450753867.554373	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=65K/4676K chunks=238/1137 io=80/569 bytes/io=0.82K/8.22K
+1450753867.554373	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=20K/57K chunks=220/541 io=102/271 bytes/io=0.21K/0.21K
+1450753875.034447	manager	child	-	-	-	info	selects=10800000 canwrites=0 timeouts=10799238
+1450753865.149133	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=65K/54K chunks=795/483 io=371/139 bytes/io=0.18K/0.39K events=0/0 operations=255/105
+1450753865.149133	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/33K chunks=8/259 io=5/130 bytes/io=0.04K/0.25K
+1450753865.149133	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/20K chunks=519/220 io=260/111 bytes/io=0.21K/0.19K
+1450753874.869810	secononoin-eth0-1	child	-	-	-	info	selects=10800000 canwrites=0 timeouts=10799061
+1450753886.699914	manager	child	-	-	-	info	selects=10900000 canwrites=0 timeouts=10899231
+1450753886.502008	secononoin-eth0-1	child	-	-	-	info	selects=10900000 canwrites=0 timeouts=10899029
+1450753875.535441	proxy	child	-	-	-	info	selects=10800000 canwrites=0 timeouts=10799573
+1450753898.239093	manager	child	-	-	-	info	selects=11000000 canwrites=0 timeouts=10999219
+1450753887.231063	proxy	child	-	-	-	info	selects=10900000 canwrites=0 timeouts=10899564
+1450753898.003142	secononoin-eth0-1	child	-	-	-	info	selects=11000000 canwrites=0 timeouts=10999014
+1450753910.373060	manager	child	-	-	-	info	selects=11100000 canwrites=0 timeouts=11099208
+1450753898.760003	proxy	child	-	-	-	info	selects=11000000 canwrites=0 timeouts=10999557
+1450753910.117393	secononoin-eth0-1	child	-	-	-	info	selects=11100000 canwrites=0 timeouts=11099003
+1450753922.452184	manager	child	-	-	-	info	selects=11200000 canwrites=0 timeouts=11199201
+1450753910.928353	proxy	child	-	-	-	info	selects=11100000 canwrites=0 timeouts=11099555
+1450753923.124848	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=4991K/66K chunks=1764/248 io=846/68 bytes/io=5.90K/0.97K events=84/113 operations=0/0
+1450753923.124848	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=34K/0K chunks=271/8 io=135/5 bytes/io=0.26K/0.04K
+1450753923.124848	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=4946K/65K chunks=1213/238 io=595/120 bytes/io=8.31K/0.55K
+1450753922.203345	secononoin-eth0-1	child	-	-	-	info	selects=11200000 canwrites=0 timeouts=11198997
+1450753922.875539	proxy	child	-	-	-	info	selects=11200000 canwrites=0 timeouts=11199554
+1450753927.554340	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=101K/5016K chunks=790/1790 io=350/814 bytes/io=0.29K/6.16K events=113/84 operations=131/279
+1450753927.554340	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=65K/4957K chunks=238/1217 io=80/609 bytes/io=0.82K/8.14K
+1450753927.554340	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=25K/59K chunks=272/567 io=128/284 bytes/io=0.20K/0.21K
+1450753934.307186	manager	child	-	-	-	info	selects=11300000 canwrites=0 timeouts=11299193
+1450753925.150521	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=69K/60K chunks=855/547 io=391/148 bytes/io=0.18K/0.41K events=0/0 operations=279/131
+1450753925.150521	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/34K chunks=8/271 io=5/136 bytes/io=0.04K/0.25K
+1450753925.150521	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=59K/25K chunks=567/272 io=284/137 bytes/io=0.21K/0.19K
+1450753933.937164	secononoin-eth0-1	child	-	-	-	info	selects=11300000 canwrites=0 timeouts=11298992
+1450753946.789635	manager	child	-	-	-	info	selects=11400000 canwrites=0 timeouts=11399185
+1450753934.834345	proxy	child	-	-	-	info	selects=11300000 canwrites=0 timeouts=11299551
+1450753946.401798	secononoin-eth0-1	child	-	-	-	info	selects=11400000 canwrites=0 timeouts=11398984
+1450753958.736752	secononoin-eth0-1	child	-	-	-	info	selects=11500000 canwrites=0 timeouts=11498971
+1450753959.158473	manager	child	-	-	-	info	selects=11500000 canwrites=0 timeouts=11499182
+1450753947.324217	proxy	child	-	-	-	info	selects=11400000 canwrites=0 timeouts=11399549
+1450753971.682604	manager	child	-	-	-	info	selects=11600000 canwrites=0 timeouts=11599177
+1450753959.666866	proxy	child	-	-	-	info	selects=11500000 canwrites=0 timeouts=11499539
+1450753971.206013	secononoin-eth0-1	child	-	-	-	info	selects=11600000 canwrites=0 timeouts=11598967
+1450753983.125562	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5036K/66K chunks=1826/252 io=877/70 bytes/io=5.74K/0.95K events=86/115 operations=0/0
+1450753983.125562	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=35K/0K chunks=281/8 io=140/5 bytes/io=0.26K/0.04K
+1450753983.125562	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=4990K/66K chunks=1255/242 io=616/122 bytes/io=8.10K/0.54K
+1450753983.904158	manager	child	-	-	-	info	selects=11700000 canwrites=0 timeouts=11699171
+1450753972.163922	proxy	child	-	-	-	info	selects=11600000 canwrites=0 timeouts=11599538
+1450753983.411978	secononoin-eth0-1	child	-	-	-	info	selects=11700000 canwrites=0 timeouts=11698963
+1450753987.554385	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=104K/5055K chunks=826/1848 io=368/836 bytes/io=0.28K/6.05K events=115/86 operations=141/287
+1450753987.554385	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=66K/4994K chunks=242/1259 io=82/630 bytes/io=0.81K/7.93K
+1450753987.554385	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=27K/60K chunks=292/583 io=138/292 bytes/io=0.20K/0.21K
+1450753996.149044	manager	child	-	-	-	info	selects=11800000 canwrites=0 timeouts=11799165
+1450753984.375221	proxy	child	-	-	-	info	selects=11700000 canwrites=0 timeouts=11699537
+1450753985.150392	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=71K/63K chunks=883/579 io=399/156 bytes/io=0.18K/0.41K events=0/0 operations=287/141
+1450753985.150392	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/35K chunks=8/283 io=5/142 bytes/io=0.04K/0.25K
+1450753985.150392	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=60K/27K chunks=583/292 io=292/147 bytes/io=0.21K/0.18K
+1450753995.623553	secononoin-eth0-1	child	-	-	-	info	selects=11800000 canwrites=0 timeouts=11798944
+1450754008.693858	manager	child	-	-	-	info	selects=11900000 canwrites=0 timeouts=11899160
+1450753996.634240	proxy	child	-	-	-	info	selects=11800000 canwrites=0 timeouts=11799534
+1450754008.092564	secononoin-eth0-1	child	-	-	-	info	selects=11900000 canwrites=0 timeouts=11898933
+1450754021.077550	manager	child	-	-	-	info	selects=12000000 canwrites=0 timeouts=11999155
+1450754009.160720	proxy	child	-	-	-	info	selects=11900000 canwrites=0 timeouts=11899524
+1450754020.425596	secononoin-eth0-1	child	-	-	-	info	selects=12000000 canwrites=0 timeouts=11998929
+1450754033.610195	manager	child	-	-	-	info	selects=12100000 canwrites=0 timeouts=12099150
+1450754021.522039	proxy	child	-	-	-	info	selects=12000000 canwrites=0 timeouts=11999523
+1450754032.907085	secononoin-eth0-1	child	-	-	-	info	selects=12100000 canwrites=0 timeouts=12098923
+1450754043.125016	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5072K/68K chunks=1910/272 io=919/79 bytes/io=5.52K/0.86K events=95/125 operations=0/0
+1450754043.125016	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=37K/0K chunks=291/8 io=145/5 bytes/io=0.26K/0.04K
+1450754043.125016	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5024K/68K chunks=1317/262 io=647/132 bytes/io=7.77K/0.52K
+1450754034.068271	proxy	child	-	-	-	info	selects=12100000 canwrites=0 timeouts=12099521
+1450754045.111280	secononoin-eth0-1	child	-	-	-	info	selects=12200000 canwrites=0 timeouts=12198899
+1450754045.848423	manager	child	-	-	-	info	selects=12200000 canwrites=0 timeouts=12199125
+1450754045.149642	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=73K/68K chunks=909/635 io=408/163 bytes/io=0.18K/0.42K events=0/0 operations=295/165
+1450754045.149642	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/37K chunks=8/291 io=5/146 bytes/io=0.04K/0.26K
+1450754045.149642	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=62K/31K chunks=599/340 io=300/171 bytes/io=0.21K/0.18K
+1450754047.554395	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=110K/5092K chunks=906/1928 io=408/870 bytes/io=0.27K/5.85K events=125/95 operations=165/295
+1450754047.554395	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=68K/5029K chunks=262/1323 io=92/662 bytes/io=0.74K/7.60K
+1450754047.554395	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=31K/62K chunks=340/599 io=162/300 bytes/io=0.19K/0.21K
+1450754058.137490	manager	child	-	-	-	info	selects=12300000 canwrites=0 timeouts=12299120
+1450754046.267077	proxy	child	-	-	-	info	selects=12200000 canwrites=0 timeouts=12199518
+1450754057.341925	secononoin-eth0-1	child	-	-	-	info	selects=12300000 canwrites=0 timeouts=12298894
+1450754070.509016	manager	child	-	-	-	info	selects=12400000 canwrites=0 timeouts=12399112
+1450754058.502972	proxy	child	-	-	-	info	selects=12300000 canwrites=0 timeouts=12299517
+1450754069.747089	secononoin-eth0-1	child	-	-	-	info	selects=12400000 canwrites=0 timeouts=12398885
+1450754082.926892	manager	child	-	-	-	info	selects=12500000 canwrites=0 timeouts=12499103
+1450754082.067841	secononoin-eth0-1	child	-	-	-	info	selects=12500000 canwrites=0 timeouts=12498876
+1450754070.889467	proxy	child	-	-	-	info	selects=12400000 canwrites=0 timeouts=12399513
+1450754095.368984	manager	child	-	-	-	info	selects=12600000 canwrites=0 timeouts=12599087
+1450754094.472829	secononoin-eth0-1	child	-	-	-	info	selects=12600000 canwrites=0 timeouts=12598855
+1450754083.300949	proxy	child	-	-	-	info	selects=12500000 canwrites=0 timeouts=12499503
+1450754103.126030	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5217K/72K chunks=2026/302 io=975/85 bytes/io=5.35K/0.85K events=105/140 operations=0/0
+1450754103.126030	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=38K/0K chunks=303/8 io=151/5 bytes/io=0.26K/0.04K
+1450754103.126030	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5167K/72K chunks=1409/292 io=692/147 bytes/io=7.47K/0.49K
+1450754095.726236	proxy	child	-	-	-	info	selects=12600000 canwrites=0 timeouts=12599494
+1450754105.509039	secononoin-eth0-1	child	-	-	-	info	selects=12700000 canwrites=0 timeouts=12698825
+1450754106.200114	manager	child	-	-	-	info	selects=12700000 canwrites=0 timeouts=12699062
+1450754105.150340	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=79K/71K chunks=967/659 io=427/171 bytes/io=0.19K/0.42K events=0/0 operations=318/171
+1450754105.150340	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/38K chunks=8/303 io=5/152 bytes/io=0.04K/0.25K
+1450754105.150340	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=67K/32K chunks=645/352 io=323/177 bytes/io=0.21K/0.18K
+1450754107.554487	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=116K/5252K chunks=964/2072 io=432/926 bytes/io=0.27K/5.67K events=142/107 operations=171/319
+1450754107.554487	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=72K/5183K chunks=296/1419 io=105/710 bytes/io=0.69K/7.30K
+1450754107.554487	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=32K/68K chunks=352/647 io=168/324 bytes/io=0.19K/0.21K
+1450754116.805433	secononoin-eth0-1	child	-	-	-	info	selects=12800000 canwrites=0 timeouts=12798806
+1450754117.693351	manager	child	-	-	-	info	selects=12800000 canwrites=0 timeouts=12799051
+1450754106.438138	proxy	child	-	-	-	info	selects=12700000 canwrites=0 timeouts=12699488
+1450754128.744291	secononoin-eth0-1	child	-	-	-	info	selects=12900000 canwrites=0 timeouts=12898786
+1450754129.760453	manager	child	-	-	-	info	selects=12900000 canwrites=0 timeouts=12899040
+1450754118.020564	proxy	child	-	-	-	info	selects=12800000 canwrites=0 timeouts=12799476
+1450754140.723449	secononoin-eth0-1	child	-	-	-	info	selects=13000000 canwrites=0 timeouts=12998773
+1450754141.780105	manager	child	-	-	-	info	selects=13000000 canwrites=0 timeouts=12999028
+1450754129.993300	proxy	child	-	-	-	info	selects=12900000 canwrites=0 timeouts=12899473
+1450754153.135852	secononoin-eth0-1	child	-	-	-	info	selects=13100000 canwrites=0 timeouts=13098768
+1450754154.279770	manager	child	-	-	-	info	selects=13100000 canwrites=0 timeouts=13099022
+1450754142.065052	proxy	child	-	-	-	info	selects=13000000 canwrites=0 timeouts=12999470
+1450754163.125544	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5389K/73K chunks=2136/308 io=1030/88 bytes/io=5.23K/0.84K events=108/143 operations=0/0
+1450754163.125544	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=40K/0K chunks=315/8 io=157/5 bytes/io=0.26K/0.04K
+1450754163.125544	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5337K/73K chunks=1495/298 io=735/150 bytes/io=7.26K/0.49K
+1450754154.573804	proxy	child	-	-	-	info	selects=13100000 canwrites=0 timeouts=13099469
+1450754166.510387	manager	child	-	-	-	info	selects=13200000 canwrites=0 timeouts=13199015
+1450754165.150742	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=83K/74K chunks=1009/695 io=447/181 bytes/io=0.19K/0.41K events=0/0 operations=333/183
+1450754165.150742	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/40K chunks=8/315 io=5/158 bytes/io=0.04K/0.25K
+1450754165.150742	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=71K/34K chunks=675/376 io=338/189 bytes/io=0.21K/0.18K
+1450754165.303250	secononoin-eth0-1	child	-	-	-	info	selects=13200000 canwrites=0 timeouts=13198763
+1450754167.554556	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=120K/5483K chunks=1002/2182 io=451/977 bytes/io=0.27K/5.61K events=143/108 operations=183/333
+1450754167.554556	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=73K/5411K chunks=298/1501 io=106/751 bytes/io=0.69K/7.21K
+1450754167.554556	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=34K/71K chunks=376/675 io=180/338 bytes/io=0.19K/0.21K
+1450754177.451327	secononoin-eth0-1	child	-	-	-	info	selects=13300000 canwrites=0 timeouts=13298757
+1450754178.733835	manager	child	-	-	-	info	selects=13300000 canwrites=0 timeouts=13299007
+1450754166.766972	proxy	child	-	-	-	info	selects=13200000 canwrites=0 timeouts=13199464
+1450754191.097327	manager	child	-	-	-	info	selects=13400000 canwrites=0 timeouts=13399000
+1450754189.877252	secononoin-eth0-1	child	-	-	-	info	selects=13400000 canwrites=0 timeouts=13398744
+1450754178.981450	proxy	child	-	-	-	info	selects=13300000 canwrites=0 timeouts=13299463
+1450754202.240975	secononoin-eth0-1	child	-	-	-	info	selects=13500000 canwrites=0 timeouts=13498734
+1450754203.625055	manager	child	-	-	-	info	selects=13500000 canwrites=0 timeouts=13498990
+1450754191.329216	proxy	child	-	-	-	info	selects=13400000 canwrites=0 timeouts=13399461
+1450754216.148357	manager	child	-	-	-	info	selects=13600000 canwrites=0 timeouts=13598987
+1450754203.815420	proxy	child	-	-	-	info	selects=13500000 canwrites=0 timeouts=13499458
+1450754214.724725	secononoin-eth0-1	child	-	-	-	info	selects=13600000 canwrites=0 timeouts=13598730
+1450754223.125742	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5509K/75K chunks=2236/328 io=1079/97 bytes/io=5.11K/0.77K events=117/153 operations=0/0
+1450754223.125742	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=41K/0K chunks=327/8 io=163/5 bytes/io=0.26K/0.04K
+1450754223.125742	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5455K/74K chunks=1571/318 io=773/160 bytes/io=7.06K/0.47K
+1450754216.314891	proxy	child	-	-	-	info	selects=13600000 canwrites=0 timeouts=13599456
+1450754228.177157	manager	child	-	-	-	info	selects=13700000 canwrites=0 timeouts=13698963
+1450754225.150736	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=84K/77K chunks=1023/725 io=454/190 bytes/io=0.19K/0.41K events=0/0 operations=334/192
+1450754225.150736	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/41K chunks=8/327 io=5/164 bytes/io=0.04K/0.25K
+1450754225.150736	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=71K/36K chunks=677/394 io=339/198 bytes/io=0.21K/0.18K
+1450754226.971317	secononoin-eth0-1	child	-	-	-	info	selects=13700000 canwrites=0 timeouts=13698707
+1450754227.556156	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=123K/5528K chunks=1052/2258 io=476/1015 bytes/io=0.26K/5.45K events=153/117 operations=192/334
+1450754227.556156	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=74K/5456K chunks=318/1575 io=116/788 bytes/io=0.64K/6.92K
+1450754227.556156	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=36K/71K chunks=394/677 io=189/339 bytes/io=0.19K/0.21K
+1450754240.395935	manager	child	-	-	-	info	selects=13800000 canwrites=0 timeouts=13798958
+1450754228.325206	proxy	child	-	-	-	info	selects=13700000 canwrites=0 timeouts=13699454
+1450754238.996873	secononoin-eth0-1	child	-	-	-	info	selects=13800000 canwrites=0 timeouts=13798702
+1450754252.691574	manager	child	-	-	-	info	selects=13900000 canwrites=0 timeouts=13898952
+1450754240.553558	proxy	child	-	-	-	info	selects=13800000 canwrites=0 timeouts=13799453
+1450754251.193641	secononoin-eth0-1	child	-	-	-	info	selects=13900000 canwrites=0 timeouts=13898697
+1450754264.937721	manager	child	-	-	-	info	selects=14000000 canwrites=0 timeouts=13998950
+1450754252.842099	proxy	child	-	-	-	info	selects=13900000 canwrites=0 timeouts=13899452
+1450754263.392244	secononoin-eth0-1	child	-	-	-	info	selects=14000000 canwrites=0 timeouts=13998696
+1450754277.086630	manager	child	-	-	-	info	selects=14100000 canwrites=0 timeouts=14098946
+1450754265.077154	proxy	child	-	-	-	info	selects=14000000 canwrites=0 timeouts=13999451
+1450754275.600352	secononoin-eth0-1	child	-	-	-	info	selects=14100000 canwrites=0 timeouts=14098693
+1450754283.126321	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5541K/75K chunks=2296/328 io=1109/97 bytes/io=5.00K/0.77K events=117/153 operations=0/0
+1450754283.126321	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=43K/0K chunks=339/8 io=169/5 bytes/io=0.25K/0.04K
+1450754283.126321	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5485K/74K chunks=1607/318 io=791/160 bytes/io=6.93K/0.47K
+1450754277.217715	proxy	child	-	-	-	info	selects=14100000 canwrites=0 timeouts=14099450
+1450754287.368757	secononoin-eth0-1	child	-	-	-	info	selects=14200000 canwrites=0 timeouts=14198686
+1450754287.556175	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=123K/5573K chunks=1064/2298 io=482/1035 bytes/io=0.26K/5.38K events=153/117 operations=192/335
+1450754287.556175	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=74K/5500K chunks=318/1613 io=116/807 bytes/io=0.64K/6.82K
+1450754287.556175	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=36K/72K chunks=394/679 io=189/340 bytes/io=0.19K/0.21K
+1450754288.773138	manager	child	-	-	-	info	selects=14200000 canwrites=0 timeouts=14198936
+1450754285.150571	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=85K/79K chunks=1037/737 io=461/196 bytes/io=0.18K/0.40K events=0/0 operations=335/192
+1450754285.150571	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/43K chunks=8/339 io=5/170 bytes/io=0.04K/0.25K
+1450754285.150571	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=72K/36K chunks=679/394 io=340/198 bytes/io=0.21K/0.18K
+1450754301.095919	manager	child	-	-	-	info	selects=14300000 canwrites=0 timeouts=14298927
+1450754288.867880	proxy	child	-	-	-	info	selects=14200000 canwrites=0 timeouts=14199446
+1450754299.473246	secononoin-eth0-1	child	-	-	-	info	selects=14300000 canwrites=0 timeouts=14298676
+1450754313.072413	manager	child	-	-	-	info	selects=14400000 canwrites=0 timeouts=14398920
+1450754301.174940	proxy	child	-	-	-	info	selects=14300000 canwrites=0 timeouts=14299445
+1450754311.412815	secononoin-eth0-1	child	-	-	-	info	selects=14400000 canwrites=0 timeouts=14398670
+1450754325.164510	manager	child	-	-	-	info	selects=14500000 canwrites=0 timeouts=14498916
+1450754313.166179	proxy	child	-	-	-	info	selects=14400000 canwrites=0 timeouts=14399444
+1450754323.446568	secononoin-eth0-1	child	-	-	-	info	selects=14500000 canwrites=0 timeouts=14498667
+1450754337.216345	manager	child	-	-	-	info	selects=14600000 canwrites=0 timeouts=14598914
+1450754325.215981	proxy	child	-	-	-	info	selects=14500000 canwrites=0 timeouts=14499443
+1450754335.425079	secononoin-eth0-1	child	-	-	-	info	selects=14600000 canwrites=0 timeouts=14598666
+1450754343.126085	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5657K/75K chunks=2370/328 io=1146/97 bytes/io=4.94K/0.77K events=117/153 operations=0/0
+1450754343.126085	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=44K/0K chunks=351/8 io=175/5 bytes/io=0.25K/0.04K
+1450754343.126085	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5599K/74K chunks=1657/318 io=816/160 bytes/io=6.86K/0.47K
+1450754337.269182	proxy	child	-	-	-	info	selects=14600000 canwrites=0 timeouts=14599442
+1450754347.316475	secononoin-eth0-1	child	-	-	-	info	selects=14700000 canwrites=0 timeouts=14698657
+1450754347.556374	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=124K/5678K chunks=1076/2352 io=488/1062 bytes/io=0.25K/5.35K events=153/117 operations=192/337
+1450754347.556374	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=74K/5605K chunks=318/1663 io=116/832 bytes/io=0.64K/6.74K
+1450754347.556374	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=36K/72K chunks=394/683 io=189/342 bytes/io=0.19K/0.21K
+1450754349.031768	manager	child	-	-	-	info	selects=14700000 canwrites=0 timeouts=14698904
+1450754345.150596	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=86K/80K chunks=1051/749 io=468/202 bytes/io=0.18K/0.40K events=0/0 operations=336/192
+1450754345.150596	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/44K chunks=8/351 io=5/176 bytes/io=0.04K/0.25K
+1450754345.150596	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=72K/36K chunks=681/394 io=341/198 bytes/io=0.21K/0.18K
+1450754361.136099	manager	child	-	-	-	info	selects=14800000 canwrites=0 timeouts=14798897
+1450754349.047690	proxy	child	-	-	-	info	selects=14700000 canwrites=0 timeouts=14699437
+1450754359.394423	secononoin-eth0-1	child	-	-	-	info	selects=14800000 canwrites=0 timeouts=14798650
+1450754371.235223	secononoin-eth0-1	child	-	-	-	info	selects=14900000 canwrites=0 timeouts=14898643
+1450754372.994118	manager	child	-	-	-	info	selects=14900000 canwrites=0 timeouts=14898890
+1450754361.166339	proxy	child	-	-	-	info	selects=14800000 canwrites=0 timeouts=14799436
+1450754385.255108	manager	child	-	-	-	info	selects=15000000 canwrites=0 timeouts=14998884
+1450754373.027561	proxy	child	-	-	-	info	selects=14900000 canwrites=0 timeouts=14899433
+1450754383.479797	secononoin-eth0-1	child	-	-	-	info	selects=15000000 canwrites=0 timeouts=14998638
+1450754397.439458	manager	child	-	-	-	info	selects=15100000 canwrites=0 timeouts=15098881
+1450754385.280566	proxy	child	-	-	-	info	selects=15000000 canwrites=0 timeouts=14999431
+1450754403.125851	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5715K/78K chunks=2484/388 io=1189/111 bytes/io=4.81K/0.71K events=138/183 operations=0/0
+1450754403.125851	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=45K/0K chunks=363/8 io=181/5 bytes/io=0.25K/0.04K
+1450754403.125851	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5655K/78K chunks=1747/378 io=859/190 bytes/io=6.58K/0.41K
+1450754395.503418	secononoin-eth0-1	child	-	-	-	info	selects=15100000 canwrites=0 timeouts=15098632
+1450754397.449756	proxy	child	-	-	-	info	selects=15100000 canwrites=0 timeouts=15099428
+1450754406.180720	secononoin-eth0-1	child	-	-	-	info	selects=15200000 canwrites=0 timeouts=15198603
+1450754405.150592	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=87K/82K chunks=1071/769 io=478/211 bytes/io=0.18K/0.39K events=0/0 operations=340/196
+1450754405.150592	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/45K chunks=8/363 io=5/182 bytes/io=0.04K/0.25K
+1450754405.150592	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=73K/36K chunks=689/402 io=345/202 bytes/io=0.21K/0.18K
+1450754407.638989	manager	child	-	-	-	info	selects=15200000 canwrites=0 timeouts=15198842
+1450754407.556386	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=129K/5729K chunks=1156/2448 io=510/1107 bytes/io=0.25K/5.18K events=183/138 operations=196/340
+1450754407.556386	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=78K/5656K chunks=378/1753 io=126/877 bytes/io=0.62K/6.45K
+1450754407.556386	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=36K/73K chunks=402/689 io=193/345 bytes/io=0.19K/0.21K
+1450754407.631418	proxy	child	-	-	-	info	selects=15200000 canwrites=0 timeouts=15199424
+1450754419.865398	manager	child	-	-	-	info	selects=15300000 canwrites=0 timeouts=15298837
+1450754417.861472	secononoin-eth0-1	child	-	-	-	info	selects=15300000 canwrites=0 timeouts=15298589
+1450754419.832169	proxy	child	-	-	-	info	selects=15300000 canwrites=0 timeouts=15299422
+1450754432.199177	manager	child	-	-	-	info	selects=15400000 canwrites=0 timeouts=15398832
+1450754430.246130	secononoin-eth0-1	child	-	-	-	info	selects=15400000 canwrites=0 timeouts=15398584
+1450754442.499456	secononoin-eth0-1	child	-	-	-	info	selects=15500000 canwrites=0 timeouts=15498580
+1450754432.158340	proxy	child	-	-	-	info	selects=15400000 canwrites=0 timeouts=15399420
+1450754444.635311	manager	child	-	-	-	info	selects=15500000 canwrites=0 timeouts=15498827
+1450754444.561773	proxy	child	-	-	-	info	selects=15500000 canwrites=0 timeouts=15499418
+1450754456.800982	manager	child	-	-	-	info	selects=15600000 canwrites=0 timeouts=15598823
+1450754454.726894	secononoin-eth0-1	child	-	-	-	info	selects=15600000 canwrites=0 timeouts=15598574
+1450754463.126145	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5756K/78K chunks=2548/388 io=1221/111 bytes/io=4.71K/0.71K events=138/183 operations=0/0
+1450754463.126145	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=47K/0K chunks=375/8 io=187/5 bytes/io=0.25K/0.04K
+1450754463.126145	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5694K/78K chunks=1787/378 io=879/190 bytes/io=6.48K/0.41K
+1450754456.741582	proxy	child	-	-	-	info	selects=15600000 canwrites=0 timeouts=15599415
+1450754466.406394	secononoin-eth0-1	child	-	-	-	info	selects=15700000 canwrites=0 timeouts=15698569
+1450754465.150567	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=88K/85K chunks=1091/799 io=488/219 bytes/io=0.18K/0.39K events=0/0 operations=344/205
+1450754465.150567	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/47K chunks=8/375 io=5/188 bytes/io=0.04K/0.25K
+1450754465.150567	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=74K/38K chunks=697/420 io=349/211 bytes/io=0.21K/0.18K
+1450754468.347783	manager	child	-	-	-	info	selects=15700000 canwrites=0 timeouts=15698815
+1450754467.556469	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=131K/5771K chunks=1186/2496 io=525/1131 bytes/io=0.25K/5.10K events=183/138 operations=205/345
+1450754467.556469	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=78K/5696K chunks=378/1791 io=126/896 bytes/io=0.62K/6.36K
+1450754467.556469	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=38K/74K chunks=420/699 io=202/350 bytes/io=0.19K/0.21K
+1450754468.250112	proxy	child	-	-	-	info	selects=15700000 canwrites=0 timeouts=15699410
+1450754480.780542	manager	child	-	-	-	info	selects=15800000 canwrites=0 timeouts=15798810
+1450754478.549092	secononoin-eth0-1	child	-	-	-	info	selects=15800000 canwrites=0 timeouts=15798560
+1450754490.935122	secononoin-eth0-1	child	-	-	-	info	selects=15900000 canwrites=0 timeouts=15898555
+1450754480.712138	proxy	child	-	-	-	info	selects=15800000 canwrites=0 timeouts=15799408
+1450754493.055059	manager	child	-	-	-	info	selects=15900000 canwrites=0 timeouts=15898803
+1450754503.060042	secononoin-eth0-1	child	-	-	-	info	selects=16000000 canwrites=0 timeouts=15998551
+1450754492.956339	proxy	child	-	-	-	info	selects=15900000 canwrites=0 timeouts=15899407
+1450754505.354305	manager	child	-	-	-	info	selects=16000000 canwrites=0 timeouts=15998798
+1450754505.251891	proxy	child	-	-	-	info	selects=16000000 canwrites=0 timeouts=15999406
+1450754517.828107	manager	child	-	-	-	info	selects=16100000 canwrites=0 timeouts=16098792
+1450754515.480378	secononoin-eth0-1	child	-	-	-	info	selects=16100000 canwrites=0 timeouts=16098545
+1450754523.125956	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5800K/78K chunks=2622/388 io=1258/111 bytes/io=4.61K/0.71K events=138/183 operations=0/0
+1450754523.125956	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=48K/0K chunks=387/8 io=193/5 bytes/io=0.25K/0.04K
+1450754523.125956	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5736K/78K chunks=1837/378 io=904/190 bytes/io=6.35K/0.41K
+1450754517.699515	proxy	child	-	-	-	info	selects=16100000 canwrites=0 timeouts=16099405
+1450754525.151627	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=89K/87K chunks=1107/811 io=496/225 bytes/io=0.18K/0.39K events=0/0 operations=346/205
+1450754525.151627	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/48K chunks=8/387 io=5/194 bytes/io=0.04K/0.25K
+1450754525.151627	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=74K/38K chunks=701/420 io=351/211 bytes/io=0.21K/0.18K
+1450754529.558732	manager	child	-	-	-	info	selects=16200000 canwrites=0 timeouts=16198785
+1450754527.555490	secononoin-eth0-1	child	-	-	-	info	selects=16200000 canwrites=0 timeouts=16198540
+1450754527.556503	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=131K/5813K chunks=1198/2548 io=531/1157 bytes/io=0.25K/5.02K events=183/138 operations=205/346
+1450754527.556503	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=78K/5738K chunks=378/1841 io=126/921 bytes/io=0.62K/6.23K
+1450754527.556503	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=38K/74K chunks=420/701 io=202/351 bytes/io=0.19K/0.21K
+1450754539.523410	secononoin-eth0-1	child	-	-	-	info	selects=16300000 canwrites=0 timeouts=16298535
+1450754529.424949	proxy	child	-	-	-	info	selects=16200000 canwrites=0 timeouts=16199402
+1450754541.943967	manager	child	-	-	-	info	selects=16300000 canwrites=0 timeouts=16298779
+1450754541.780458	proxy	child	-	-	-	info	selects=16300000 canwrites=0 timeouts=16299400
+1450754554.275641	manager	child	-	-	-	info	selects=16400000 canwrites=0 timeouts=16398772
+1450754551.948442	secononoin-eth0-1	child	-	-	-	info	selects=16400000 canwrites=0 timeouts=16398527
+1450754564.170663	secononoin-eth0-1	child	-	-	-	info	selects=16500000 canwrites=0 timeouts=16498524
+1450754554.133206	proxy	child	-	-	-	info	selects=16400000 canwrites=0 timeouts=16399399
+1450754566.643178	manager	child	-	-	-	info	selects=16500000 canwrites=0 timeouts=16498767
+1450754576.537074	secononoin-eth0-1	child	-	-	-	info	selects=16600000 canwrites=0 timeouts=16598519
+1450754566.467120	proxy	child	-	-	-	info	selects=16500000 canwrites=0 timeouts=16499398
+1450754578.921529	manager	child	-	-	-	info	selects=16600000 canwrites=0 timeouts=16598761
+1450754583.126322	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5857K/79K chunks=2712/404 io=1303/118 bytes/io=4.50K/0.68K events=145/191 operations=0/0
+1450754583.126322	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=50K/0K chunks=399/8 io=199/5 bytes/io=0.25K/0.04K
+1450754583.126322	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5792K/79K chunks=1903/394 io=937/198 bytes/io=6.18K/0.40K
+1450754578.738610	proxy	child	-	-	-	info	selects=16600000 canwrites=0 timeouts=16599396
+1450754587.556744	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=133K/5871K chunks=1224/2624 io=544/1194 bytes/io=0.24K/4.92K events=191/145 operations=205/350
+1450754587.556744	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=79K/5796K chunks=394/1909 io=134/955 bytes/io=0.59K/6.07K
+1450754587.556744	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=38K/75K chunks=420/709 io=202/355 bytes/io=0.19K/0.21K
+1450754588.172669	secononoin-eth0-1	child	-	-	-	info	selects=16700000 canwrites=0 timeouts=16698493
+1450754585.150656	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=90K/88K chunks=1127/823 io=506/231 bytes/io=0.18K/0.38K events=0/0 operations=350/205
+1450754585.150656	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/50K chunks=8/399 io=5/200 bytes/io=0.04K/0.25K
+1450754585.150656	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=75K/38K chunks=709/420 io=355/211 bytes/io=0.21K/0.18K
+1450754590.693665	manager	child	-	-	-	info	selects=16700000 canwrites=0 timeouts=16698737
+1450754600.208898	secononoin-eth0-1	child	-	-	-	info	selects=16800000 canwrites=0 timeouts=16798486
+1450754590.478151	proxy	child	-	-	-	info	selects=16700000 canwrites=0 timeouts=16699393
+1450754602.806155	manager	child	-	-	-	info	selects=16800000 canwrites=0 timeouts=16798727
+1450754612.616964	secononoin-eth0-1	child	-	-	-	info	selects=16900000 canwrites=0 timeouts=16898481
+1450754602.583695	proxy	child	-	-	-	info	selects=16800000 canwrites=0 timeouts=16799392
+1450754614.943408	manager	child	-	-	-	info	selects=16900000 canwrites=0 timeouts=16898721
+1450754614.765568	proxy	child	-	-	-	info	selects=16900000 canwrites=0 timeouts=16899391
+1450754627.191996	manager	child	-	-	-	info	selects=17000000 canwrites=0 timeouts=16998718
+1450754624.518626	secononoin-eth0-1	child	-	-	-	info	selects=17000000 canwrites=0 timeouts=16998478
+1450754626.930572	proxy	child	-	-	-	info	selects=17000000 canwrites=0 timeouts=16999390
+1450754639.104199	manager	child	-	-	-	info	selects=17100000 canwrites=0 timeouts=17098716
+1450754636.557277	secononoin-eth0-1	child	-	-	-	info	selects=17100000 canwrites=0 timeouts=17098477
+1450754643.126720	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5926K/79K chunks=2782/404 io=1338/118 bytes/io=4.43K/0.68K events=145/191 operations=0/0
+1450754643.126720	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=51K/0K chunks=411/8 io=205/5 bytes/io=0.25K/0.04K
+1450754643.126720	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5859K/79K chunks=1949/394 io=960/198 bytes/io=6.10K/0.40K
+1450754638.904140	proxy	child	-	-	-	info	selects=17100000 canwrites=0 timeouts=17099389
+1450754645.150919	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=91K/90K chunks=1139/835 io=512/237 bytes/io=0.18K/0.38K events=0/0 operations=350/205
+1450754645.150919	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/51K chunks=8/411 io=5/206 bytes/io=0.04K/0.25K
+1450754645.150919	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=75K/38K chunks=709/420 io=355/211 bytes/io=0.21K/0.18K
+1450754650.532612	manager	child	-	-	-	info	selects=17200000 canwrites=0 timeouts=17198710
+1450754647.558564	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=133K/5935K chunks=1236/2666 io=550/1215 bytes/io=0.24K/4.88K events=191/145 operations=205/351
+1450754647.558564	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=79K/5859K chunks=394/1949 io=134/975 bytes/io=0.59K/6.01K
+1450754647.558564	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=38K/75K chunks=420/711 io=202/356 bytes/io=0.19K/0.21K
+1450754647.928855	secononoin-eth0-1	child	-	-	-	info	selects=17200000 canwrites=0 timeouts=17198471
+1450754650.220756	proxy	child	-	-	-	info	selects=17200000 canwrites=0 timeouts=17199385
+1450754659.689787	secononoin-eth0-1	child	-	-	-	info	selects=17300000 canwrites=0 timeouts=17298470
+1450754662.588706	manager	child	-	-	-	info	selects=17300000 canwrites=0 timeouts=17298706
+1450754662.249300	proxy	child	-	-	-	info	selects=17300000 canwrites=0 timeouts=17299384
+1450754674.465037	manager	child	-	-	-	info	selects=17400000 canwrites=0 timeouts=17398703
+1450754671.699867	secononoin-eth0-1	child	-	-	-	info	selects=17400000 canwrites=0 timeouts=17398466
+1450754674.124391	proxy	child	-	-	-	info	selects=17400000 canwrites=0 timeouts=17399382
+1450754686.911461	manager	child	-	-	-	info	selects=17500000 canwrites=0 timeouts=17498698
+1450754683.920322	secononoin-eth0-1	child	-	-	-	info	selects=17500000 canwrites=0 timeouts=17498460
+1450754696.388790	secononoin-eth0-1	child	-	-	-	info	selects=17600000 canwrites=0 timeouts=17598458
+1450754686.544338	proxy	child	-	-	-	info	selects=17500000 canwrites=0 timeouts=17499380
+1450754699.404659	manager	child	-	-	-	info	selects=17600000 canwrites=0 timeouts=17598694
+1450754703.126522	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5945K/80K chunks=2842/424 io=1364/119 bytes/io=4.36K/0.68K events=150/201 operations=0/0
+1450754703.126522	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=53K/0K chunks=423/8 io=211/5 bytes/io=0.25K/0.04K
+1450754703.126522	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5876K/80K chunks=1985/414 io=977/208 bytes/io=6.01K/0.39K
+1450754699.025043	proxy	child	-	-	-	info	selects=17600000 canwrites=0 timeouts=17599379
+1450754705.150881	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=92K/91K chunks=1155/849 io=520/244 bytes/io=0.18K/0.38K events=0/0 operations=352/206
+1450754705.150881	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/53K chunks=8/423 io=5/212 bytes/io=0.04K/0.25K
+1450754705.150881	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=75K/38K chunks=713/422 io=357/212 bytes/io=0.21K/0.18K
+1450754709.373142	manager	child	-	-	-	info	selects=17700000 canwrites=0 timeouts=17698684
+1450754706.742167	secononoin-eth0-1	child	-	-	-	info	selects=17700000 canwrites=0 timeouts=17698448
+1450754707.558528	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=135K/5958K chunks=1272/2710 io=561/1237 bytes/io=0.24K/4.82K events=201/150 operations=206/352
+1450754707.558528	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=80K/5882K chunks=414/1991 io=136/996 bytes/io=0.59K/5.91K
+1450754707.558528	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=38K/75K chunks=422/713 io=203/357 bytes/io=0.19K/0.21K
+1450754718.580001	secononoin-eth0-1	child	-	-	-	info	selects=17800000 canwrites=0 timeouts=17798444
+1450754709.005695	proxy	child	-	-	-	info	selects=17700000 canwrites=0 timeouts=17699376
+1450754721.668483	manager	child	-	-	-	info	selects=17800000 canwrites=0 timeouts=17798679
+1450754730.808916	secononoin-eth0-1	child	-	-	-	info	selects=17900000 canwrites=0 timeouts=17898439
+1450754721.259393	proxy	child	-	-	-	info	selects=17800000 canwrites=0 timeouts=17799375
+1450754733.859737	manager	child	-	-	-	info	selects=17900000 canwrites=0 timeouts=17898674
+1450754733.464286	proxy	child	-	-	-	info	selects=17900000 canwrites=0 timeouts=17899373
+1450754745.874934	manager	child	-	-	-	info	selects=18000000 canwrites=0 timeouts=17998672
+1450754742.853466	secononoin-eth0-1	child	-	-	-	info	selects=18000000 canwrites=0 timeouts=17998436
+1450754745.479146	proxy	child	-	-	-	info	selects=18000000 canwrites=0 timeouts=17999371
+1450754757.827426	manager	child	-	-	-	info	selects=18100000 canwrites=0 timeouts=18098669
+1450754754.652074	secononoin-eth0-1	child	-	-	-	info	selects=18100000 canwrites=0 timeouts=18098434
+1450754763.126693	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=5975K/81K chunks=2910/440 io=1398/126 bytes/io=4.27K/0.65K events=157/209 operations=0/0
+1450754763.126693	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=54K/0K chunks=435/8 io=217/5 bytes/io=0.25K/0.04K
+1450754763.126693	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5903K/81K chunks=2029/430 io=999/216 bytes/io=5.91K/0.38K
+1450754757.422877	proxy	child	-	-	-	info	selects=18100000 canwrites=0 timeouts=18099369
+1450754766.805732	secononoin-eth0-1	child	-	-	-	info	selects=18200000 canwrites=0 timeouts=18198414
+1450754767.558572	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=138K/6000K chunks=1308/2760 io=579/1260 bytes/io=0.24K/4.76K events=210/158 operations=209/355
+1450754767.558572	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=82K/5924K chunks=432/2035 io=145/1018 bytes/io=0.57K/5.82K
+1450754767.558572	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/76K chunks=428/719 io=206/360 bytes/io=0.19K/0.21K
+1450754765.150968	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=92K/93K chunks=1169/867 io=527/253 bytes/io=0.18K/0.37K events=0/0 operations=353/209
+1450754765.150968	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/54K chunks=8/435 io=5/218 bytes/io=0.04K/0.25K
+1450754765.150968	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=76K/39K chunks=715/428 io=358/215 bytes/io=0.21K/0.18K
+1450754769.746801	manager	child	-	-	-	info	selects=18200000 canwrites=0 timeouts=18198647
+1450754769.355475	proxy	child	-	-	-	info	selects=18200000 canwrites=0 timeouts=18199363
+1450754782.250284	manager	child	-	-	-	info	selects=18300000 canwrites=0 timeouts=18298643
+1450754778.965970	secononoin-eth0-1	child	-	-	-	info	selects=18300000 canwrites=0 timeouts=18298407
+1450754781.845021	proxy	child	-	-	-	info	selects=18300000 canwrites=0 timeouts=18299361
+1450754794.575869	manager	child	-	-	-	info	selects=18400000 canwrites=0 timeouts=18398637
+1450754791.404793	secononoin-eth0-1	child	-	-	-	info	selects=18400000 canwrites=0 timeouts=18398402
+1450754794.277722	proxy	child	-	-	-	info	selects=18400000 canwrites=0 timeouts=18399358
+1450754806.947290	manager	child	-	-	-	info	selects=18500000 canwrites=0 timeouts=18498632
+1450754803.645542	secononoin-eth0-1	child	-	-	-	info	selects=18500000 canwrites=0 timeouts=18498399
+1450754806.547284	proxy	child	-	-	-	info	selects=18500000 canwrites=0 timeouts=18499357
+1450754819.437691	manager	child	-	-	-	info	selects=18600000 canwrites=0 timeouts=18598629
+1450754816.082325	secononoin-eth0-1	child	-	-	-	info	selects=18600000 canwrites=0 timeouts=18598397
+1450754823.126528	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=6024K/82K chunks=2974/442 io=1429/127 bytes/io=4.22K/0.65K events=158/210 operations=0/0
+1450754823.126528	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=56K/0K chunks=447/8 io=223/5 bytes/io=0.25K/0.04K
+1450754823.126528	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5951K/82K chunks=2069/432 io=1019/217 bytes/io=5.84K/0.38K
+1450754819.052629	proxy	child	-	-	-	info	selects=18600000 canwrites=0 timeouts=18599356
+1450754827.558591	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=138K/6028K chunks=1320/2800 io=585/1280 bytes/io=0.24K/4.71K events=210/158 operations=210/357
+1450754827.558591	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=82K/5951K chunks=432/2071 io=145/1036 bytes/io=0.57K/5.75K
+1450754827.558591	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/76K chunks=430/723 io=207/362 bytes/io=0.19K/0.21K
+1450754827.985838	secononoin-eth0-1	child	-	-	-	info	selects=18700000 canwrites=0 timeouts=18698392
+1450754825.151202	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=93K/95K chunks=1189/881 io=537/260 bytes/io=0.18K/0.37K events=0/0 operations=357/210
+1450754825.151202	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/56K chunks=8/447 io=5/224 bytes/io=0.04K/0.25K
+1450754825.151202	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=76K/39K chunks=723/430 io=362/216 bytes/io=0.21K/0.18K
+1450754831.418474	manager	child	-	-	-	info	selects=18700000 canwrites=0 timeouts=18698622
+1450754840.471911	secononoin-eth0-1	child	-	-	-	info	selects=18800000 canwrites=0 timeouts=18798385
+1450754830.988122	proxy	child	-	-	-	info	selects=18700000 canwrites=0 timeouts=18699353
+1450754843.960139	manager	child	-	-	-	info	selects=18800000 canwrites=0 timeouts=18798614
+1450754852.955968	secononoin-eth0-1	child	-	-	-	info	selects=18900000 canwrites=0 timeouts=18898380
+1450754843.550707	proxy	child	-	-	-	info	selects=18800000 canwrites=0 timeouts=18799351
+1450754856.296727	manager	child	-	-	-	info	selects=18900000 canwrites=0 timeouts=18898607
+1450754855.905911	proxy	child	-	-	-	info	selects=18900000 canwrites=0 timeouts=18899349
+1450754868.835415	manager	child	-	-	-	info	selects=19000000 canwrites=0 timeouts=18998605
+1450754865.303455	secononoin-eth0-1	child	-	-	-	info	selects=19000000 canwrites=0 timeouts=18998377
+1450754877.815768	secononoin-eth0-1	child	-	-	-	info	selects=19100000 canwrites=0 timeouts=19098374
+1450754868.424877	proxy	child	-	-	-	info	selects=19000000 canwrites=0 timeouts=18999348
+1450754881.393287	manager	child	-	-	-	info	selects=19100000 canwrites=0 timeouts=19098602
+1450754883.126243	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=6048K/82K chunks=3036/442 io=1460/127 bytes/io=4.14K/0.65K events=158/210 operations=0/0
+1450754883.126243	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=57K/0K chunks=459/8 io=229/5 bytes/io=0.25K/0.04K
+1450754883.126243	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=5973K/82K chunks=2107/432 io=1038/217 bytes/io=5.75K/0.38K
+1450754880.945215	proxy	child	-	-	-	info	selects=19100000 canwrites=0 timeouts=19099346
+1450754887.558609	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=139K/6051K chunks=1336/2840 io=593/1300 bytes/io=0.24K/4.66K events=210/158 operations=212/358
+1450754887.558609	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=82K/5974K chunks=432/2109 io=145/1055 bytes/io=0.57K/5.66K
+1450754887.558609	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/77K chunks=434/725 io=209/363 bytes/io=0.19K/0.21K
+1450754885.151598	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=94K/97K chunks=1203/897 io=544/268 bytes/io=0.17K/0.36K events=0/0 operations=358/212
+1450754885.151598	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/57K chunks=8/459 io=5/230 bytes/io=0.04K/0.25K
+1450754885.151598	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=77K/39K chunks=725/434 io=363/218 bytes/io=0.21K/0.18K
+1450754893.362481	manager	child	-	-	-	info	selects=19200000 canwrites=0 timeouts=19198597
+1450754889.678731	secononoin-eth0-1	child	-	-	-	info	selects=19200000 canwrites=0 timeouts=19198370
+1450754892.898697	proxy	child	-	-	-	info	selects=19200000 canwrites=0 timeouts=19199343
+1450754905.920849	manager	child	-	-	-	info	selects=19300000 canwrites=0 timeouts=19298593
+1450754902.199164	secononoin-eth0-1	child	-	-	-	info	selects=19300000 canwrites=0 timeouts=19298367
+1450754914.692622	secononoin-eth0-1	child	-	-	-	info	selects=19400000 canwrites=0 timeouts=19398360
+1450754905.409702	proxy	child	-	-	-	info	selects=19300000 canwrites=0 timeouts=19299342
+1450754918.308330	manager	child	-	-	-	info	selects=19400000 canwrites=0 timeouts=19398586
+1450754917.767108	proxy	child	-	-	-	info	selects=19400000 canwrites=0 timeouts=19399338
+1450754930.885735	manager	child	-	-	-	info	selects=19500000 canwrites=0 timeouts=19498581
+1450754927.059074	secononoin-eth0-1	child	-	-	-	info	selects=19500000 canwrites=0 timeouts=19498355
+1450754939.559825	secononoin-eth0-1	child	-	-	-	info	selects=19600000 canwrites=0 timeouts=19598349
+1450754930.336151	proxy	child	-	-	-	info	selects=19500000 canwrites=0 timeouts=19499337
+1450754943.126733	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=6097K/83K chunks=3110/450 io=1497/130 bytes/io=4.07K/0.64K events=161/214 operations=0/0
+1450754943.126733	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=58K/0K chunks=471/8 io=235/5 bytes/io=0.25K/0.04K
+1450754943.126733	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=6020K/82K chunks=2159/440 io=1064/221 bytes/io=5.66K/0.38K
+1450754943.177382	manager	child	-	-	-	info	selects=19600000 canwrites=0 timeouts=19598566
+1450754942.594640	proxy	child	-	-	-	info	selects=19600000 canwrites=0 timeouts=19599336
+1450754947.558745	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=140K/6100K chunks=1356/2902 io=603/1331 bytes/io=0.23K/4.58K events=214/161 operations=212/361
+1450754947.558745	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=82K/6023K chunks=440/2165 io=149/1083 bytes/io=0.56K/5.56K
+1450754947.558745	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/77K chunks=434/731 io=209/366 bytes/io=0.19K/0.21K
+1450754945.151602	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=95K/98K chunks=1221/909 io=553/274 bytes/io=0.17K/0.36K events=0/0 operations=361/212
+1450754945.151602	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/58K chunks=8/471 io=5/236 bytes/io=0.04K/0.25K
+1450754945.151602	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=77K/39K chunks=731/434 io=366/218 bytes/io=0.21K/0.18K
+1450754955.495853	manager	child	-	-	-	info	selects=19700000 canwrites=0 timeouts=19698560
+1450754951.525358	secononoin-eth0-1	child	-	-	-	info	selects=19700000 canwrites=0 timeouts=19698336
+1450754954.880547	proxy	child	-	-	-	info	selects=19700000 canwrites=0 timeouts=19699333
+1450754968.039112	manager	child	-	-	-	info	selects=19800000 canwrites=0 timeouts=19798556
+1450754964.048435	secononoin-eth0-1	child	-	-	-	info	selects=19800000 canwrites=0 timeouts=19798333
+1450754976.333082	secononoin-eth0-1	child	-	-	-	info	selects=19900000 canwrites=0 timeouts=19898313
+1450754967.395011	proxy	child	-	-	-	info	selects=19800000 canwrites=0 timeouts=19799332
+1450754980.353172	manager	child	-	-	-	info	selects=19900000 canwrites=0 timeouts=19898545
+1450754988.570507	secononoin-eth0-1	child	-	-	-	info	selects=20000000 canwrites=0 timeouts=19998294
+1450754979.712933	proxy	child	-	-	-	info	selects=19900000 canwrites=0 timeouts=19899318
+1450754992.632215	manager	child	-	-	-	info	selects=20000000 canwrites=0 timeouts=19998530
+1450755001.075605	secononoin-eth0-1	child	-	-	-	info	selects=20100000 canwrites=0 timeouts=20098277
+1450755003.127028	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=6551K/85K chunks=3234/484 io=1553/136 bytes/io=4.22K/0.63K events=172/231 operations=0/0
+1450755003.127028	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=60K/0K chunks=481/8 io=240/5 bytes/io=0.25K/0.04K
+1450755003.127028	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=6472K/85K chunks=2261/474 io=1112/238 bytes/io=5.82K/0.36K
+1450754991.946096	proxy	child	-	-	-	info	selects=20000000 canwrites=0 timeouts=19999309
+1450755004.166449	manager	child	-	-	-	info	selects=20100000 canwrites=0 timeouts=20098507
+1450755003.703022	proxy	child	-	-	-	info	selects=20100000 canwrites=0 timeouts=20099306
+1450755007.558709	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=143K/6581K chunks=1402/3058 io=619/1406 bytes/io=0.23K/4.68K events=231/172 operations=212/387
+1450755007.558709	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=85K/6497K chunks=474/2269 io=158/1135 bytes/io=0.54K/5.73K
+1450755007.558709	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/83K chunks=434/783 io=209/392 bytes/io=0.19K/0.21K
+1450755010.921313	secononoin-eth0-1	child	-	-	-	info	selects=20200000 canwrites=0 timeouts=20198243
+1450755005.152056	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=101K/100K chunks=1283/921 io=584/280 bytes/io=0.17K/0.36K events=0/0 operations=386/212
+1450755005.152056	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/60K chunks=8/483 io=5/242 bytes/io=0.04K/0.25K
+1450755005.152056	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=83K/39K chunks=781/434 io=391/218 bytes/io=0.21K/0.18K
+1450755014.910761	manager	child	-	-	-	info	selects=20200000 canwrites=0 timeouts=20198495
+1450755022.588897	secononoin-eth0-1	child	-	-	-	info	selects=20300000 canwrites=0 timeouts=20298207
+1450755014.244437	proxy	child	-	-	-	info	selects=20200000 canwrites=0 timeouts=20199291
+1450755025.577036	manager	child	-	-	-	info	selects=20300000 canwrites=0 timeouts=20298476
+1450755032.052469	secononoin-eth0-1	child	-	-	-	info	selects=20400000 canwrites=0 timeouts=20398176
+1450755025.050402	proxy	child	-	-	-	info	selects=20300000 canwrites=0 timeouts=20299267
+1450755036.067917	manager	child	-	-	-	info	selects=20400000 canwrites=0 timeouts=20398465
+1450755044.118686	secononoin-eth0-1	child	-	-	-	info	selects=20500000 canwrites=0 timeouts=20498165
+1450755035.469758	proxy	child	-	-	-	info	selects=20400000 canwrites=0 timeouts=20399256
+1450755048.184432	manager	child	-	-	-	info	selects=20500000 canwrites=0 timeouts=20498452
+1450755056.254050	secononoin-eth0-1	child	-	-	-	info	selects=20600000 canwrites=0 timeouts=20598151
+1450755047.440392	proxy	child	-	-	-	info	selects=20500000 canwrites=0 timeouts=20499255
+1450755060.465488	manager	child	-	-	-	info	selects=20600000 canwrites=0 timeouts=20598439
+1450755063.127342	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=7553K/89K chunks=3386/492 io=1629/140 bytes/io=4.64K/0.64K events=177/235 operations=0/0
+1450755063.127342	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=61K/0K chunks=495/8 io=247/5 bytes/io=0.25K/0.04K
+1450755063.127342	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=7473K/89K chunks=2385/482 io=1174/242 bytes/io=6.37K/0.37K
+1450755059.684763	proxy	child	-	-	-	info	selects=20600000 canwrites=0 timeouts=20599251
+1450755067.558942	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=148K/7588K chunks=1424/3282 io=630/1519 bytes/io=0.24K/5.00K events=235/177 operations=213/436
+1450755067.558942	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=89K/7494K chunks=482/2395 io=162/1198 bytes/io=0.55K/6.26K
+1450755067.558942	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=39K/93K chunks=436/881 io=210/441 bytes/io=0.19K/0.21K
+1450755068.092677	secononoin-eth0-1	child	-	-	-	info	selects=20700000 canwrites=0 timeouts=20698136
+1450755065.152316	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=112K/101K chunks=1393/935 io=637/287 bytes/io=0.18K/0.36K events=0/0 operations=435/213
+1450755065.152316	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/61K chunks=8/495 io=5/248 bytes/io=0.04K/0.25K
+1450755065.152316	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=93K/39K chunks=879/436 io=440/219 bytes/io=0.21K/0.18K
+1450755072.408209	manager	child	-	-	-	info	selects=20700000 canwrites=0 timeouts=20698425
+1450755080.376299	secononoin-eth0-1	child	-	-	-	info	selects=20800000 canwrites=0 timeouts=20798122
+1450755071.637431	proxy	child	-	-	-	info	selects=20700000 canwrites=0 timeouts=20699245
+1450755083.583930	manager	child	-	-	-	info	selects=20800000 canwrites=0 timeouts=20798414
+1450755091.729615	secononoin-eth0-1	child	-	-	-	info	selects=20900000 canwrites=0 timeouts=20898111
+1450755082.921396	proxy	child	-	-	-	info	selects=20800000 canwrites=0 timeouts=20799243
+1450755096.099589	manager	child	-	-	-	info	selects=20900000 canwrites=0 timeouts=20898403
+1450755104.085452	secononoin-eth0-1	child	-	-	-	info	selects=21000000 canwrites=0 timeouts=20998099
+1450755095.308688	proxy	child	-	-	-	info	selects=20900000 canwrites=0 timeouts=20899241
+1450755108.558215	manager	child	-	-	-	info	selects=21000000 canwrites=0 timeouts=20998392
+1450755107.699929	proxy	child	-	-	-	info	selects=21000000 canwrites=0 timeouts=20999237
+1450755121.139433	manager	child	-	-	-	info	selects=21100000 canwrites=0 timeouts=21098385
+1450755116.614107	secononoin-eth0-1	child	-	-	-	info	selects=21100000 canwrites=0 timeouts=21098090
+1450755123.127188	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=7823K/91K chunks=3532/520 io=1702/153 bytes/io=4.60K/0.60K events=190/249 operations=0/0
+1450755123.127188	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=63K/0K chunks=507/8 io=253/5 bytes/io=0.25K/0.04K
+1450755123.127188	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=7740K/91K chunks=2507/510 io=1235/256 bytes/io=6.27K/0.36K
+1450755120.310094	proxy	child	-	-	-	info	selects=21100000 canwrites=0 timeouts=21099236
+1450755127.558928	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=151K/7842K chunks=1468/3410 io=652/1581 bytes/io=0.23K/4.96K events=249/190 operations=215/441
+1450755127.558928	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=91K/7746K chunks=510/2513 io=176/1257 bytes/io=0.52K/6.16K
+1450755127.558928	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=40K/95K chunks=440/891 io=212/446 bytes/io=0.19K/0.21K
+1450755128.547724	secononoin-eth0-1	child	-	-	-	info	selects=21200000 canwrites=0 timeouts=21198059
+1450755125.152117	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=114K/103K chunks=1417/951 io=647/294 bytes/io=0.18K/0.35K events=0/0 operations=441/215
+1450755125.152117	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/63K chunks=8/507 io=5/254 bytes/io=0.04K/0.25K
+1450755125.152117	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=95K/40K chunks=891/440 io=446/221 bytes/io=0.21K/0.18K
+1450755133.116054	manager	child	-	-	-	info	selects=21200000 canwrites=0 timeouts=21198347
+1450755141.113274	secononoin-eth0-1	child	-	-	-	info	selects=21300000 canwrites=0 timeouts=21298050
+1450755132.286649	proxy	child	-	-	-	info	selects=21200000 canwrites=0 timeouts=21199233
+1450755145.726907	manager	child	-	-	-	info	selects=21300000 canwrites=0 timeouts=21298338
+1450755153.691897	secononoin-eth0-1	child	-	-	-	info	selects=21400000 canwrites=0 timeouts=21398041
+1450755144.866718	proxy	child	-	-	-	info	selects=21300000 canwrites=0 timeouts=21299232
+1450755158.147843	manager	child	-	-	-	info	selects=21400000 canwrites=0 timeouts=21398327
+1450755166.049083	secononoin-eth0-1	child	-	-	-	info	selects=21500000 canwrites=0 timeouts=21498034
+1450755157.270824	proxy	child	-	-	-	info	selects=21400000 canwrites=0 timeouts=21399231
+1450755170.743470	manager	child	-	-	-	info	selects=21500000 canwrites=0 timeouts=21498320
+1450755169.880578	proxy	child	-	-	-	info	selects=21500000 canwrites=0 timeouts=21499230
+1450755183.055171	manager	child	-	-	-	info	selects=21600000 canwrites=0 timeouts=21598315
+1450755183.127064	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=7893K/91K chunks=3628/520 io=1750/153 bytes/io=4.51K/0.60K events=190/249 operations=0/0
+1450755183.127064	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=64K/0K chunks=519/8 io=259/5 bytes/io=0.25K/0.04K
+1450755183.127064	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=7809K/91K chunks=2579/510 io=1271/256 bytes/io=6.14K/0.36K
+1450755182.141750	proxy	child	-	-	-	info	selects=21600000 canwrites=0 timeouts=21599229
+1450755178.604953	secononoin-eth0-1	child	-	-	-	info	selects=21600000 canwrites=0 timeouts=21598028
+1450755187.558959	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=151K/7904K chunks=1480/3476 io=658/1614 bytes/io=0.23K/4.90K events=249/190 operations=215/441
+1450755187.558959	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=91K/7809K chunks=510/2579 io=176/1290 bytes/io=0.52K/6.05K
+1450755187.558959	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=40K/95K chunks=440/891 io=212/446 bytes/io=0.19K/0.21K
+1450755185.151884	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=115K/105K chunks=1429/963 io=653/300 bytes/io=0.18K/0.35K events=0/0 operations=441/215
+1450755185.151884	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/64K chunks=8/519 io=5/260 bytes/io=0.04K/0.25K
+1450755185.151884	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=95K/40K chunks=891/440 io=446/221 bytes/io=0.21K/0.18K
+1450755195.350302	manager	child	-	-	-	info	selects=21700000 canwrites=0 timeouts=21698310
+1450755190.552134	secononoin-eth0-1	child	-	-	-	info	selects=21700000 canwrites=0 timeouts=21698025
+1450755203.089050	secononoin-eth0-1	child	-	-	-	info	selects=21800000 canwrites=0 timeouts=21798020
+1450755194.413207	proxy	child	-	-	-	info	selects=21700000 canwrites=0 timeouts=21699226
+1450755207.970298	manager	child	-	-	-	info	selects=21800000 canwrites=0 timeouts=21798304
+1450755215.620466	secononoin-eth0-1	child	-	-	-	info	selects=21900000 canwrites=0 timeouts=21898011
+1450755206.994544	proxy	child	-	-	-	info	selects=21800000 canwrites=0 timeouts=21799225
+1450755220.394409	manager	child	-	-	-	info	selects=21900000 canwrites=0 timeouts=21898295
+1450755219.392320	proxy	child	-	-	-	info	selects=21900000 canwrites=0 timeouts=21899223
+1450755233.009240	manager	child	-	-	-	info	selects=22000000 canwrites=0 timeouts=21998291
+1450755228.032777	secononoin-eth0-1	child	-	-	-	info	selects=22000000 canwrites=0 timeouts=21998004
+1450755243.126609	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=7942K/91K chunks=3696/520 io=1784/153 bytes/io=4.45K/0.60K events=190/249 operations=0/0
+1450755243.126609	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=66K/0K chunks=529/8 io=264/5 bytes/io=0.25K/0.04K
+1450755243.126609	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=7856K/91K chunks=2627/510 io=1295/256 bytes/io=6.07K/0.36K
+1450755231.993584	proxy	child	-	-	-	info	selects=22000000 canwrites=0 timeouts=21999222
+1450755240.588451	secononoin-eth0-1	child	-	-	-	info	selects=22100000 canwrites=0 timeouts=22097999
+1450755245.357072	manager	child	-	-	-	info	selects=22100000 canwrites=0 timeouts=22098283
+1450755247.558955	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=152K/7953K chunks=1498/3532 io=667/1642 bytes/io=0.23K/4.84K events=249/190 operations=218/443
+1450755247.558955	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=91K/7857K chunks=510/2631 io=176/1316 bytes/io=0.52K/5.97K
+1450755247.558955	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=40K/95K chunks=446/895 io=215/448 bytes/io=0.19K/0.21K
+1450755244.283175	proxy	child	-	-	-	info	selects=22100000 canwrites=0 timeouts=22099219
+1450755245.152338	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=116K/107K chunks=1445/981 io=661/307 bytes/io=0.18K/0.35K events=0/0 operations=443/218
+1450755245.152338	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/66K chunks=8/531 io=5/266 bytes/io=0.04K/0.25K
+1450755245.152338	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=95K/40K chunks=895/446 io=448/224 bytes/io=0.21K/0.18K
+1450755252.570643	secononoin-eth0-1	child	-	-	-	info	selects=22200000 canwrites=0 timeouts=22197992
+1450755257.648294	manager	child	-	-	-	info	selects=22200000 canwrites=0 timeouts=22198276
+1450755265.140631	secononoin-eth0-1	child	-	-	-	info	selects=22300000 canwrites=0 timeouts=22297987
+1450755256.577283	proxy	child	-	-	-	info	selects=22200000 canwrites=0 timeouts=22199217
+1450755270.185899	manager	child	-	-	-	info	selects=22300000 canwrites=0 timeouts=22298270
+1450755277.499056	secononoin-eth0-1	child	-	-	-	info	selects=22400000 canwrites=0 timeouts=22397956
+1450755269.149145	proxy	child	-	-	-	info	selects=22300000 canwrites=0 timeouts=22299215
+1450755282.442562	manager	child	-	-	-	info	selects=22400000 canwrites=0 timeouts=22398253
+1450755289.828170	secononoin-eth0-1	child	-	-	-	info	selects=22500000 canwrites=0 timeouts=22497932
+1450755281.386390	proxy	child	-	-	-	info	selects=22400000 canwrites=0 timeouts=22399198
+1450755294.911602	manager	child	-	-	-	info	selects=22500000 canwrites=0 timeouts=22498241
+1450755302.023370	secononoin-eth0-1	child	-	-	-	info	selects=22600000 canwrites=0 timeouts=22597915
+1450755303.127515	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=8507K/95K chunks=3830/556 io=1846/159 bytes/io=4.61K/0.60K events=201/267 operations=0/0
+1450755303.127515	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=67K/0K chunks=539/8 io=269/5 bytes/io=0.25K/0.04K
+1450755303.127515	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8419K/95K chunks=2739/546 io=1347/274 bytes/io=6.25K/0.35K
+1450755293.866659	proxy	child	-	-	-	info	selects=22500000 canwrites=0 timeouts=22499195
+1450755305.735307	manager	child	-	-	-	info	selects=22600000 canwrites=0 timeouts=22598219
+1450755307.559076	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=160K/8575K chunks=1588/3688 io=704/1716 bytes/io=0.23K/5.00K events=267/201 operations=239/462
+1450755307.559076	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=95K/8475K chunks=546/2749 io=184/1375 bytes/io=0.52K/6.16K
+1450755307.559076	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=44K/99K chunks=488/933 io=236/467 bytes/io=0.19K/0.21K
+1450755312.219304	secononoin-eth0-1	child	-	-	-	info	selects=22700000 canwrites=0 timeouts=22697889
+1450755304.963612	proxy	child	-	-	-	info	selects=22600000 canwrites=0 timeouts=22599192
+1450755305.152870	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=120K/112K chunks=1493/1033 io=684/315 bytes/io=0.18K/0.36K events=0/0 operations=461/239
+1450755305.152870	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/67K chunks=8/541 io=5/271 bytes/io=0.04K/0.25K
+1450755305.152870	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=99K/44K chunks=931/488 io=466/245 bytes/io=0.21K/0.18K
+1450755317.434656	manager	child	-	-	-	info	selects=22700000 canwrites=0 timeouts=22698207
+1450755324.764511	secononoin-eth0-1	child	-	-	-	info	selects=22800000 canwrites=0 timeouts=22797854
+1450755316.365444	proxy	child	-	-	-	info	selects=22700000 canwrites=0 timeouts=22699187
+1450755330.049664	manager	child	-	-	-	info	selects=22800000 canwrites=0 timeouts=22798196
+1450755337.299928	secononoin-eth0-1	child	-	-	-	info	selects=22900000 canwrites=0 timeouts=22897825
+1450755328.925099	proxy	child	-	-	-	info	selects=22800000 canwrites=0 timeouts=22799178
+1450755342.463200	manager	child	-	-	-	info	selects=22900000 canwrites=0 timeouts=22898187
+1450755341.313317	proxy	child	-	-	-	info	selects=22900000 canwrites=0 timeouts=22899176
+1450755349.679938	secononoin-eth0-1	child	-	-	-	info	selects=23000000 canwrites=0 timeouts=22997818
+1450755355.050616	manager	child	-	-	-	info	selects=23000000 canwrites=0 timeouts=22998181
+1450755362.160511	secononoin-eth0-1	child	-	-	-	info	selects=23100000 canwrites=0 timeouts=23097811
+1450755363.127635	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=8719K/95K chunks=3936/556 io=1899/159 bytes/io=4.59K/0.60K events=201/267 operations=0/0
+1450755363.127635	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=68K/0K chunks=549/8 io=274/5 bytes/io=0.25K/0.04K
+1450755363.127635	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8629K/95K chunks=2823/546 io=1389/274 bytes/io=6.21K/0.35K
+1450755353.886856	proxy	child	-	-	-	info	selects=23000000 canwrites=0 timeouts=22999175
+1450755367.384327	manager	child	-	-	-	info	selects=23100000 canwrites=0 timeouts=23098174
+1450755367.559185	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=168K/8730K chunks=1686/3778 io=752/1758 bytes/io=0.22K/4.97K events=267/201 operations=282/470
+1450755367.559185	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=95K/8629K chunks=546/2823 io=184/1412 bytes/io=0.52K/6.11K
+1450755367.559185	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=52K/101K chunks=574/949 io=279/475 bytes/io=0.19K/0.21K
+1450755374.155715	secononoin-eth0-1	child	-	-	-	info	selects=23200000 canwrites=0 timeouts=23197804
+1450755365.151664	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=122K/121K chunks=1521/1127 io=695/324 bytes/io=0.18K/0.37K events=0/0 operations=470/282
+1450755365.151664	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/68K chunks=8/549 io=5/275 bytes/io=0.04K/0.25K
+1450755365.151664	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=101K/52K chunks=949/574 io=475/288 bytes/io=0.21K/0.18K
+1450755366.150465	proxy	child	-	-	-	info	selects=23100000 canwrites=0 timeouts=23099170
+1450755379.657111	manager	child	-	-	-	info	selects=23200000 canwrites=0 timeouts=23198167
+1450755386.762945	secononoin-eth0-1	child	-	-	-	info	selects=23300000 canwrites=0 timeouts=23297797
+1450755378.407388	proxy	child	-	-	-	info	selects=23200000 canwrites=0 timeouts=23199168
+1450755392.252520	manager	child	-	-	-	info	selects=23300000 canwrites=0 timeouts=23298160
+1450755399.190799	secononoin-eth0-1	child	-	-	-	info	selects=23400000 canwrites=0 timeouts=23397789
+1450755391.017869	proxy	child	-	-	-	info	selects=23300000 canwrites=0 timeouts=23299167
+1450755404.670990	manager	child	-	-	-	info	selects=23400000 canwrites=0 timeouts=23398152
+1450755411.736280	secononoin-eth0-1	child	-	-	-	info	selects=23500000 canwrites=0 timeouts=23497783
+1450755403.424515	proxy	child	-	-	-	info	selects=23400000 canwrites=0 timeouts=23399166
+1450755417.261194	manager	child	-	-	-	info	selects=23500000 canwrites=0 timeouts=23498143
+1450755423.127277	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=8774K/95K chunks=4018/556 io=1940/159 bytes/io=4.52K/0.60K events=201/267 operations=0/0
+1450755423.127277	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=70K/0K chunks=559/8 io=279/5 bytes/io=0.25K/0.04K
+1450755423.127277	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8682K/95K chunks=2883/546 io=1419/274 bytes/io=6.12K/0.35K
+1450755416.029167	proxy	child	-	-	-	info	selects=23500000 canwrites=0 timeouts=23499165
+1450755424.005050	secononoin-eth0-1	child	-	-	-	info	selects=23600000 canwrites=0 timeouts=23597774
+1450755425.151981	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=123K/122K chunks=1535/1141 io=702/330 bytes/io=0.18K/0.37K events=0/0 operations=471/284
+1450755425.151981	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/70K chunks=8/559 io=5/280 bytes/io=0.04K/0.25K
+1450755425.151981	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=101K/52K chunks=951/578 io=476/290 bytes/io=0.21K/0.18K
+1450755429.294729	manager	child	-	-	-	info	selects=23600000 canwrites=0 timeouts=23598134
+1450755427.559223	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=169K/8785K chunks=1702/3844 io=760/1791 bytes/io=0.22K/4.91K events=267/201 operations=284/471
+1450755427.559223	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=95K/8683K chunks=546/2887 io=184/1444 bytes/io=0.52K/6.01K
+1450755427.559223	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=52K/101K chunks=578/951 io=281/476 bytes/io=0.19K/0.21K
+1450755436.296727	secononoin-eth0-1	child	-	-	-	info	selects=23700000 canwrites=0 timeouts=23697768
+1450755428.047939	proxy	child	-	-	-	info	selects=23600000 canwrites=0 timeouts=23599162
+1450755441.892236	manager	child	-	-	-	info	selects=23700000 canwrites=0 timeouts=23698129
+1450755448.848555	secononoin-eth0-1	child	-	-	-	info	selects=23800000 canwrites=0 timeouts=23797765
+1450755440.649992	proxy	child	-	-	-	info	selects=23700000 canwrites=0 timeouts=23699161
+1450755454.497134	manager	child	-	-	-	info	selects=23800000 canwrites=0 timeouts=23798122
+1450755461.235369	secononoin-eth0-1	child	-	-	-	info	selects=23900000 canwrites=0 timeouts=23897759
+1450755453.239244	proxy	child	-	-	-	info	selects=23800000 canwrites=0 timeouts=23799160
+1450755466.904389	manager	child	-	-	-	info	selects=23900000 canwrites=0 timeouts=23898115
+1450755473.765954	secononoin-eth0-1	child	-	-	-	info	selects=24000000 canwrites=0 timeouts=23997751
+1450755465.648209	proxy	child	-	-	-	info	selects=23900000 canwrites=0 timeouts=23899159
+1450755479.369828	manager	child	-	-	-	info	selects=24000000 canwrites=0 timeouts=23998107
+1450755483.127628	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=8841K/96K chunks=4108/568 io=1985/164 bytes/io=4.45K/0.59K events=206/273 operations=0/0
+1450755483.127628	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=71K/0K chunks=571/8 io=285/5 bytes/io=0.25K/0.04K
+1450755483.127628	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8747K/95K chunks=2949/558 io=1452/280 bytes/io=6.02K/0.34K
+1450755478.147254	proxy	child	-	-	-	info	selects=24000000 canwrites=0 timeouts=23999158
+1450755485.964530	secononoin-eth0-1	child	-	-	-	info	selects=24100000 canwrites=0 timeouts=24097734
+1450755487.559316	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=170K/8854K chunks=1726/3912 io=772/1825 bytes/io=0.22K/4.85K events=273/206 operations=284/471
+1450755487.559316	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=95K/8752K chunks=558/2955 io=190/1478 bytes/io=0.50K/5.92K
+1450755487.559316	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=52K/101K chunks=578/951 io=281/476 bytes/io=0.19K/0.21K
+1450755485.152008	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=123K/124K chunks=1547/1153 io=708/336 bytes/io=0.17K/0.37K events=0/0 operations=471/284
+1450755485.152008	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/71K chunks=8/571 io=5/286 bytes/io=0.04K/0.25K
+1450755485.152008	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=101K/52K chunks=951/578 io=476/290 bytes/io=0.21K/0.18K
+1450755491.376979	manager	child	-	-	-	info	selects=24100000 canwrites=0 timeouts=24098087
+1450755498.249225	secononoin-eth0-1	child	-	-	-	info	selects=24200000 canwrites=0 timeouts=24197728
+1450755490.117921	proxy	child	-	-	-	info	selects=24100000 canwrites=0 timeouts=24099156
+1450755503.942750	manager	child	-	-	-	info	selects=24200000 canwrites=0 timeouts=24198080
+1450755510.766632	secononoin-eth0-1	child	-	-	-	info	selects=24300000 canwrites=0 timeouts=24297721
+1450755502.647210	proxy	child	-	-	-	info	selects=24200000 canwrites=0 timeouts=24199155
+1450755516.505435	manager	child	-	-	-	info	selects=24300000 canwrites=0 timeouts=24298073
+1450755523.169749	secononoin-eth0-1	child	-	-	-	info	selects=24400000 canwrites=0 timeouts=24397715
+1450755515.223170	proxy	child	-	-	-	info	selects=24300000 canwrites=0 timeouts=24299154
+1450755528.937215	manager	child	-	-	-	info	selects=24400000 canwrites=0 timeouts=24398065
+1450755535.719023	secononoin-eth0-1	child	-	-	-	info	selects=24500000 canwrites=0 timeouts=24497705
+1450755527.608843	proxy	child	-	-	-	info	selects=24400000 canwrites=0 timeouts=24399152
+1450755541.519176	manager	child	-	-	-	info	selects=24500000 canwrites=0 timeouts=24498056
+1450755543.127753	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=8942K/96K chunks=4196/568 io=2029/164 bytes/io=4.41K/0.59K events=206/273 operations=0/0
+1450755543.127753	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=73K/0K chunks=583/8 io=291/5 bytes/io=0.25K/0.04K
+1450755543.127753	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8846K/95K chunks=3013/558 io=1484/280 bytes/io=5.96K/0.34K
+1450755540.217098	proxy	child	-	-	-	info	selects=24500000 canwrites=0 timeouts=24499151
+1450755547.559268	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=171K/8948K chunks=1740/3972 io=779/1855 bytes/io=0.22K/4.82K events=273/206 operations=286/472
+1450755547.559268	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=95K/8846K chunks=558/3013 io=190/1507 bytes/io=0.50K/5.87K
+1450755547.559268	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=52K/101K chunks=582/953 io=283/477 bytes/io=0.19K/0.21K
+1450755547.746348	secononoin-eth0-1	child	-	-	-	info	selects=24600000 canwrites=0 timeouts=24597698
+1450755545.152796	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=124K/126K chunks=1561/1169 io=715/343 bytes/io=0.17K/0.37K events=0/0 operations=472/286
+1450755545.152796	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/73K chunks=8/583 io=5/292 bytes/io=0.04K/0.25K
+1450755545.152796	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=101K/52K chunks=953/582 io=477/292 bytes/io=0.21K/0.18K
+1450755553.546001	manager	child	-	-	-	info	selects=24600000 canwrites=0 timeouts=24598049
+1450755560.221124	secononoin-eth0-1	child	-	-	-	info	selects=24700000 canwrites=0 timeouts=24697689
+1450755552.205129	proxy	child	-	-	-	info	selects=24600000 canwrites=0 timeouts=24599146
+1450755566.156113	manager	child	-	-	-	info	selects=24700000 canwrites=0 timeouts=24698041
+1450755572.807201	secononoin-eth0-1	child	-	-	-	info	selects=24800000 canwrites=0 timeouts=24797683
+1450755564.776227	proxy	child	-	-	-	info	selects=24700000 canwrites=0 timeouts=24699145
+1450755578.757343	manager	child	-	-	-	info	selects=24800000 canwrites=0 timeouts=24798035
+1450755585.210041	secononoin-eth0-1	child	-	-	-	info	selects=24900000 canwrites=0 timeouts=24897668
+1450755577.336428	proxy	child	-	-	-	info	selects=24800000 canwrites=0 timeouts=24799142
+1450755591.203132	manager	child	-	-	-	info	selects=24900000 canwrites=0 timeouts=24898029
+1450755597.757984	secononoin-eth0-1	child	-	-	-	info	selects=25000000 canwrites=0 timeouts=24997663
+1450755589.781990	proxy	child	-	-	-	info	selects=24900000 canwrites=0 timeouts=24899137
+1450755603.128620	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=9020K/97K chunks=4286/592 io=2069/166 bytes/io=4.36K/0.59K events=212/285 operations=0/0
+1450755603.128620	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=74K/0K chunks=595/8 io=297/5 bytes/io=0.25K/0.04K
+1450755603.128620	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=8922K/96K chunks=3081/582 io=1517/292 bytes/io=5.88K/0.33K
+1450755603.273655	manager	child	-	-	-	info	selects=25000000 canwrites=0 timeouts=24998015
+1450755602.265880	proxy	child	-	-	-	info	selects=25000000 canwrites=0 timeouts=24999136
+1450755607.559299	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=174K/9041K chunks=1798/4056 io=798/1894 bytes/io=0.22K/4.77K events=285/212 operations=297/477
+1450755607.559299	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=96K/8938K chunks=582/3087 io=192/1544 bytes/io=0.51K/5.79K
+1450755607.559299	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=54K/102K chunks=604/963 io=294/482 bytes/io=0.19K/0.21K
+1450755607.919292	secononoin-eth0-1	child	-	-	-	info	selects=25100000 canwrites=0 timeouts=25097648
+1450755605.152901	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=125K/129K chunks=1583/1203 io=723/353 bytes/io=0.17K/0.37K events=0/0 operations=477/297
+1450755605.152901	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/74K chunks=8/595 io=5/298 bytes/io=0.04K/0.25K
+1450755605.152901	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=102K/54K chunks=963/604 io=482/303 bytes/io=0.21K/0.18K
+1450755613.654355	manager	child	-	-	-	info	selects=25100000 canwrites=0 timeouts=25098004
+1450755620.104461	secononoin-eth0-1	child	-	-	-	info	selects=25200000 canwrites=0 timeouts=25197628
+1450755612.221501	proxy	child	-	-	-	info	selects=25100000 canwrites=0 timeouts=25099128
+1450755626.219541	manager	child	-	-	-	info	selects=25200000 canwrites=0 timeouts=25197991
+1450755632.650014	secononoin-eth0-1	child	-	-	-	info	selects=25300000 canwrites=0 timeouts=25297615
+1450755624.772527	proxy	child	-	-	-	info	selects=25200000 canwrites=0 timeouts=25199122
+1450755638.725495	manager	child	-	-	-	info	selects=25300000 canwrites=0 timeouts=25297978
+1450755644.881322	secononoin-eth0-1	child	-	-	-	info	selects=25400000 canwrites=0 timeouts=25397579
+1450755637.279868	proxy	child	-	-	-	info	selects=25300000 canwrites=0 timeouts=25299119
+1450755651.050487	manager	child	-	-	-	info	selects=25400000 canwrites=0 timeouts=25397951
+1450755657.404395	secononoin-eth0-1	child	-	-	-	info	selects=25500000 canwrites=0 timeouts=25497557
+1450755649.567945	proxy	child	-	-	-	info	selects=25400000 canwrites=0 timeouts=25399091
+1450755663.128523	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=9784K/104K chunks=4450/622 io=2151/180 bytes/io=4.55K/0.58K events=227/300 operations=0/0
+1450755663.128523	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=76K/0K chunks=607/8 io=303/5 bytes/io=0.25K/0.04K
+1450755663.128523	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=9684K/104K chunks=3221/612 io=1587/307 bytes/io=6.10K/0.34K
+1450755663.326187	manager	child	-	-	-	info	selects=25500000 canwrites=0 timeouts=25497925
+1450755661.986657	proxy	child	-	-	-	info	selects=25500000 canwrites=0 timeouts=25499089
+1450755667.559421	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=183K/9817K chunks=1844/4272 io=821/1993 bytes/io=0.22K/4.93K events=300/227 operations=299/514
+1450755667.559421	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=104K/9706K chunks=612/3229 io=207/1615 bytes/io=0.51K/6.01K
+1450755667.559421	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/110K chunks=608/1037 io=296/519 bytes/io=0.19K/0.21K
+1450755669.385021	secononoin-eth0-1	child	-	-	-	info	selects=25600000 canwrites=0 timeouts=25597530
+1450755665.152198	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=134K/131K chunks=1669/1219 io=766/361 bytes/io=0.18K/0.36K events=0/0 operations=514/299
+1450755665.152198	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/76K chunks=8/607 io=5/304 bytes/io=0.04K/0.25K
+1450755665.152198	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=110K/55K chunks=1037/608 io=519/305 bytes/io=0.21K/0.18K
+1450755675.630379	manager	child	-	-	-	info	selects=25600000 canwrites=0 timeouts=25597913
+1450755681.912826	secononoin-eth0-1	child	-	-	-	info	selects=25700000 canwrites=0 timeouts=25697519
+1450755674.107089	proxy	child	-	-	-	info	selects=25600000 canwrites=0 timeouts=25599086
+1450755688.222903	manager	child	-	-	-	info	selects=25700000 canwrites=0 timeouts=25697906
+1450755694.440314	secononoin-eth0-1	child	-	-	-	info	selects=25800000 canwrites=0 timeouts=25797511
+1450755686.673312	proxy	child	-	-	-	info	selects=25700000 canwrites=0 timeouts=25699084
+1450755700.655090	manager	child	-	-	-	info	selects=25800000 canwrites=0 timeouts=25797897
+1450755706.839880	secononoin-eth0-1	child	-	-	-	info	selects=25900000 canwrites=0 timeouts=25897505
+1450755699.236205	proxy	child	-	-	-	info	selects=25800000 canwrites=0 timeouts=25799081
+1450755713.260252	manager	child	-	-	-	info	selects=25900000 canwrites=0 timeouts=25897891
+1450755719.400433	secononoin-eth0-1	child	-	-	-	info	selects=26000000 canwrites=0 timeouts=25997499
+1450755723.127895	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=9887K/104K chunks=4542/622 io=2197/180 bytes/io=4.50K/0.58K events=227/300 operations=0/0
+1450755723.127895	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=77K/0K chunks=617/8 io=308/5 bytes/io=0.25K/0.04K
+1450755723.127895	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=9786K/104K chunks=3291/612 io=1622/307 bytes/io=6.03K/0.34K
+1450755711.663492	proxy	child	-	-	-	info	selects=25900000 canwrites=0 timeouts=25899080
+1450755723.969711	proxy	child	-	-	-	info	selects=26000000 canwrites=0 timeouts=25999079
+1450755725.552692	manager	child	-	-	-	info	selects=26000000 canwrites=0 timeouts=25997883
+1450755727.559395	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=183K/9898K chunks=1858/4342 io=828/2028 bytes/io=0.22K/4.88K events=300/227 operations=300/517
+1450755727.559395	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=104K/9786K chunks=612/3293 io=207/1647 bytes/io=0.51K/5.94K
+1450755727.559395	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/111K chunks=610/1043 io=297/522 bytes/io=0.19K/0.21K
+1450755731.385259	secononoin-eth0-1	child	-	-	-	info	selects=26100000 canwrites=0 timeouts=26097493
+1450755725.152339	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=135K/133K chunks=1687/1233 io=775/368 bytes/io=0.17K/0.36K events=0/0 operations=517/300
+1450755725.152339	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/77K chunks=8/619 io=5/310 bytes/io=0.04K/0.25K
+1450755725.152339	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=111K/55K chunks=1043/610 io=522/306 bytes/io=0.21K/0.18K
+1450755737.855910	manager	child	-	-	-	info	selects=26100000 canwrites=0 timeouts=26097877
+1450755736.237316	proxy	child	-	-	-	info	selects=26100000 canwrites=0 timeouts=26099076
+1450755750.456870	manager	child	-	-	-	info	selects=26200000 canwrites=0 timeouts=26197872
+1450755743.980737	secononoin-eth0-1	child	-	-	-	info	selects=26200000 canwrites=0 timeouts=26197487
+1450755756.520527	secononoin-eth0-1	child	-	-	-	info	selects=26300000 canwrites=0 timeouts=26297481
+1450755748.866849	proxy	child	-	-	-	info	selects=26200000 canwrites=0 timeouts=26199075
+1450755762.798065	manager	child	-	-	-	info	selects=26300000 canwrites=0 timeouts=26297860
+1450755768.740007	secononoin-eth0-1	child	-	-	-	info	selects=26400000 canwrites=0 timeouts=26397453
+1450755761.200592	proxy	child	-	-	-	info	selects=26300000 canwrites=0 timeouts=26299070
+1450755775.285355	manager	child	-	-	-	info	selects=26400000 canwrites=0 timeouts=26397844
+1450755781.210484	secononoin-eth0-1	child	-	-	-	info	selects=26500000 canwrites=0 timeouts=26497434
+1450755783.128718	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10386K/106K chunks=4650/626 io=2251/182 bytes/io=4.61K/0.59K events=229/302 operations=0/0
+1450755783.128718	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=78K/0K chunks=629/8 io=314/5 bytes/io=0.25K/0.04K
+1450755783.128718	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10283K/106K chunks=3375/616 io=1664/309 bytes/io=6.18K/0.34K
+1450755773.628998	proxy	child	-	-	-	info	selects=26400000 canwrites=0 timeouts=26399048
+1450755787.504943	manager	child	-	-	-	info	selects=26500000 canwrites=0 timeouts=26497830
+1450755787.559456	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=186K/10427K chunks=1874/4486 io=836/2096 bytes/io=0.22K/4.98K events=302/229 operations=300/543
+1450755787.559456	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=106K/10310K chunks=616/3385 io=209/1693 bytes/io=0.51K/6.09K
+1450755787.559456	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/117K chunks=610/1095 io=297/548 bytes/io=0.19K/0.21K
+1450755793.191131	secononoin-eth0-1	child	-	-	-	info	selects=26600000 canwrites=0 timeouts=26597422
+1450755785.152921	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=141K/134K chunks=1749/1243 io=806/373 bytes/io=0.18K/0.36K events=0/0 operations=543/300
+1450755785.152921	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/78K chunks=8/629 io=5/315 bytes/io=0.04K/0.25K
+1450755785.152921	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=117K/55K chunks=1095/610 io=548/306 bytes/io=0.21K/0.18K
+1450755785.886408	proxy	child	-	-	-	info	selects=26500000 canwrites=0 timeouts=26499045
+1450755799.863908	manager	child	-	-	-	info	selects=26600000 canwrites=0 timeouts=26597819
+1450755805.752035	secononoin-eth0-1	child	-	-	-	info	selects=26700000 canwrites=0 timeouts=26697411
+1450755798.166515	proxy	child	-	-	-	info	selects=26600000 canwrites=0 timeouts=26599045
+1450755812.459723	manager	child	-	-	-	info	selects=26700000 canwrites=0 timeouts=26697809
+1450755818.299641	secononoin-eth0-1	child	-	-	-	info	selects=26800000 canwrites=0 timeouts=26797403
+1450755810.719168	proxy	child	-	-	-	info	selects=26700000 canwrites=0 timeouts=26699044
+1450755824.881064	manager	child	-	-	-	info	selects=26800000 canwrites=0 timeouts=26797802
+1450755830.692676	secononoin-eth0-1	child	-	-	-	info	selects=26900000 canwrites=0 timeouts=26897394
+1450755823.128111	proxy	child	-	-	-	info	selects=26800000 canwrites=0 timeouts=26799043
+1450755837.476172	manager	child	-	-	-	info	selects=26900000 canwrites=0 timeouts=26897793
+1450755843.128802	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10548K/107K chunks=4772/642 io=2312/189 bytes/io=4.56K/0.57K events=236/310 operations=0/0
+1450755843.128802	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=80K/0K chunks=639/8 io=319/5 bytes/io=0.25K/0.04K
+1450755843.128802	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10443K/107K chunks=3475/632 io=1714/317 bytes/io=6.09K/0.34K
+1450755835.703462	proxy	child	-	-	-	info	selects=26900000 canwrites=0 timeouts=26899041
+1450755842.956812	secononoin-eth0-1	child	-	-	-	info	selects=27000000 canwrites=0 timeouts=26997373
+1450755845.152561	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=142K/135K chunks=1763/1255 io=813/379 bytes/io=0.18K/0.36K events=0/0 operations=544/301
+1450755845.152561	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/80K chunks=8/639 io=5/320 bytes/io=0.04K/0.25K
+1450755845.152561	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=117K/55K chunks=1097/612 io=549/307 bytes/io=0.21K/0.18K
+1450755849.466208	manager	child	-	-	-	info	selects=27000000 canwrites=0 timeouts=26997774
+1450755847.559456	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=187K/10562K chunks=1904/4580 io=851/2143 bytes/io=0.22K/4.93K events=310/236 operations=301/544
+1450755847.559456	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=107K/10444K chunks=632/3477 io=217/1739 bytes/io=0.50K/6.01K
+1450755847.559456	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/117K chunks=612/1097 io=298/549 bytes/io=0.19K/0.21K
+1450755855.173501	secononoin-eth0-1	child	-	-	-	info	selects=27100000 canwrites=0 timeouts=27097367
+1450755847.688027	proxy	child	-	-	-	info	selects=27000000 canwrites=0 timeouts=26999038
+1450755862.068608	manager	child	-	-	-	info	selects=27100000 canwrites=0 timeouts=27097769
+1450755867.746232	secononoin-eth0-1	child	-	-	-	info	selects=27200000 canwrites=0 timeouts=27197363
+1450755860.260410	proxy	child	-	-	-	info	selects=27100000 canwrites=0 timeouts=27099036
+1450755874.665711	manager	child	-	-	-	info	selects=27200000 canwrites=0 timeouts=27197764
+1450755880.309335	secononoin-eth0-1	child	-	-	-	info	selects=27300000 canwrites=0 timeouts=27297355
+1450755872.838909	proxy	child	-	-	-	info	selects=27200000 canwrites=0 timeouts=27199035
+1450755887.107498	manager	child	-	-	-	info	selects=27300000 canwrites=0 timeouts=27297752
+1450755885.272213	proxy	child	-	-	-	info	selects=27300000 canwrites=0 timeouts=27299034
+1450755892.732375	secononoin-eth0-1	child	-	-	-	info	selects=27400000 canwrites=0 timeouts=27397346
+1450755899.703517	manager	child	-	-	-	info	selects=27400000 canwrites=0 timeouts=27397746
+1450755903.128099	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10584K/108K chunks=4858/662 io=2351/190 bytes/io=4.50K/0.57K events=241/320 operations=0/0
+1450755903.128099	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=81K/0K chunks=651/8 io=325/5 bytes/io=0.25K/0.04K
+1450755903.128099	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10477K/108K chunks=3537/652 io=1745/327 bytes/io=6.00K/0.33K
+1450755897.873018	proxy	child	-	-	-	info	selects=27400000 canwrites=0 timeouts=27399033
+1450755904.295020	secononoin-eth0-1	child	-	-	-	info	selects=27500000 canwrites=0 timeouts=27497337
+1450755905.152956	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=142K/137K chunks=1775/1269 io=819/386 bytes/io=0.17K/0.36K events=0/0 operations=544/302
+1450755905.152956	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/81K chunks=8/651 io=5/326 bytes/io=0.04K/0.25K
+1450755905.152956	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=117K/55K chunks=1097/614 io=549/308 bytes/io=0.21K/0.18K
+1450755909.649669	manager	child	-	-	-	info	selects=27500000 canwrites=0 timeouts=27497734
+1450755907.559521	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=189K/10598K chunks=1938/4644 io=861/2175 bytes/io=0.22K/4.87K events=320/241 operations=302/544
+1450755907.559521	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=108K/10480K chunks=652/3541 io=219/1771 bytes/io=0.50K/5.92K
+1450755907.559521	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=55K/117K chunks=614/1097 io=299/549 bytes/io=0.19K/0.21K
+1450755915.170473	secononoin-eth0-1	child	-	-	-	info	selects=27600000 canwrites=0 timeouts=27597323
+1450755907.993159	proxy	child	-	-	-	info	selects=27500000 canwrites=0 timeouts=27499030
+1450755922.204304	manager	child	-	-	-	info	selects=27600000 canwrites=0 timeouts=27597725
+1450755927.641846	secononoin-eth0-1	child	-	-	-	info	selects=27700000 canwrites=0 timeouts=27697310
+1450755920.363355	proxy	child	-	-	-	info	selects=27600000 canwrites=0 timeouts=27599028
+1450755934.770841	manager	child	-	-	-	info	selects=27700000 canwrites=0 timeouts=27697713
+1450755940.175460	secononoin-eth0-1	child	-	-	-	info	selects=27800000 canwrites=0 timeouts=27797298
+1450755932.906222	proxy	child	-	-	-	info	selects=27700000 canwrites=0 timeouts=27699024
+1450755947.200526	manager	child	-	-	-	info	selects=27800000 canwrites=0 timeouts=27797700
+1450755952.562844	secononoin-eth0-1	child	-	-	-	info	selects=27900000 canwrites=0 timeouts=27897263
+1450755945.338680	proxy	child	-	-	-	info	selects=27800000 canwrites=0 timeouts=27799022
+1450755959.779965	manager	child	-	-	-	info	selects=27900000 canwrites=0 timeouts=27897688
+1450755963.128453	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10918K/108K chunks=4980/662 io=2412/190 bytes/io=4.53K/0.57K events=241/320 operations=0/0
+1450755963.128453	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=83K/0K chunks=663/8 io=331/5 bytes/io=0.25K/0.04K
+1450755963.128453	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10809K/108K chunks=3635/652 io=1794/327 bytes/io=6.03K/0.33K
+1450755957.878975	proxy	child	-	-	-	info	selects=27900000 canwrites=0 timeouts=27899020
+1450755964.775970	secononoin-eth0-1	child	-	-	-	info	selects=28000000 canwrites=0 timeouts=27997254
+1450755965.153099	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=143K/145K chunks=1793/1353 io=828/395 bytes/io=0.17K/0.37K events=0/0 operations=547/338
+1450755965.153099	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/83K chunks=8/663 io=5/332 bytes/io=0.04K/0.25K
+1450755965.153099	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=118K/62K chunks=1103/686 io=552/344 bytes/io=0.21K/0.18K
+1450755971.761549	manager	child	-	-	-	info	selects=28000000 canwrites=0 timeouts=27997682
+1450755967.559533	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=196K/10929K chunks=2022/4746 io=902/2226 bytes/io=0.22K/4.91K events=320/241 operations=338/547
+1450755967.559533	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=108K/10811K chunks=652/3637 io=219/1819 bytes/io=0.50K/5.94K
+1450755967.559533	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=62K/118K chunks=686/1103 io=335/552 bytes/io=0.19K/0.21K
+1450755977.050655	secononoin-eth0-1	child	-	-	-	info	selects=28100000 canwrites=0 timeouts=28097248
+1450755969.836009	proxy	child	-	-	-	info	selects=28000000 canwrites=0 timeouts=27999017
+1450755984.332413	manager	child	-	-	-	info	selects=28100000 canwrites=0 timeouts=28097675
+1450755989.610627	secononoin-eth0-1	child	-	-	-	info	selects=28200000 canwrites=0 timeouts=28197239
+1450755982.437133	proxy	child	-	-	-	info	selects=28100000 canwrites=0 timeouts=28099014
+1450755996.892990	manager	child	-	-	-	info	selects=28200000 canwrites=0 timeouts=28197667
+1450756002.182342	secononoin-eth0-1	child	-	-	-	info	selects=28300000 canwrites=0 timeouts=28297234
+1450755995.009872	proxy	child	-	-	-	info	selects=28200000 canwrites=0 timeouts=28199013
+1450756009.355256	manager	child	-	-	-	info	selects=28300000 canwrites=0 timeouts=28297664
+1450756014.586434	secononoin-eth0-1	child	-	-	-	info	selects=28400000 canwrites=0 timeouts=28397231
+1450756007.441062	proxy	child	-	-	-	info	selects=28300000 canwrites=0 timeouts=28299011
+1450756021.957505	manager	child	-	-	-	info	selects=28400000 canwrites=0 timeouts=28397659
+1450756023.128409	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10954K/109K chunks=5060/678 io=2452/197 bytes/io=4.47K/0.56K events=248/328 operations=0/0
+1450756023.128409	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=84K/0K chunks=675/8 io=337/5 bytes/io=0.25K/0.04K
+1450756023.128409	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10843K/109K chunks=3691/668 io=1822/335 bytes/io=5.95K/0.33K
+1450756020.041948	proxy	child	-	-	-	info	selects=28400000 canwrites=0 timeouts=28399010
+1450756026.823720	secononoin-eth0-1	child	-	-	-	info	selects=28500000 canwrites=0 timeouts=28497212
+1450756027.559615	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=198K/10965K chunks=2056/4804 io=919/2255 bytes/io=0.22K/4.86K events=328/248 operations=341/548
+1450756027.559615	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=109K/10846K chunks=668/3693 io=227/1847 bytes/io=0.48K/5.87K
+1450756027.559615	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=62K/118K chunks=692/1105 io=338/553 bytes/io=0.19K/0.21K
+1450756025.153427	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=144K/147K chunks=1807/1371 io=835/403 bytes/io=0.17K/0.37K events=0/0 operations=548/341
+1450756025.153427	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/84K chunks=8/675 io=5/338 bytes/io=0.04K/0.25K
+1450756025.153427	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=118K/62K chunks=1105/692 io=553/347 bytes/io=0.21K/0.18K
+1450756033.936388	manager	child	-	-	-	info	selects=28500000 canwrites=0 timeouts=28497639
+1450756039.025298	secononoin-eth0-1	child	-	-	-	info	selects=28600000 canwrites=0 timeouts=28597208
+1450756031.994277	proxy	child	-	-	-	info	selects=28500000 canwrites=0 timeouts=28499007
+1450756046.538915	manager	child	-	-	-	info	selects=28600000 canwrites=0 timeouts=28597633
+1450756051.616723	secononoin-eth0-1	child	-	-	-	info	selects=28700000 canwrites=0 timeouts=28697203
+1450756044.599906	proxy	child	-	-	-	info	selects=28600000 canwrites=0 timeouts=28599006
+1450756059.126240	manager	child	-	-	-	info	selects=28700000 canwrites=0 timeouts=28697628
+1450756064.043786	secononoin-eth0-1	child	-	-	-	info	selects=28800000 canwrites=0 timeouts=28797199
+1450756057.194159	proxy	child	-	-	-	info	selects=28700000 canwrites=0 timeouts=28699005
+1450756071.589196	manager	child	-	-	-	info	selects=28800000 canwrites=0 timeouts=28797623
+1450756076.629840	secononoin-eth0-1	child	-	-	-	info	selects=28900000 canwrites=0 timeouts=28897175
+1450756069.617478	proxy	child	-	-	-	info	selects=28800000 canwrites=0 timeouts=28798999
+1450756083.128650	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=10984K/109K chunks=5122/678 io=2483/197 bytes/io=4.42K/0.56K events=248/328 operations=0/0
+1450756083.128650	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=86K/0K chunks=687/8 io=343/5 bytes/io=0.25K/0.04K
+1450756083.128650	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10871K/109K chunks=3731/668 io=1842/335 bytes/io=5.90K/0.33K
+1450756083.916027	manager	child	-	-	-	info	selects=28900000 canwrites=0 timeouts=28897618
+1450756082.038330	proxy	child	-	-	-	info	selects=28900000 canwrites=0 timeouts=28898997
+1450756087.559645	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=202K/10994K chunks=2108/4852 io=941/2276 bytes/io=0.22K/4.83K events=328/248 operations=362/552
+1450756087.559645	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=109K/10874K chunks=668/3733 io=227/1867 bytes/io=0.48K/5.82K
+1450756087.559645	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=66K/119K chunks=734/1113 io=359/557 bytes/io=0.18K/0.21K
+1450756085.153462	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=145K/152K chunks=1827/1425 io=843/411 bytes/io=0.17K/0.37K events=0/0 operations=552/362
+1450756085.153462	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/86K chunks=8/687 io=5/344 bytes/io=0.04K/0.25K
+1450756085.153462	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=119K/66K chunks=1113/734 io=557/368 bytes/io=0.21K/0.18K
+1450756096.192914	manager	child	-	-	-	info	selects=29000000 canwrites=0 timeouts=28997613
+1450756088.573458	secononoin-eth0-1	child	-	-	-	info	selects=29000000 canwrites=0 timeouts=28997169
+1450756101.142151	secononoin-eth0-1	child	-	-	-	info	selects=29100000 canwrites=0 timeouts=29097167
+1450756094.244914	proxy	child	-	-	-	info	selects=29000000 canwrites=0 timeouts=28998994
+1450756108.814670	manager	child	-	-	-	info	selects=29100000 canwrites=0 timeouts=29097609
+1450756106.864292	proxy	child	-	-	-	info	selects=29100000 canwrites=0 timeouts=29098993
+1450756121.428675	manager	child	-	-	-	info	selects=29200000 canwrites=0 timeouts=29197606
+1450756113.690168	secononoin-eth0-1	child	-	-	-	info	selects=29200000 canwrites=0 timeouts=29197164
+1450756126.096809	secononoin-eth0-1	child	-	-	-	info	selects=29300000 canwrites=0 timeouts=29297161
+1450756119.452762	proxy	child	-	-	-	info	selects=29200000 canwrites=0 timeouts=29198991
+1450756133.904076	manager	child	-	-	-	info	selects=29300000 canwrites=0 timeouts=29297600
+1450756138.635187	secononoin-eth0-1	child	-	-	-	info	selects=29400000 canwrites=0 timeouts=29397157
+1450756143.129190	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11013K/109K chunks=5174/678 io=2509/197 bytes/io=4.39K/0.56K events=248/328 operations=0/0
+1450756143.129190	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=87K/0K chunks=697/8 io=348/5 bytes/io=0.25K/0.04K
+1450756143.129190	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=10898K/109K chunks=3761/668 io=1857/335 bytes/io=5.87K/0.33K
+1450756131.860540	proxy	child	-	-	-	info	selects=29300000 canwrites=0 timeouts=29298990
+1450756144.136897	proxy	child	-	-	-	info	selects=29400000 canwrites=0 timeouts=29398989
+1450756146.179515	manager	child	-	-	-	info	selects=29400000 canwrites=0 timeouts=29397594
+1450756147.559715	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=203K/11028K chunks=2122/4882 io=948/2291 bytes/io=0.21K/4.81K events=328/248 operations=363/552
+1450756147.559715	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=109K/10908K chunks=668/3763 io=227/1882 bytes/io=0.48K/5.80K
+1450756147.559715	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=66K/119K chunks=736/1113 io=360/557 bytes/io=0.18K/0.21K
+1450756145.152968	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=146K/154K chunks=1839/1439 io=849/418 bytes/io=0.17K/0.37K events=0/0 operations=552/363
+1450756145.152968	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/87K chunks=8/699 io=5/350 bytes/io=0.04K/0.25K
+1450756145.152968	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=119K/66K chunks=1113/736 io=557/369 bytes/io=0.21K/0.18K
+1450756158.479348	manager	child	-	-	-	info	selects=29500000 canwrites=0 timeouts=29497591
+1450756150.558576	secononoin-eth0-1	child	-	-	-	info	selects=29500000 canwrites=0 timeouts=29497153
+1450756163.008895	secononoin-eth0-1	child	-	-	-	info	selects=29600000 canwrites=0 timeouts=29597147
+1450756156.393519	proxy	child	-	-	-	info	selects=29500000 canwrites=0 timeouts=29498986
+1450756170.936298	manager	child	-	-	-	info	selects=29600000 canwrites=0 timeouts=29597580
+1450756175.468231	secononoin-eth0-1	child	-	-	-	info	selects=29700000 canwrites=0 timeouts=29697134
+1450756168.842060	proxy	child	-	-	-	info	selects=29600000 canwrites=0 timeouts=29598980
+1450756183.316579	manager	child	-	-	-	info	selects=29700000 canwrites=0 timeouts=29697568
+1450756187.752503	secononoin-eth0-1	child	-	-	-	info	selects=29800000 canwrites=0 timeouts=29797125
+1450756181.226298	proxy	child	-	-	-	info	selects=29700000 canwrites=0 timeouts=29698978
+1450756195.775948	manager	child	-	-	-	info	selects=29800000 canwrites=0 timeouts=29797562
+1450756203.129959	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11169K/112K chunks=5292/730 io=2559/209 bytes/io=4.36K/0.54K events=265/354 operations=0/0
+1450756203.129959	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=88K/0K chunks=709/8 io=354/5 bytes/io=0.25K/0.04K
+1450756203.129959	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11053K/112K chunks=3855/720 io=1904/361 bytes/io=5.81K/0.31K
+1450756193.662125	proxy	child	-	-	-	info	selects=29800000 canwrites=0 timeouts=29798977
+1450756200.326818	secononoin-eth0-1	child	-	-	-	info	selects=29900000 canwrites=0 timeouts=29897123
+1450756206.421604	manager	child	-	-	-	info	selects=29900000 canwrites=0 timeouts=29897529
+1450756207.560057	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=206K/11184K chunks=2186/4990 io=966/2344 bytes/io=0.21K/4.77K events=354/265 operations=363/558
+1450756207.560057	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=112K/11064K chunks=720/3859 io=237/1930 bytes/io=0.47K/5.73K
+1450756207.560057	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=66K/120K chunks=736/1125 io=360/563 bytes/io=0.18K/0.21K
+1450756210.151159	secononoin-eth0-1	child	-	-	-	info	selects=30000000 canwrites=0 timeouts=29997095
+1450756204.909332	proxy	child	-	-	-	info	selects=29900000 canwrites=0 timeouts=29898976
+1450756205.153147	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=147K/155K chunks=1863/1451 io=861/424 bytes/io=0.17K/0.37K events=0/0 operations=558/363
+1450756205.153147	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/89K chunks=8/711 io=5/356 bytes/io=0.04K/0.25K
+1450756205.153147	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=120K/66K chunks=1125/736 io=563/369 bytes/io=0.21K/0.18K
+1450756218.251464	manager	child	-	-	-	info	selects=30000000 canwrites=0 timeouts=29997524
+1450756222.669579	secononoin-eth0-1	child	-	-	-	info	selects=30100000 canwrites=0 timeouts=30097090
+1450756216.118712	proxy	child	-	-	-	info	selects=30000000 canwrites=0 timeouts=29998974
+1450756230.840691	manager	child	-	-	-	info	selects=30100000 canwrites=0 timeouts=30097518
+1450756235.235677	secononoin-eth0-1	child	-	-	-	info	selects=30200000 canwrites=0 timeouts=30197081
+1450756228.682169	proxy	child	-	-	-	info	selects=30100000 canwrites=0 timeouts=30098972
+1450756243.415772	manager	child	-	-	-	info	selects=30200000 canwrites=0 timeouts=30197509
+1450756247.625332	secononoin-eth0-1	child	-	-	-	info	selects=30300000 canwrites=0 timeouts=30297074
+1450756241.272222	proxy	child	-	-	-	info	selects=30200000 canwrites=0 timeouts=30198971
+1450756255.852318	manager	child	-	-	-	info	selects=30300000 canwrites=0 timeouts=30297502
+1450756260.204857	secononoin-eth0-1	child	-	-	-	info	selects=30400000 canwrites=0 timeouts=30397070
+1450756263.128790	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11218K/112K chunks=5368/730 io=2597/209 bytes/io=4.32K/0.54K events=265/354 operations=0/0
+1450756263.128790	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=90K/0K chunks=719/8 io=359/5 bytes/io=0.25K/0.04K
+1450756263.128790	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11100K/112K chunks=3909/720 io=1931/361 bytes/io=5.75K/0.31K
+1450756253.715716	proxy	child	-	-	-	info	selects=30300000 canwrites=0 timeouts=30298970
+1450756267.832470	manager	child	-	-	-	info	selects=30400000 canwrites=0 timeouts=30397497
+1450756267.560080	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=207K/11228K chunks=2204/5042 io=975/2370 bytes/io=0.21K/4.74K events=354/265 operations=366/558
+1450756267.560080	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=112K/11108K chunks=720/3911 io=237/1956 bytes/io=0.47K/5.68K
+1450756267.560080	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=67K/120K chunks=742/1125 io=363/563 bytes/io=0.18K/0.21K
+1450756272.119749	secononoin-eth0-1	child	-	-	-	info	selects=30500000 canwrites=0 timeouts=30497067
+1450756265.153368	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=148K/157K chunks=1873/1465 io=866/429 bytes/io=0.17K/0.37K events=0/0 operations=558/366
+1450756265.153368	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/90K chunks=8/719 io=5/360 bytes/io=0.04K/0.25K
+1450756265.153368	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=120K/67K chunks=1125/742 io=563/372 bytes/io=0.21K/0.18K
+1450756266.053109	proxy	child	-	-	-	info	selects=30400000 canwrites=0 timeouts=30398967
+1450756280.413969	manager	child	-	-	-	info	selects=30500000 canwrites=0 timeouts=30497492
+1450756284.676335	secononoin-eth0-1	child	-	-	-	info	selects=30600000 canwrites=0 timeouts=30597061
+1450756278.316303	proxy	child	-	-	-	info	selects=30500000 canwrites=0 timeouts=30498966
+1450756293.011728	manager	child	-	-	-	info	selects=30600000 canwrites=0 timeouts=30597487
+1450756297.236367	secononoin-eth0-1	child	-	-	-	info	selects=30700000 canwrites=0 timeouts=30697056
+1450756290.917143	proxy	child	-	-	-	info	selects=30600000 canwrites=0 timeouts=30598965
+1450756305.438908	manager	child	-	-	-	info	selects=30700000 canwrites=0 timeouts=30697483
+1450756309.669592	secononoin-eth0-1	child	-	-	-	info	selects=30800000 canwrites=0 timeouts=30797054
+1450756303.496436	proxy	child	-	-	-	info	selects=30700000 canwrites=0 timeouts=30698964
+1450756318.044752	manager	child	-	-	-	info	selects=30800000 canwrites=0 timeouts=30797478
+1450756323.128572	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11247K/112K chunks=5428/730 io=2627/209 bytes/io=4.28K/0.54K events=265/354 operations=0/0
+1450756323.128572	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=91K/0K chunks=729/8 io=364/5 bytes/io=0.25K/0.04K
+1450756323.128572	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11127K/112K chunks=3947/720 io=1950/361 bytes/io=5.71K/0.31K
+1450756322.105174	secononoin-eth0-1	child	-	-	-	info	selects=30900000 canwrites=0 timeouts=30897049
+1450756315.943747	proxy	child	-	-	-	info	selects=30800000 canwrites=0 timeouts=30798962
+1450756325.153400	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=149K/159K chunks=1889/1477 io=874/435 bytes/io=0.17K/0.37K events=0/0 operations=560/367
+1450756325.153400	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/91K chunks=8/729 io=5/365 bytes/io=0.04K/0.25K
+1450756325.153400	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=120K/67K chunks=1129/744 io=565/373 bytes/io=0.21K/0.18K
+1450756327.560118	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=208K/11248K chunks=2218/5084 io=982/2391 bytes/io=0.21K/4.70K events=354/265 operations=367/560
+1450756327.560118	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=112K/11128K chunks=720/3949 io=237/1975 bytes/io=0.47K/5.63K
+1450756327.560118	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=67K/120K chunks=744/1129 io=364/565 bytes/io=0.18K/0.21K
+1450756330.007794	manager	child	-	-	-	info	selects=30900000 canwrites=0 timeouts=30897471
+1450756334.133838	secononoin-eth0-1	child	-	-	-	info	selects=31000000 canwrites=0 timeouts=30997043
+1450756328.010077	proxy	child	-	-	-	info	selects=30900000 canwrites=0 timeouts=30898958
+1450756342.622437	manager	child	-	-	-	info	selects=31000000 canwrites=0 timeouts=30997465
+1450756346.687752	secononoin-eth0-1	child	-	-	-	info	selects=31100000 canwrites=0 timeouts=31097036
+1450756340.434715	proxy	child	-	-	-	info	selects=31000000 canwrites=0 timeouts=30998956
+1450756355.219700	manager	child	-	-	-	info	selects=31100000 canwrites=0 timeouts=31097458
+1450756359.227783	secononoin-eth0-1	child	-	-	-	info	selects=31200000 canwrites=0 timeouts=31197028
+1450756353.029080	proxy	child	-	-	-	info	selects=31100000 canwrites=0 timeouts=31098955
+1450756367.543769	manager	child	-	-	-	info	selects=31200000 canwrites=0 timeouts=31197444
+1450756371.305230	secononoin-eth0-1	child	-	-	-	info	selects=31300000 canwrites=0 timeouts=31297012
+1450756365.397655	proxy	child	-	-	-	info	selects=31200000 canwrites=0 timeouts=31198953
+1450756379.957041	manager	child	-	-	-	info	selects=31300000 canwrites=0 timeouts=31297431
+1450756383.129114	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11507K/114K chunks=5544/744 io=2685/215 bytes/io=4.29K/0.53K events=271/361 operations=0/0
+1450756383.129114	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=93K/0K chunks=741/8 io=370/5 bytes/io=0.25K/0.04K
+1450756383.129114	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11385K/114K chunks=4039/734 io=1996/368 bytes/io=5.70K/0.31K
+1450756383.546813	secononoin-eth0-1	child	-	-	-	info	selects=31400000 canwrites=0 timeouts=31396992
+1450756377.732330	proxy	child	-	-	-	info	selects=31300000 canwrites=0 timeouts=31298949
+1450756387.560152	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=210K/11536K chunks=2244/5194 io=995/2444 bytes/io=0.21K/4.72K events=361/271 operations=367/565
+1450756387.560152	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=114K/11414K chunks=734/4049 io=244/2025 bytes/io=0.47K/5.64K
+1450756387.560152	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=67K/121K chunks=744/1139 io=364/570 bytes/io=0.18K/0.21K
+1450756385.153601	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=150K/160K chunks=1911/1489 io=885/441 bytes/io=0.17K/0.36K events=0/0 operations=565/367
+1450756385.153601	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/93K chunks=8/741 io=5/371 bytes/io=0.04K/0.25K
+1450756385.153601	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=121K/67K chunks=1139/744 io=570/373 bytes/io=0.21K/0.18K
+1450756391.924876	manager	child	-	-	-	info	selects=31400000 canwrites=0 timeouts=31397407
+1450756395.683971	secononoin-eth0-1	child	-	-	-	info	selects=31500000 canwrites=0 timeouts=31496975
+1450756389.728194	proxy	child	-	-	-	info	selects=31400000 canwrites=0 timeouts=31398946
+1450756404.347124	manager	child	-	-	-	info	selects=31500000 canwrites=0 timeouts=31497394
+1450756408.170103	secononoin-eth0-1	child	-	-	-	info	selects=31600000 canwrites=0 timeouts=31596958
+1450756402.142414	proxy	child	-	-	-	info	selects=31500000 canwrites=0 timeouts=31498935
+1450756416.895111	manager	child	-	-	-	info	selects=31600000 canwrites=0 timeouts=31597381
+1450756420.687532	secononoin-eth0-1	child	-	-	-	info	selects=31700000 canwrites=0 timeouts=31696946
+1450756414.710378	proxy	child	-	-	-	info	selects=31600000 canwrites=0 timeouts=31598934
+1450756429.314567	manager	child	-	-	-	info	selects=31700000 canwrites=0 timeouts=31697369
+1450756433.105055	secononoin-eth0-1	child	-	-	-	info	selects=31800000 canwrites=0 timeouts=31796931
+1450756427.082342	proxy	child	-	-	-	info	selects=31700000 canwrites=0 timeouts=31698930
+1450756441.905110	manager	child	-	-	-	info	selects=31800000 canwrites=0 timeouts=31797358
+1450756443.128681	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11949K/114K chunks=5680/744 io=2753/215 bytes/io=4.34K/0.53K events=271/361 operations=0/0
+1450756443.128681	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=94K/0K chunks=753/8 io=376/5 bytes/io=0.25K/0.04K
+1450756443.128681	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11825K/114K chunks=4151/734 io=2052/368 bytes/io=5.76K/0.31K
+1450756439.663992	proxy	child	-	-	-	info	selects=31800000 canwrites=0 timeouts=31798929
+1450756445.344002	secononoin-eth0-1	child	-	-	-	info	selects=31900000 canwrites=0 timeouts=31896922
+1450756445.153453	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=153K/161K chunks=1949/1501 io=904/447 bytes/io=0.17K/0.36K events=0/0 operations=578/367
+1450756445.153453	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/94K chunks=8/753 io=5/377 bytes/io=0.04K/0.25K
+1450756445.153453	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=124K/67K chunks=1165/744 io=583/373 bytes/io=0.21K/0.18K
+1450756447.560298	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=211K/11966K chunks=2256/5330 io=1001/2512 bytes/io=0.21K/4.76K events=361/271 operations=367/578
+1450756447.560298	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=114K/11842K chunks=734/4159 io=244/2080 bytes/io=0.47K/5.69K
+1450756447.560298	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=67K/124K chunks=744/1165 io=364/583 bytes/io=0.18K/0.21K
+1450756453.857371	manager	child	-	-	-	info	selects=31900000 canwrites=0 timeouts=31897349
+1450756457.559976	secononoin-eth0-1	child	-	-	-	info	selects=32000000 canwrites=0 timeouts=31996917
+1450756451.594274	proxy	child	-	-	-	info	selects=31900000 canwrites=0 timeouts=31898926
+1450756466.483686	manager	child	-	-	-	info	selects=32000000 canwrites=0 timeouts=31997342
+1450756470.138410	secononoin-eth0-1	child	-	-	-	info	selects=32100000 canwrites=0 timeouts=32096907
+1450756464.195752	proxy	child	-	-	-	info	selects=32000000 canwrites=0 timeouts=31998925
+1450756479.065394	manager	child	-	-	-	info	selects=32100000 canwrites=0 timeouts=32097339
+1450756482.678543	secononoin-eth0-1	child	-	-	-	info	selects=32200000 canwrites=0 timeouts=32196902
+1450756476.753185	proxy	child	-	-	-	info	selects=32100000 canwrites=0 timeouts=32098922
+1450756491.502649	manager	child	-	-	-	info	selects=32200000 canwrites=0 timeouts=32197332
+1450756495.110312	secononoin-eth0-1	child	-	-	-	info	selects=32300000 canwrites=0 timeouts=32296895
+1450756489.188183	proxy	child	-	-	-	info	selects=32200000 canwrites=0 timeouts=32198921
+1450756503.129332	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=11996K/115K chunks=5766/764 io=2792/216 bytes/io=4.30K/0.53K events=276/371 operations=0/0
+1450756503.129332	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=96K/0K chunks=765/8 io=382/5 bytes/io=0.25K/0.04K
+1450756503.129332	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=11870K/115K chunks=4215/754 io=2083/378 bytes/io=5.70K/0.30K
+1450756503.416544	manager	child	-	-	-	info	selects=32300000 canwrites=0 timeouts=32297320
+1450756501.739553	proxy	child	-	-	-	info	selects=32300000 canwrites=0 timeouts=32298920
+1450756505.954143	secononoin-eth0-1	child	-	-	-	info	selects=32400000 canwrites=0 timeouts=32396882
+1450756507.560316	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=213K/12025K chunks=2300/5394 io=1016/2544 bytes/io=0.21K/4.73K events=371/276 operations=373/578
+1450756507.560316	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=115K/11901K chunks=754/4223 io=246/2112 bytes/io=0.47K/5.63K
+1450756507.560316	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=68K/124K chunks=756/1165 io=370/583 bytes/io=0.18K/0.21K
+1450756505.153680	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=154K/164K chunks=1961/1525 io=910/455 bytes/io=0.17K/0.36K events=0/0 operations=578/373
+1450756505.153680	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/96K chunks=8/765 io=5/383 bytes/io=0.04K/0.25K
+1450756505.153680	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=124K/68K chunks=1165/756 io=583/379 bytes/io=0.21K/0.18K
+1450756513.985568	manager	child	-	-	-	info	selects=32400000 canwrites=0 timeouts=32397308
+1450756517.499209	secononoin-eth0-1	child	-	-	-	info	selects=32500000 canwrites=0 timeouts=32496863
+1450756511.649566	proxy	child	-	-	-	info	selects=32400000 canwrites=0 timeouts=32398913
+1450756526.563990	manager	child	-	-	-	info	selects=32500000 canwrites=0 timeouts=32497296
+1450756530.055222	secononoin-eth0-1	child	-	-	-	info	selects=32600000 canwrites=0 timeouts=32596854
+1450756524.221099	proxy	child	-	-	-	info	selects=32500000 canwrites=0 timeouts=32498909
+1450756539.105855	manager	child	-	-	-	info	selects=32600000 canwrites=0 timeouts=32597287
+1450756542.544357	secononoin-eth0-1	child	-	-	-	info	selects=32700000 canwrites=0 timeouts=32696841
+1450756536.771158	proxy	child	-	-	-	info	selects=32600000 canwrites=0 timeouts=32598908
+1450756551.558803	manager	child	-	-	-	info	selects=32700000 canwrites=0 timeouts=32697275
+1450756554.942904	secononoin-eth0-1	child	-	-	-	info	selects=32800000 canwrites=0 timeouts=32796830
+1450756549.131438	proxy	child	-	-	-	info	selects=32700000 canwrites=0 timeouts=32698904
+1450756563.129365	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=12367K/117K chunks=5904/786 io=2861/226 bytes/io=4.32K/0.52K events=286/382 operations=0/0
+1450756563.129365	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=97K/0K chunks=777/8 io=388/5 bytes/io=0.25K/0.04K
+1450756563.129365	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=12239K/117K chunks=4329/776 io=2140/389 bytes/io=5.72K/0.30K
+1450756563.848414	manager	child	-	-	-	info	selects=32800000 canwrites=0 timeouts=32797248
+1450756561.627670	proxy	child	-	-	-	info	selects=32800000 canwrites=0 timeouts=32798903
+1450756567.138596	secononoin-eth0-1	child	-	-	-	info	selects=32900000 canwrites=0 timeouts=32896804
+1450756567.560313	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=216K/12395K chunks=2334/5526 io=1033/2609 bytes/io=0.21K/4.75K events=382/286 operations=373/588
+1450756567.560313	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=117K/12269K chunks=776/4335 io=257/2168 bytes/io=0.46K/5.66K
+1450756567.560313	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=68K/126K chunks=756/1185 io=370/593 bytes/io=0.18K/0.21K
+1450756565.153857	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=156K/165K chunks=1993/1537 io=926/461 bytes/io=0.17K/0.36K events=0/0 operations=588/373
+1450756565.153857	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/97K chunks=8/777 io=5/389 bytes/io=0.04K/0.25K
+1450756565.153857	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=126K/68K chunks=1185/756 io=593/379 bytes/io=0.21K/0.18K
+1450756576.010096	manager	child	-	-	-	info	selects=32900000 canwrites=0 timeouts=32897236
+1450756579.304866	secononoin-eth0-1	child	-	-	-	info	selects=33000000 canwrites=0 timeouts=32996787
+1450756573.592172	proxy	child	-	-	-	info	selects=32900000 canwrites=0 timeouts=32898900
+1450756588.612463	manager	child	-	-	-	info	selects=33000000 canwrites=0 timeouts=32997225
+1450756591.875038	secononoin-eth0-1	child	-	-	-	info	selects=33100000 canwrites=0 timeouts=33096779
+1450756586.156278	proxy	child	-	-	-	info	selects=33000000 canwrites=0 timeouts=32998896
+1450756601.219471	manager	child	-	-	-	info	selects=33100000 canwrites=0 timeouts=33097219
+1450756604.422420	secononoin-eth0-1	child	-	-	-	info	selects=33200000 canwrites=0 timeouts=33196773
+1450756598.744028	proxy	child	-	-	-	info	selects=33100000 canwrites=0 timeouts=33098895
+1450756613.681235	manager	child	-	-	-	info	selects=33200000 canwrites=0 timeouts=33197213
+1450756616.861346	secononoin-eth0-1	child	-	-	-	info	selects=33300000 canwrites=0 timeouts=33296769
+1450756623.129393	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=12516K/117K chunks=5992/786 io=2905/226 bytes/io=4.31K/0.52K events=286/382 operations=0/0
+1450756623.129393	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=98K/0K chunks=787/8 io=393/5 bytes/io=0.25K/0.04K
+1450756623.129393	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=12387K/117K chunks=4395/776 io=2173/389 bytes/io=5.70K/0.30K
+1450756611.185691	proxy	child	-	-	-	info	selects=33200000 canwrites=0 timeouts=33198893
+1450756623.513968	proxy	child	-	-	-	info	selects=33300000 canwrites=0 timeouts=33298890
+1450756626.008183	manager	child	-	-	-	info	selects=33300000 canwrites=0 timeouts=33297207
+1450756627.560345	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=216K/12519K chunks=2346/5604 io=1039/2648 bytes/io=0.21K/4.73K events=382/286 operations=374/595
+1450756627.560345	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=117K/12391K chunks=776/4399 io=257/2200 bytes/io=0.46K/5.63K
+1450756627.560345	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=68K/128K chunks=758/1199 io=371/600 bytes/io=0.18K/0.21K
+1450756628.768492	secononoin-eth0-1	child	-	-	-	info	selects=33400000 canwrites=0 timeouts=33396761
+1450756625.153748	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=158K/167K chunks=2019/1551 io=939/468 bytes/io=0.17K/0.36K events=0/0 operations=595/374
+1450756625.153748	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/99K chunks=8/789 io=5/395 bytes/io=0.04K/0.25K
+1450756625.153748	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=128K/68K chunks=1199/758 io=600/380 bytes/io=0.21K/0.18K
+1450756638.260497	manager	child	-	-	-	info	selects=33400000 canwrites=0 timeouts=33397199
+1450756641.309118	secononoin-eth0-1	child	-	-	-	info	selects=33500000 canwrites=0 timeouts=33496753
+1450756635.756457	proxy	child	-	-	-	info	selects=33400000 canwrites=0 timeouts=33398886
+1450756650.875625	manager	child	-	-	-	info	selects=33500000 canwrites=0 timeouts=33497193
+1450756653.866762	secononoin-eth0-1	child	-	-	-	info	selects=33600000 canwrites=0 timeouts=33596746
+1450756648.368447	proxy	child	-	-	-	info	selects=33500000 canwrites=0 timeouts=33498885
+1450756663.468352	manager	child	-	-	-	info	selects=33600000 canwrites=0 timeouts=33597183
+1450756666.417397	secononoin-eth0-1	child	-	-	-	info	selects=33700000 canwrites=0 timeouts=33696735
+1450756660.956159	proxy	child	-	-	-	info	selects=33600000 canwrites=0 timeouts=33598881
+1450756675.935953	manager	child	-	-	-	info	selects=33700000 canwrites=0 timeouts=33697174
+1450756678.863341	secononoin-eth0-1	child	-	-	-	info	selects=33800000 canwrites=0 timeouts=33796726
+1450756683.129711	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=12579K/117K chunks=6084/786 io=2951/226 bytes/io=4.26K/0.52K events=286/382 operations=0/0
+1450756683.129711	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=100K/0K chunks=799/8 io=399/5 bytes/io=0.25K/0.04K
+1450756683.129711	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=12447K/117K chunks=4463/776 io=2207/389 bytes/io=5.64K/0.30K
+1450756673.430593	proxy	child	-	-	-	info	selects=33700000 canwrites=0 timeouts=33698879
+1450756687.978517	manager	child	-	-	-	info	selects=33800000 canwrites=0 timeouts=33797165
+1450756687.560433	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=218K/12584K chunks=2368/5678 io=1050/2684 bytes/io=0.21K/4.69K events=382/286 operations=379/598
+1450756687.560433	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=117K/12455K chunks=776/4467 io=257/2234 bytes/io=0.46K/5.58K
+1450756687.560433	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=69K/128K chunks=768/1205 io=376/603 bytes/io=0.18K/0.21K
+1450756690.722174	secononoin-eth0-1	child	-	-	-	info	selects=33900000 canwrites=0 timeouts=33896718
+1450756685.154455	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=159K/169K chunks=2035/1571 io=947/476 bytes/io=0.17K/0.36K events=0/0 operations=598/379
+1450756685.154455	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/100K chunks=8/799 io=5/400 bytes/io=0.04K/0.25K
+1450756685.154455	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=128K/69K chunks=1205/768 io=603/385 bytes/io=0.21K/0.18K
+1450756685.710567	proxy	child	-	-	-	info	selects=33800000 canwrites=0 timeouts=33798875
+1450756700.443912	manager	child	-	-	-	info	selects=33900000 canwrites=0 timeouts=33897156
+1450756703.255092	secononoin-eth0-1	child	-	-	-	info	selects=34000000 canwrites=0 timeouts=33996702
+1450756697.856840	proxy	child	-	-	-	info	selects=33900000 canwrites=0 timeouts=33898874
+1450756713.048690	manager	child	-	-	-	info	selects=34000000 canwrites=0 timeouts=33997145
+1450756715.831934	secononoin-eth0-1	child	-	-	-	info	selects=34100000 canwrites=0 timeouts=34096688
+1450756710.457915	proxy	child	-	-	-	info	selects=34000000 canwrites=0 timeouts=33998869
+1450756725.683761	manager	child	-	-	-	info	selects=34100000 canwrites=0 timeouts=34097140
+1450756728.260982	secononoin-eth0-1	child	-	-	-	info	selects=34200000 canwrites=0 timeouts=34196681
+1450756723.027372	proxy	child	-	-	-	info	selects=34100000 canwrites=0 timeouts=34098868
+1450756738.185582	manager	child	-	-	-	info	selects=34200000 canwrites=0 timeouts=34197134
+1450756740.831858	secononoin-eth0-1	child	-	-	-	info	selects=34300000 canwrites=0 timeouts=34296675
+1450756743.129668	manager	parent	-	-	-	info	parent statistics: pending=0 bytes=12669K/118K chunks=6180/794 io=2999/229 bytes/io=4.22K/0.52K events=289/386 operations=0/0
+1450756743.129668	manager	parent	-	-	-	info	child statistics: [0] pending=0 bytes=101K/0K chunks=809/8 io=404/5 bytes/io=0.25K/0.04K
+1450756743.129668	manager	parent	-	-	-	info	child statistics: [1] pending=0 bytes=12535K/118K chunks=4537/784 io=2244/393 bytes/io=5.59K/0.30K
+1450756735.508095	proxy	child	-	-	-	info	selects=34200000 canwrites=0 timeouts=34198866
+1450756745.153878	proxy	parent	-	-	-	info	parent statistics: pending=0 bytes=161K/173K chunks=2057/1607 io=958/484 bytes/io=0.17K/0.36K events=0/0 operations=603/392
+1450756745.153878	proxy	parent	-	-	-	info	child statistics: [0] pending=0 bytes=0K/101K chunks=8/809 io=5/405 bytes/io=0.04K/0.25K
+1450756745.153878	proxy	parent	-	-	-	info	child statistics: [1] pending=0 bytes=129K/71K chunks=1215/794 io=608/398 bytes/io=0.21K/0.18K
+1450756750.139153	manager	child	-	-	-	info	selects=34300000 canwrites=0 timeouts=34297119
+1450756747.560495	secononoin-eth0-1	parent	-	-	-	info	parent statistics: pending=0 bytes=221K/12672K chunks=2414/5764 io=1073/2726 bytes/io=0.21K/4.65K events=386/289 operations=392/603
+1450756747.560495	secononoin-eth0-1	parent	-	-	-	info	child statistics: [0] pending=0 bytes=118K/12542K chunks=784/4543 io=261/2272 bytes/io=0.45K/5.52K
+1450756747.560495	secononoin-eth0-1	parent	-	-	-	info	child statistics: [1] pending=0 bytes=71K/129K chunks=794/1215 io=389/608 bytes/io=0.18K/0.21K
+1450756752.743938	secononoin-eth0-1	child	-	-	-	info	selects=34400000 canwrites=0 timeouts=34396659
+1450756747.574681	proxy	child	-	-	-	info	selects=34300000 canwrites=0 timeouts=34298861
+1450756762.702599	manager	child	-	-	-	info	selects=34400000 canwrites=0 timeouts=34397112
+1450756765.296758	secononoin-eth0-1	child	-	-	-	info	selects=34500000 canwrites=0 timeouts=34496654
+1450756759.989463	proxy	child	-	-	-	info	selects=34400000 canwrites=0 timeouts=34398860
+1450756775.298940	manager	child	-	-	-	info	selects=34500000 canwrites=0 timeouts=34497107
+1450756772.599682	proxy	child	-	-	-	info	selects=34500000 canwrites=0 timeouts=34498859
+1450756777.871425	secononoin-eth0-1	child	-	-	-	info	selects=34600000 canwrites=0 timeouts=34596650
+1450756787.734561	manager	child	-	-	-	info	selects=34600000 canwrites=0 timeouts=34597104
+1450756785.179956	proxy	child	-	-	-	info	selects=34600000 canwrites=0 timeouts=34598858
+1450756790.279516	secononoin-eth0-1	child	-	-	-	info	selects=34700000 canwrites=0 timeouts=34696646
+#close	2015-12-22-04-00-00

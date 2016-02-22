@@ -1,0 +1,24 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser.bro::* ;
+
+composite BroFilesParserSample {
+	graph
+		stream<rstring data> File = FileSource(){
+			param
+				file : "files.03_01_49-04_00_00.log" ;
+				format : line ;
+		}
+
+		stream<BroFiles_t> BroRecord = BroFilesParser(File){
+			param
+				dataAttr : data ;
+		}
+
+		()as DSink = FileSink(BroRecord){
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+				format : txt ;
+		}
+}

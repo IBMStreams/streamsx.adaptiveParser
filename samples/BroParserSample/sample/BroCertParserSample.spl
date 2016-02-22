@@ -1,0 +1,27 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser.bro::* ;
+
+composite BroCertParserSample {
+	graph
+		stream<rstring data> File = FileSource(){
+			param
+				file : "x509.03_01_51-04_00_00.log" ;
+				format : line ;
+		}
+
+		stream<BroCert_t> BroRecord = BroCertParser(File){
+			param
+				dataAttr : data ;
+		}
+
+		()as DSink = FileSink(BroRecord){
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+				format : txt ;
+		}
+
+}
+
+

@@ -1,0 +1,31 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser.bro::* ;
+
+composite BroSimpleParserSample {
+	type
+		KnownHosts_t = timestamp ts, rstring host;
+
+	graph
+		stream<rstring data> File = FileSource(){
+			param
+				file : "known_hosts.03_01_48-04_00_00.log" ;
+				format : line ;
+		}
+
+		stream<KnownHosts_t> BroRecord = BroSimpleParser(File){
+			param
+				dataAttr : data ;
+				broType : KnownHosts_t;
+		}
+
+		()as DSink = FileSink(BroRecord){
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+				format : txt ;
+		}
+
+}
+
+
