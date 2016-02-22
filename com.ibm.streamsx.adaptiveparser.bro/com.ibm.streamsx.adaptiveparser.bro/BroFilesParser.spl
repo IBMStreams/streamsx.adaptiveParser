@@ -1,0 +1,22 @@
+namespace com.ibm.streamsx.adaptiveparser.bro ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+public composite BroFilesParser(input RawData ; output BroEvent) {
+	param
+		attribute $dataAttr ;
+		expression<boolean> $batch : false ;
+	graph
+		stream<BroFiles_t> BroEvent = AdaptiveParser(RawData ){
+			param
+				comment : "#" ;
+				globalSkipper : tab ;
+				undefined : "-", "(empty)";
+
+			output BroEvent:
+				tx_hosts = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab }),
+				rx_hosts = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab }),
+				analyzers = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab }),
+				conn_uids = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab });
+		}
+}

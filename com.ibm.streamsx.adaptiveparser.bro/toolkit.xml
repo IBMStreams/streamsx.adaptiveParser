@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.0.1.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="com.ibm.streamsx.adaptiveparser.bro" requiredProductVersion="4.0.1.0" version="1.0.0">
+    <description/>
+    <uriTable>
+      <uri index="7" value="com.ibm.streamsx.adaptiveparser.bro/BroSSLParser.spl"/>
+      <uri index="9" value="com.ibm.streamsx.adaptiveparser.bro/BroDHCPParser.spl"/>
+      <uri index="4" value="com.ibm.streamsx.adaptiveparser.bro/Types.spl"/>
+      <uri index="1" value="com.ibm.streamsx.adaptiveparser.bro/BroCommParser.spl"/>
+      <uri index="11" value="com.ibm.streamsx.adaptiveparser.bro/BroSimpleParser.spl"/>
+      <uri index="5" value="com.ibm.streamsx.adaptiveparser.bro/BroConnParser.spl"/>
+      <uri index="6" value="com.ibm.streamsx.adaptiveparser.bro/BroDNSParser.spl"/>
+      <uri index="10" value="com.ibm.streamsx.adaptiveparser.bro/BroFilesParser.spl"/>
+      <uri index="8" value="com.ibm.streamsx.adaptiveparser.bro/BroNoticeParser.spl"/>
+      <uri index="3" value="com.ibm.streamsx.adaptiveparser.bro/BroCertParser.spl"/>
+      <uri index="2" value="com.ibm.streamsx.adaptiveparser.bro/BroHTTPParser.spl"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.adaptiveparser.bro">
+      <compositeOp column="18" line="5" name="BroCommParser" potentialMain="false" public="true" uriIndex="1">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroHTTPParser" potentialMain="false" public="true" uriIndex="2">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroCertParser" potentialMain="false" public="true" uriIndex="3">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroConnParser" potentialMain="false" public="true" uriIndex="5">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroDNSParser" potentialMain="false" public="true" uriIndex="6">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroSSLParser" potentialMain="false" public="true" uriIndex="7">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroNoticeParser" potentialMain="false" public="true" uriIndex="8">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroDHCPParser" potentialMain="false" public="true" uriIndex="9">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="5" name="BroFilesParser" potentialMain="false" public="true" uriIndex="10">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <compositeOp column="18" line="7" name="BroSimpleParser" potentialMain="false" public="true" uriIndex="11">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <parameter metaType="Type" name="broType" optional="false"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="BroEvent" portIndex="0"/>
+      </compositeOp>
+      <type column="6" line="3" name="Level_e" static="true" type="enum { info }" uriIndex="4"/>
+      <type column="6" line="5" name="Proto_e" static="true" type="enum { tcp, udp }" uriIndex="4"/>
+      <type column="6" line="7" name="ID_t" static="true" type="rstring orig_h, uint32 orig_p, rstring resp_h, uint32 resp_p" uriIndex="4"/>
+      <type column="6" line="12" name="RemoteLocation_t" static="true" type="rstring country_code, rstring region, rstring city, float64 latitude, float64 longitude" uriIndex="4"/>
+      <type column="6" line="18" name="Certificate_t" static="true" type="uint32 version, rstring serial, rstring subject, rstring issuer, timestamp not_valid_before, timestamp not_valid_after, rstring key_alg, rstring sig_alg, rstring key_type, uint32 key_length, rstring exponent, rstring curve" uriIndex="4"/>
+      <type column="6" line="31" name="San_t" static="true" type="list&lt;rstring> dns, list&lt;rstring> uri, list&lt;rstring> email, list&lt;rstring> ip" uriIndex="4"/>
+      <type column="6" line="36" name="BroComm_t" static="true" type="timestamp ts, rstring peer, rstring src_name, rstring connected_peer_desc, rstring connected_peer_addr, uint32 connected_peer_port, Level_e level, rstring message" uriIndex="4"/>
+      <type column="6" line="45" name="BroConn_t" static="true" type="timestamp ts, rstring uid, ID_t id, Proto_e proto, rstring service, float64 duration, uint32 orig_bytes, uint32 resp_bytes, rstring conn_state, boolean local_orig, uint32 missed_bytes, rstring history, uint32 orig_pkts, uint32 orig_ip_bytes, uint32 resp_pkts, uint32 resp_ip_bytes, set&lt;rstring> tunnel_parents, rstring orig_cc, rstring resp_cc, rstring sensorname" uriIndex="4"/>
+      <type column="6" line="66" name="BroDHCP_t" static="true" type="timestamp ts, rstring uid, ID_t id, rstring mac, rstring assigned_ip, float64 lease_time, uint32 trans_id" uriIndex="4"/>
+      <type column="6" line="74" name="BroDNS_t" static="true" type="timestamp ts, rstring uid, ID_t id, Proto_e proto, uint32 trans_id, rstring query, uint32 qclass, rstring qclass_name, uint32 qtype, rstring qtype_name, uint32 rcode, rstring rcode_name, boolean AA, boolean TC, boolean RD, boolean RA, uint32 Z, list&lt;rstring> answers, list&lt;float64> TTLs, boolean rejected" uriIndex="4"/>
+      <type column="6" line="95" name="BroFiles_t" static="true" type="timestamp ts, rstring fuid, set&lt;rstring> tx_hosts, set&lt;rstring> rx_hosts, set&lt;rstring> conn_uids, rstring source, uint32 depth, set&lt;rstring> analyzers, rstring mime_type, rstring filename, float64 duration, boolean local_orig, boolean is_orig, uint32 seen_bytes, uint32 total_bytes, uint32 missing_bytes, uint32 overflow_bytes, boolean timedout, rstring parent_fuid, rstring md5, rstring sha1, rstring sha256, rstring extracted" uriIndex="4"/>
+      <type column="6" line="119" name="BroHTTP_t" static="true" type="timestamp ts, rstring uid, ID_t id, uint32 trans_depth, rstring method, rstring host, rstring uri, rstring referrer, rstring user_agent, uint32 request_body_len, uint32 response_body_len, uint32 status_code, rstring status_msg, uint32 info_code, rstring info_msg, rstring filename, set&lt;rstring> tags, rstring username, rstring password, set&lt;rstring> proxied, list&lt;rstring> orig_fuids, list&lt;rstring> orig_mime_types, list&lt;rstring> resp_fuids, list&lt;rstring> resp_mime_types" uriIndex="4"/>
+      <type column="6" line="144" name="BroNotice_t" static="true" type="timestamp ts, rstring uid, ID_t id, rstring fuid, rstring file_mime_type, rstring file_desc, Proto_e proto, rstring note, rstring msg, rstring sub, rstring src, rstring dst, uint32 p, uint32 n, rstring peer_descr, set&lt;rstring> actions, float64 suppress_for, boolean dropped, RemoteLocation_t remote_location" uriIndex="4"/>
+      <type column="6" line="164" name="BroSSL_t" static="true" type="timestamp ts, rstring uid, ID_t id, rstring version, rstring cipher, rstring curve, rstring server_name, rstring session_id, rstring last_alert, boolean established, list&lt;rstring> cert_chain_fuids, list&lt;rstring> client_cert_chain_fuids, rstring subject, rstring issuer, rstring client_subject, rstring client_issuer, rstring validation_status" uriIndex="4"/>
+      <type column="6" line="182" name="BroCert_t" static="true" type="timestamp ts, rstring uid, Certificate_t certificate, San_t san, boolean ca, uint32 path_len" uriIndex="4"/>
+      <enumLiterals column="22" line="3" typeName="Level_e" uriIndex="4">
+        <enum>info</enum>
+      </enumLiterals>
+      <enumLiterals column="22" line="5" typeName="Proto_e" uriIndex="4">
+        <enum>tcp</enum>
+        <enum>udp</enum>
+      </enumLiterals>
+    </namespace>
+    <dependency>
+      <common:name>com.ibm.streamsx.adaptiveparser</common:name>
+      <common:version>1.4.1</common:version>
+    </dependency>
+    <sabFiles>
+      <ti:include path="toolkit.xml" root="toolkitDir"/>
+      <ti:include path="impl/java/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/java/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/nl/*.dat" root="toolkitDir"/>
+      <ti:include path="etc/**" root="toolkitDir"/>
+      <ti:include path="lib/**" root="toolkitDir"/>
+      <ti:include path="nl/**" root="toolkitDir"/>
+      <ti:include path="opt/**" root="toolkitDir"/>
+    </sabFiles>
+  </toolkit>
+
+</toolkitModel>

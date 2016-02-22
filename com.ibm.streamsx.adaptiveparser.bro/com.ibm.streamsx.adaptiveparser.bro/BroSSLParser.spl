@@ -1,0 +1,23 @@
+namespace com.ibm.streamsx.adaptiveparser.bro ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+public composite BroSSLParser(input RawData ; output BroEvent){
+	param
+		attribute $dataAttr ;
+		expression<boolean> $batch : false ;
+
+	graph
+		stream<BroSSL_t> BroEvent = AdaptiveParser(RawData) {
+			param
+				comment : "#" ;
+				globalSkipper : tab ;
+				undefined : "-", "(empty)";
+
+			output BroEvent:
+				cert_chain_fuids = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab }),
+				client_cert_chain_fuids = Param({ globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab });
+		}
+}
+
+

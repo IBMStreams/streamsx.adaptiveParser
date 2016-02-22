@@ -1,0 +1,21 @@
+namespace com.ibm.streamsx.adaptiveparser.bro ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+public composite BroDNSParser(input RawData ; output BroEvent) {
+	param
+		attribute $dataAttr ;
+		expression<boolean> $batch : false;
+
+	graph
+		stream<BroDNS_t> BroEvent = AdaptiveParser(RawData){
+			param
+				comment : "#" ;
+				globalSkipper : tab ;
+				undefined : "-", "(empty)" ;
+			output BroEvent:
+				answers = Param({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+				TTLs = Param({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab});
+		}
+
+}

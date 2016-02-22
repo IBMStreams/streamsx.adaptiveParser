@@ -1,0 +1,26 @@
+namespace com.ibm.streamsx.adaptiveparser.bro ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+public composite BroCertParser(input RawData; output BroEvent) {
+	param
+		attribute $dataAttr ;
+		expression<boolean> $batch : false ;
+	graph
+		stream<BroCert_t> BroEvent = AdaptiveParser(RawData) {
+			param
+				comment : "#" ;
+				globalSkipper : tab ;
+				undefined : "-", "(empty)";
+
+			output BroEvent:
+				san = Param({globalDelimiter = ""}, {
+					dns =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+					uri =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+					email = ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+					ip =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab})
+				});
+		}
+}
+
+
