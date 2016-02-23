@@ -1,0 +1,45 @@
+namespace com.ibm.streamsx.adaptiveparser.json ;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+/*
+ *  AdaptiveParser output port type generates the JSON parser
+ *  As an option, JSON header can be represented as list<rstring>[5] instead of tuple<JSONHeader_t>
+ *  JSONParser parameters:
+ *  	'dataAttr' - is needed to set input attribute to parse
+ *  	'batch' - if bulk of tuples is expected i the input
+ *  	'customAttributesType' - optionally JSONAttributes_t can be extended
+ *  AdaptiveParser parameters:
+ *  	global skipper is '\t' (which overridden by syslog that needs whitespace)
+ *  Custom formats can be handled by custom output functions:
+ *  	'date' parses string based on timestamp string format defined by 'tsFormat = "%b %d %Y %H:%M:%S"'
+ *  	'eventHeader' needs globalDelimiter to be '|' (other headers need only skipper)
+ *  	'version' parses string like 'JSON:<ver>', so prefix 'JSON:' needed
+ *  	'eventAttributes' uses keyValue parser (enabled by 'attrNameAsPrefix = true') to map data directly to the tuple
+ *  	'key' delimited by '=', 'value' delimited by '\t'
+ *  here two subsequent key/values sample: 'devTimeFormat=MMM dd yyyy HH:mm:ss	src=RZS.RWY.SQU.SR'
+ */
+public composite JSONParser(input RawData ; output JSONEvent) {
+param
+	attribute $dataAttr;
+	expression<boolean> $batch : false;
+    expression<boolean> $keyQuoted : true;
+	type $JSONType;
+
+graph
+    
+    stream<$JSONType> JSONEvent = AdaptiveParser(RawData) {
+    	param
+    		batch : $batch;
+    		dataAttr : $dataAttr;
+    		globalDelimiter : ",";
+    		globalAttrNameAsPrefix : true;
+    		globalAttrNameDelimiter : ":";
+    		globalAttrNameQuoted : $keyQuoted;
+    		quotedStrings : true;
+    		listPrefix : "[";
+    		listSuffix : "]";
+    		tuplePrefix : "{";
+    		tupleSuffix : "}";
+    }
+}
