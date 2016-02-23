@@ -6,7 +6,7 @@ use warnings;
 use Data::Dumper;
 use Spirit;
 
-my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapPrefix','mapSuffix','tuplePrefix','tupleSuffix','quotedStrings','globalAttrNameAsPrefix','globalAttrNameDelimiter','globalAttrNameQuoted','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
+my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapPrefix','mapSuffix','tuplePrefix','tupleSuffix','prefix','suffix','quotedStrings','globalAttrNameAsPrefix','globalAttrNameDelimiter','globalAttrNameQuoted','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
 
 my %allowedParams = (
 					binaryMode => 'boolean',
@@ -156,8 +156,8 @@ sub buildStructFromTuple(@) {
 		}
 
 		if (Type::isComposite($attrTypes[$i])) {
-			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -169,7 +169,8 @@ sub buildStructFromTuple(@) {
 			$attrName =~ tr/\"//d;
 			$attrName =  qq(\\"$attrName\\") if ($parserCustOpt->{'attrNameQuoted'});
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
-			$parser = qq(kwd("$attrName",0,1)[$parser]);
+			$parser = qq(lit("$attrName") >> $parser) if ($tupleSize == 1);
+			$parser = qq(kwd("$attrName",0,1)[$parser]) if ($tupleSize > 1);
 		}
 		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'}) {
 			SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
@@ -179,13 +180,13 @@ sub buildStructFromTuple(@) {
 	}
 
 	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
+	#Spirit::traits_defTuple1($structs->[-1], $cppType, $attrNames[0]) if ($tupleSize == 1);
 	
 	$struct->{'extension'} .= ")";
 
-	#$ruleName = "as<$cppType>()[$ruleName]" if ($tupleSize == 1);
-	$ruleName = "attr_cast<$cppType>($ruleName)" if ($tupleSize == 1);
-	$ruleName = "$parserOpt->{'tuplePrefix'} >> $ruleName" if ($parserOpt->{'tuplePrefix'});
-	$ruleName .= " >> $parserOpt->{'tupleSuffix'}" if ($parserOpt->{'tupleSuffix'});
+	#$ruleName = "attr_cast<$cppType, $cppType\::$attrNames[0]\_type>($ruleName)" if ($tupleSize == 1);
+	$ruleName = "lit($parserOpt->{'tuplePrefix'}) >> $ruleName" if ($parserOpt->{'tuplePrefix'});
+	$ruleName .= " >> lit($parserOpt->{'tupleSuffix'})" if ($parserOpt->{'tupleSuffix'});
 
 	return $ruleName;
 }
@@ -238,8 +239,8 @@ sub handleListOrSet(@) {
 		}
 
 		if (Type::isComposite($valueType)) {
-			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -252,8 +253,9 @@ sub handleListOrSet(@) {
 		}
 	}
 	
-	$parser = "$parserOpt->{'listPrefix'} >> $parser" if ($parserOpt->{'listPrefix'});
-	$parser .= " >> $parserOpt->{'listSuffix'}" if ($parserOpt->{'listSuffix'});
+	$parser = "lit($parserOpt->{'listPrefix'}) >> $parser" if ($parserOpt->{'listPrefix'});
+	$parser .= " >> lit($parserOpt->{'listSuffix'})" if ($parserOpt->{'listSuffix'});
+	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
 	
 	return $parser;
 }
@@ -349,8 +351,8 @@ sub handleMap(@) {
 		}
 		
 		if (Type::isComposite($attrType)) {
-			#$parser = "$parserCustOpt->{'prefix'} >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> $parserCustOpt->{'suffix'}" if ($parserCustOpt->{'suffix'});
+			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
+			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -367,8 +369,9 @@ sub handleMap(@) {
 		$parser = "*(($ruleName >> eps) - eoi)";
 	}
 	
-	$parser = "$parserOpt->{'mapPrefix'} >> $parser" if ($parserOpt->{'mapPrefix'});
-	$parser .= " >> $parserOpt->{'mapSuffix'}" if ($parserOpt->{'mapSuffix'});
+	$parser = "lit($parserOpt->{'mapPrefix'}) >> $parser" if ($parserOpt->{'mapPrefix'});
+	$parser .= " >> lit($parserOpt->{'mapSuffix'})" if ($parserOpt->{'mapSuffix'});
+	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
 
 	return $parser;
 }
@@ -502,8 +505,8 @@ sub handlePrimitive(@) {
 	
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "($value | as<$cppType>()[eps])" if ($parserOpt->{'allowEmpty'});
-	$value = "$parserOpt->{'prefix'} >> $value" if ($parserOpt->{'prefix'});
-	$value .= " >> $parserOpt->{'suffix'}" if ($parserOpt->{'suffix'});
+	$value = "lit($parserOpt->{'prefix'}) >> $value" if ($parserOpt->{'prefix'});
+	$value .= " >> lit($parserOpt->{'suffix'})" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
 	$value = "-($value)" if ($parserOpt->{'optional'});
 	return $value;

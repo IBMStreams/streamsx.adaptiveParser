@@ -435,6 +435,11 @@ namespace streams_boost { namespace spirit { namespace traits {
             return true;
         }
     };
+
+//	template <>
+//	struct strip_single_element_vector<fusion::vector1<char> > {
+//		typedef fusion::vector1<char> type;
+//	};
 }}}
 
 #endif /* SPIRIT_H_ */

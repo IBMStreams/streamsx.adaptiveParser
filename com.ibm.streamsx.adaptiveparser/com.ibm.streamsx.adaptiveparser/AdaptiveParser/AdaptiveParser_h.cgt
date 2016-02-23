@@ -92,14 +92,15 @@ print qq(
 foreach my $struct (@{$structs}) {
 if (scalar %{$struct}) {
 	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
+#my $assign = $struct->{'size'} == 1 ? '%=' : '%=';
 	my $operator = $struct->{'globalAttrNameAsPrefix'} ? ' / ' : ' >> ';
 	my $rule = join($operator, @{$struct->{'ruleBody'}});
-	$rule = "$parserOpt->{'tuplePrefix'} >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
+	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
 	if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tupleSuffix'}) {
-		$rule = "$rule >> $parserOpt->{'tupleSuffix'}" if ($batch);
-		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> $parserOpt->{'tupleSuffix'}" unless ($batch);
+		$rule = "$rule >> lit($parserOpt->{'tupleSuffix'})" if ($batch);
+		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
 	}
-	$rule .= " >> eps" if ($struct->{'size'} <= 1); # patch for single element tuple
+	$rule = "eps >> $rule" if ($struct->{'size'} <= 1); # patch for single element tuple
 	$rule = $skipper."[$rule]";
 	$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $startFrom);
 	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
@@ -237,6 +238,32 @@ print qq(
 		}
 	};
 	}}}
+);
+	}
+
+}
+
+if (defined($structs->[-1]->{'tuple'})) {
+	my @tupleDefs = keys %{$structs->[-1]->{'tuple'}};
+	my @attrDefs = values %{$structs->[-1]->{'tuple'}};
+	
+	for (my $i = 0; $i < @tupleDefs; $i++) {
+		my $cppTupleType = $tupleDefs[$i];
+		my $cppAttrType = "$cppTupleType\::$attrDefs[$i]\_type";
+print qq(
+//	namespace streams_boost { namespace spirit { namespace traits {
+//	    template <>
+//	    struct transform_attribute<$cppTupleType, $cppAttrType, qi::domain>
+//	    {
+//	        typedef $cppAttrType & type;
+//	        static $cppAttrType & pre($cppTupleType & tuple1) {
+//	        	return tuple1.get_$attrDefs[$i]();
+//	        }
+//
+//	        static void post($cppTupleType &, $cppAttrType const&) {}
+//	        static void fail($cppTupleType &) {}
+//	    };
+//	}}}
 );
 	}
 

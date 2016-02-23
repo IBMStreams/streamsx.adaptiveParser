@@ -36,6 +36,14 @@ sub traits_defXml(@) {
 	}
 }
 
+sub traits_defTuple1(@) {
+	my ($adapt, $cppType, $attrName) = @_;
+
+	unless (defined($adapt->{'tuple'}->{$cppType})) {
+		$adapt->{'tuple'}->{$cppType} = $attrName;
+	}
+}
+
 sub traits_defStruct(@) {
 	my ($adapt, $cppType) = @_;
 
@@ -63,7 +71,7 @@ sub ext_defDummyStructMember(@) {
 
 	$adapt->{'extension'} .=
 qq(
-    (qi::unused_type, unused())
+    (SPL::TupleIterator, getEndIterator())
 );
 
 }
