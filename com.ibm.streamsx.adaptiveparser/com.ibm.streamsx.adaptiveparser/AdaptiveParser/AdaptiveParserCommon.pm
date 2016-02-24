@@ -604,7 +604,7 @@ sub getSkippedValue(@) {
 sub getStringMacro(@) {
 	my ($parserOpt, $quotedStrings) = @_;
 	my $macro = 'STR_';
-	my $delimiter = defined($parserOpt->{'suffix'}) ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
+	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
 	my $operator = defined($parserOpt->{'skipChars'}) ? 'as_string' : 'raw';
 
 	if ($quotedStrings) {

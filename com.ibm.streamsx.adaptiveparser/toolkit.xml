@@ -110,6 +110,12 @@
         <parameter cardinality="1" expressionMode="Constant" name="tupleSuffix" optional="true" type="rstring">
           <description/>
         </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="prefix" optional="true" type="rstring">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="suffix" optional="true" type="rstring">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="quotedStrings" optional="true" type="boolean">
           <description/>
         </parameter>
