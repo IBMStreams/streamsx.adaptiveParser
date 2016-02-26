@@ -355,16 +355,14 @@ namespace streams_boost { namespace spirit { namespace qi {
 namespace streams_boost { namespace spirit { namespace traits {
 
 	template <typename Subject, typename RangeSkipper>
-    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
-//    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
+//  struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
+    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper>
-    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
-//    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
+    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper, typename ReverseSkipper>
-    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
-//    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};
+    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper, typename Attribute, typename Context, typename Iterator>
 	struct handles_container<ext::reparse_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>

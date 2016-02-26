@@ -122,7 +122,7 @@ sub main::generate($$) {
    	$rule = $skipper."[$rule]";
    	if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tupleSuffix'}) {
    		$rule = "$rule >> lit($parserOpt->{'tupleSuffix'})" if ($batch);
-   		$rule = "reparse(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
+   		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
    	}
    	$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $startFrom);
    	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
