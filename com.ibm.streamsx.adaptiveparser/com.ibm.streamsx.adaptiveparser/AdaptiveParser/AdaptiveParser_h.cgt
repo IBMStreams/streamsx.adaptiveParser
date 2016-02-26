@@ -98,12 +98,12 @@ if (scalar %{$struct}) {
 	my $operator = $struct->{'globalAttrNameAsPrefix'} ? ' / ' : ' >> ';
 	my $rule = join($operator, @{$struct->{'ruleBody'}});
 	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
+	$rule = "eps >> $rule" if ($struct->{'size'} == 1); # patch for single element tuple
+	$rule = $skipper."[$rule]";
 	if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tupleSuffix'}) {
 		$rule = "$rule >> lit($parserOpt->{'tupleSuffix'})" if ($batch);
-		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
+		$rule = "reparse(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
 	}
-	$rule = "eps >> $rule";
-	$rule = $skipper."[$rule]";
 	$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $startFrom);
 	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
 print qq(

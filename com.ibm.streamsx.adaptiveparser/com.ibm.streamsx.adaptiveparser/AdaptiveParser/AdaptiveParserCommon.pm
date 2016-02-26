@@ -170,7 +170,7 @@ sub buildStructFromTuple(@) {
 			$attrName =  qq(\\"$attrName\\") if ($parserCustOpt->{'attrNameQuoted'});
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
 			$parser = qq(lit("$attrName") >> $parser) if ($tupleSize == 1);
-			$parser = qq(kwd("$attrName",0,1)[$parser]) if ($tupleSize > 1);
+			$parser = qq(kwd("$attrName",0,inf)[$parser]) if ($tupleSize > 1);
 		}
 		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'}) {
 			SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
