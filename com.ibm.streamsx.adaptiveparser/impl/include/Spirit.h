@@ -34,7 +34,7 @@ using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
 using fusion::at_c; using qi::locals; using qi::_val;
 using phoenix::bind; using phoenix::function; using phoenix::construct; using phoenix::ref; using phoenix::val;
 using qi::alnum; using qi::alpha; using qi::blank; using qi::string; using qi::symbols;
-using qi::bin; using qi::hex; using qi::oct;
+using qi::bin; using qi::hex; using qi::inf; using qi::oct;
 using qi::float_; using qi::double_; using qi::long_double;
 using qi::short_; using qi::int_; using qi::long_;
 using qi::ushort_; using qi::uint_; using qi::ulong_;
@@ -95,7 +95,10 @@ namespace ext {
 		typedef Subject subject_type;
 
 		template <typename Context, typename Iterator>
-		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+//		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+		struct attribute {
+			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
+		};
 
 		reparse_parser(Subject const& subject, RangeSkipper const& rangeSkipper) : subject(subject),  rangeSkipper(rangeSkipper) {}
 
@@ -130,7 +133,10 @@ namespace ext {
 		typedef Subject subject_type;
 
 		template <typename Context, typename Iterator>
-		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+//		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+		struct attribute {
+			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
+		};
 
 		reparse2_parser(Subject const& subject, RangeSkipper const& rangeSkipper) : subject(subject),  rangeSkipper(rangeSkipper) {}
 
@@ -169,7 +175,10 @@ namespace ext {
 		typedef Subject subject_type;
 
 		template <typename Context, typename Iterator>
-		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+//		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
+		struct attribute {
+			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
+		};
 
 		reverse_parser(Subject const& subject, RangeSkipper const& rangeSkipper, ReverseSkipper const& reverseSkipper) : subject(subject), rangeSkipper(rangeSkipper), reverseSkipper(reverseSkipper) {}
 
@@ -283,6 +292,17 @@ namespace streams_boost { namespace spirit {
 }}
 
 namespace streams_boost { namespace spirit { namespace qi {
+
+//	template <typename RangeSkipper, typename Subject, typename Modifiers>
+//    struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
+//        typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
+//        typedef ext::reparse_parser<Subject, rangeSkipper_type> result_type;
+//
+//        result_type operator()(unused_type, Subject const& subject, unused_type) const {
+//            return result_type(subject);
+//        }
+//    };
+
 	template <typename RangeSkipper, typename Subject, typename Modifiers>
     struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
         typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
@@ -333,14 +353,22 @@ namespace streams_boost { namespace spirit { namespace qi {
 }}}
 
 namespace streams_boost { namespace spirit { namespace traits {
-	template <typename Subject, typename RangeSkipper>
-    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper>
-    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
+    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
+//    struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
+
+	template <typename Subject, typename RangeSkipper>
+    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
+//    struct has_semantic_action<ext::reparse2_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper, typename ReverseSkipper>
-    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};
+    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
+//    struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};
+
+	template <typename Subject, typename RangeSkipper, typename Attribute, typename Context, typename Iterator>
+	struct handles_container<ext::reparse_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>
+	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
 
 
 	template <>
