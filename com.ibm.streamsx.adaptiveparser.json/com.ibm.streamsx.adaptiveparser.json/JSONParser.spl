@@ -4,20 +4,11 @@ use com.ibm.streamsx.adaptiveparser::* ;
 
 /*
  *  AdaptiveParser output port type generates the JSON parser
- *  As an option, JSON header can be represented as list<rstring>[5] instead of tuple<JSONHeader_t>
  *  JSONParser parameters:
  *  	'dataAttr' - is needed to set input attribute to parse
- *  	'batch' - if bulk of tuples is expected i the input
- *  	'customAttributesType' - optionally JSONAttributes_t can be extended
- *  AdaptiveParser parameters:
- *  	global skipper is '\t' (which overridden by syslog that needs whitespace)
- *  Custom formats can be handled by custom output functions:
- *  	'date' parses string based on timestamp string format defined by 'tsFormat = "%b %d %Y %H:%M:%S"'
- *  	'eventHeader' needs globalDelimiter to be '|' (other headers need only skipper)
- *  	'version' parses string like 'JSON:<ver>', so prefix 'JSON:' needed
- *  	'eventAttributes' uses keyValue parser (enabled by 'attrNameAsPrefix = true') to map data directly to the tuple
- *  	'key' delimited by '=', 'value' delimited by '\t'
- *  here two subsequent key/values sample: 'devTimeFormat=MMM dd yyyy HH:mm:ss	src=RZS.RWY.SQU.SR'
+ *  	'batch' - if bulk of tuples is expected in the input
+ *  	'keyQuoted' - are the JSON keys quoted - true by default
+ *  	'JSONType' - the SPL output type
  */
 public composite JSONParser(input RawData ; output JSONEvent) {
 param
