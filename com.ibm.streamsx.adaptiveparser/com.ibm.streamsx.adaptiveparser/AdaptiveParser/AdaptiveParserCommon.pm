@@ -11,12 +11,14 @@ my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapP
 my %allowedParams = (
 					binaryMode => 'boolean',
 					attrNameAsPrefix => 'boolean',
+					attrNameQuoted => 'boolean',
 					globalAttrNameAsPrefix => 'boolean',
 					globalAttrNameQuoted => 'boolean',
 					attrFieldName => 'rstring',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
 					skipChars => 'rstring',
+					attrNameDelimiter => 'rstring',
 					globalAttrNameDelimiter => 'rstring',
 					globalDelimiter => 'rstring',
 					globalEscapeChar => 'rstring',
@@ -324,15 +326,17 @@ sub handleMap(@) {
 		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
 		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
 		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
-		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
 		
 		if ($attrName eq 'key') {
+			$parserCustOpt->{'delimiter'} //= $parserCustOpt->{'attrNameAsPrefix'} ? $parserCustOpt->{'attrNameDelimiter'} : $parserOpt->{'globalDelimiter'};
+			$parserCustOpt->{'quotedStrings'} = defined($parserCustOpt->{'attrNameQuoted'}) ? $parserCustOpt->{'attrNameQuoted'} : $parserCustOpt->{'quotedStrings'};
 			$keyDelimiter = $parserCustOpt->{'delimiter'};
 			$parser = buildStructs($srcLocation, "$cppType\::key_type", $keyType, $structs, $param2, $parserCustOpt, $size);
 		}
 		else {
+			$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 			my $valueSkipper = $parserCustOpt->{'skipper'};
 
 			if ($parserCustOpt->{'cutCharsetDelim'}) {
