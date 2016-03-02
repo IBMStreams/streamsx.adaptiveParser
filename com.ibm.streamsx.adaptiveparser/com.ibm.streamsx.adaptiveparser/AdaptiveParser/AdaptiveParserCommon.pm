@@ -77,8 +77,6 @@ sub buildStructFromTuple(@) {
 	$ruleName .= '_base' if ($ruleName eq $cppType);
 	my $adapt = {};
 	
-	Spirit::traits_defStruct($adapt, $cppType);
-
 	$adapt->{'cppType'} = $cppType;
 	$adapt->{'ruleName'} = $ruleName;
 	$adapt->{'ruleBody'} = [];
@@ -91,6 +89,11 @@ sub buildStructFromTuple(@) {
 	unshift @{$structs}, $adapt;
 	my $struct = $structs->[0];
 	
+	my $adapted = defined($structs->[-1]->{'tuples'}->{$splType});
+	$structs->[-1]->{'tuples'}->{$splType} = '';
+	
+	Spirit::traits_defStruct($adapt, $cppType) unless ($adapted);
+
 	my %attrParams;
 	my $topLevel = ref $oAttrParams eq 'SPL::Operator::Instance::OutputPort';
 
@@ -105,7 +108,7 @@ sub buildStructFromTuple(@) {
 	}
 
 	for (my $i = 0; $i < $tupleSize; $i++) {
-		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType);
+		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType) unless ($adapted);
 
 		my $parserCustOpt;
 		@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
@@ -182,7 +185,7 @@ sub buildStructFromTuple(@) {
 	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
 	#Spirit::traits_defTuple1($structs->[-1], $cppType, $attrNames[0]) if ($tupleSize == 1);
 	
-	$struct->{'extension'} .= ")";
+	$struct->{'extension'} .= ")" unless ($adapted);
 
 	#$ruleName = "attr_cast<$cppType, $cppType\::$attrNames[0]\_type>($ruleName)" if ($tupleSize == 1);
 	$ruleName = "lit($parserOpt->{'tuplePrefix'}) >> $ruleName" if ($parserOpt->{'tuplePrefix'});
@@ -282,12 +285,14 @@ sub handleMap(@) {
 	my $struct = $structs->[0];
 	
 	my %attrParams;
-	my $attrParamNames = $oAttrParams->getAttributes();
-	for (my $i = 0; $i < @{$attrParamNames}; $i++) {
-		SPL::CodeGen::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
-			unless ($attrParamNames->[$i] ~~ ['key','value']);
-		$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
-		
+	if ($oAttrParams){
+		my $attrParamNames = $oAttrParams->getAttributes();
+		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
+			SPL::CodeGen::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
+				unless ($attrParamNames->[$i] ~~ ['key','value']);
+			$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
+			
+		}
 	}
 	
 	my $keyDelimiter = '';

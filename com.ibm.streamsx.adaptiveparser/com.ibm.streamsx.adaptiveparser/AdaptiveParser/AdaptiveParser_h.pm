@@ -99,7 +99,7 @@ sub main::generate($$) {
    		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} ;
    );
    }
-    
+   
    if ($parserOpt->{'undefined'}) {
    	my $undefValue;
    	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
@@ -114,7 +114,7 @@ sub main::generate($$) {
    foreach my $struct (@{$structs}) {
    if (scalar %{$struct}) {
    	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
-   #my $assign = $struct->{'size'} == 1 ? '%=' : '%=';
+   #my $assign = $struct->{'size'} == 1 ? '=' : '%=';
    	my $operator = $struct->{'globalAttrNameAsPrefix'} ? ' / ' : ' >> ';
    	my $rule = join($operator, @{$struct->{'ruleBody'}});
    	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
