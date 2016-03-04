@@ -1,0 +1,37 @@
+namespace sample ;
+
+use com.ibm.streamsx.adaptiveparser.json::* ;
+
+composite JSONParserSample {
+	type
+		Item_t = rstring id, rstring label;
+		JSONSample_t = tuple<rstring header, list<Item_t> items> menu;
+	graph
+		stream<blob data> Row = FileSource(){
+			param
+				file : "jsonSample.json" ;
+				format : block ;
+				blockSize : 10000u;
+		}
+
+	/*
+	 *  JSONParserSample uses JSONParser toolkit with AdaptiveParser as dependency
+	 *  JSONParser expects the input attribute to be of type blob or rstring
+	 *  JSONParser expects the output type as mandatory 'JSONType' parameter
+	 */
+		stream<JSONSample_t> JSONParsed = JSONParser(Row){
+			param
+				dataAttr : data ;
+				JSONType : JSONSample_t ;
+		}
+
+		()as DSink = FileSink(JSONParsed){
+			param
+				file : "/dev/stdout" ;
+				flush : 1u ;
+				format : txt ;
+		}
+
+}
+
+
