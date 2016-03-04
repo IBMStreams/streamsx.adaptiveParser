@@ -37,10 +37,10 @@ sub traits_defXml(@) {
 }
 
 sub traits_defTuple1(@) {
-	my ($adapt, $cppType, $attrName) = @_;
+	my ($adapt, $splType, $cppType) = @_;
 
-	unless (defined($adapt->{'tuple'}->{$cppType})) {
-		$adapt->{'tuple'}->{$cppType} = $attrName;
+	unless (defined($adapt->{'tuple1'}->{$splType})) {
+		$adapt->{'tuple1'}->{$splType} = $cppType;
 	}
 }
 

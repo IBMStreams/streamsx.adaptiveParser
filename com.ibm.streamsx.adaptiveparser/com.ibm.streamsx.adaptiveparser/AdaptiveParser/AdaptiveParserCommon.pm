@@ -177,7 +177,7 @@ sub buildStructFromTuple(@) {
 			$parser = qq(lit("$attrName") >> $parser) if ($tupleSize == 1);
 			$parser = qq(kwd("$attrName",0,inf)[$parser]) if ($tupleSize > 1);
 		}
-		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'}) {
+		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'} && $tupleSize > 1) {
 			SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
 		}
 		
@@ -185,7 +185,7 @@ sub buildStructFromTuple(@) {
 	}
 
 	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
-	#Spirit::traits_defTuple1($structs->[-1], $cppType, $attrNames[0]) if ($tupleSize == 1);
+	Spirit::traits_defTuple1($structs->[-1], $splType, $cppType) if ($tupleSize == 1);
 	
 	$struct->{'extension'} .= ")" unless ($adapted);
 

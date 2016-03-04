@@ -15,6 +15,7 @@
 #include <streams_boost/fusion/include/adapt_struct.hpp>
 #include <streams_boost/fusion/include/std_pair.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
+#include <streams_boost/spirit/home/support/container.hpp>
 #include <streams_boost/spirit/repository/include/qi_kwd.hpp>
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
@@ -366,6 +367,10 @@ namespace streams_boost { namespace spirit { namespace traits {
 
 	template <typename Subject, typename RangeSkipper, typename Attribute, typename Context, typename Iterator>
 	struct handles_container<ext::reparse_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>
+	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
+
+	template <typename Subject, typename RangeSkipper, typename Attribute, typename Context, typename Iterator>
+	struct handles_container<ext::reparse2_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>
 	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
 
 

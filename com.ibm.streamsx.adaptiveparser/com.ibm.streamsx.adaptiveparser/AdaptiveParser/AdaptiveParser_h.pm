@@ -275,32 +275,30 @@ sub main::generate($$) {
    	}
    
    }
-   
-   if (defined($structs->[-1]->{'tuple'})) {
-   	my @tupleDefs = keys %{$structs->[-1]->{'tuple'}};
-   	my @attrDefs = values %{$structs->[-1]->{'tuple'}};
+   if (defined($structs->[-1]->{'tuple1'})) {
+   	my @splTupleDefs = keys %{$structs->[-1]->{'tuple1'}};
+   	my @cppTupleDefs = values %{$structs->[-1]->{'tuple1'}};
    	
-   	for (my $i = 0; $i < @tupleDefs; $i++) {
-   		my $cppTupleType = $tupleDefs[$i];
-   		my $cppAttrType = "$cppTupleType\::$attrDefs[$i]\_type";
+   	for (my $i = 0; $i < @splTupleDefs; $i++) {
+   		my $splAttrName = (Type::getAttributeNames($splTupleDefs[$i]))[0];
+   		my $splAttrType = (Type::getAttributeTypes($splTupleDefs[$i]))[0];
+   		my $cppTupleType = $cppTupleDefs[$i];
+   		my $cppAttrType = "$cppTupleType\::$splAttrName\_type";
+   		my $assignOp = Type::isString($splAttrType) || Type::isCollection($splAttrType) ? 'assign_to_container_from_value' : 'assign_to_attribute_from_value';
    print qq(
-   //	namespace streams_boost { namespace spirit { namespace traits {
-   //	    template <>
-   //	    struct transform_attribute<$cppTupleType, $cppAttrType, qi::domain>
-   //	    {
-   //	        typedef $cppAttrType & type;
-   //	        static $cppAttrType & pre($cppTupleType & tuple1) {
-   //	        	return tuple1.get_$attrDefs[$i]();
-   //	        }
-   //
-   //	        static void post($cppTupleType &, $cppAttrType const&) {}
-   //	        static void fail($cppTupleType &) {}
-   //	    };
-   //	}}}
+   	namespace streams_boost { namespace spirit { namespace traits {
+   		template <>
+   		struct $assignOp<$cppAttrType, $cppTupleType> {
+   			static void call(const $cppTupleType & attr, $cppAttrType& val) {
+   				val = attr.get_$splAttrName();
+   			}
+   		};
+   	}}}
    );
    	}
    
    }
+   
    
    foreach my $struct (@{$structs}) {
    print qq(
