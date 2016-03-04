@@ -7,7 +7,7 @@
       <uri index="1" value="com.ibm.streamsx.adaptiveparser.json/JSONParser.spl"/>
     </uriTable>
     <namespace name="com.ibm.streamsx.adaptiveparser.json">
-      <compositeOp column="18" line="22" name="JSONParser" potentialMain="false" public="true" uriIndex="1">
+      <compositeOp column="18" line="13" name="JSONParser" potentialMain="false" public="true" uriIndex="1">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <parameter defaultValue="true" metaType="Expression" name="keyQuoted" optional="true" type="&lt;boolean>"/>

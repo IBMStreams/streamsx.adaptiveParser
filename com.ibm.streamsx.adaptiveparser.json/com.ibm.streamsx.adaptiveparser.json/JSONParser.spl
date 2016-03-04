@@ -30,6 +30,8 @@ graph
     		quotedStrings : true;
     		listPrefix : "[";
     		listSuffix : "]";
+    		mapPrefix : "{";
+    		mapSuffix : "}";
     		tuplePrefix : "{";
     		tupleSuffix : "}";
     }
