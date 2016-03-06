@@ -106,6 +106,15 @@
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
+        <name>passAttrs</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Attribute</expressionMode>
+        <type></type>
+        <cardinality>-1</cardinality>
+      </parameter>
+      <parameter>
         <name>comment</name>
         <description></description>
         <optional>true</optional>

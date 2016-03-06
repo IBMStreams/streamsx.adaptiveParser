@@ -18,7 +18,9 @@ sub main::generate($$) {
    
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
+   
    my $dataAttr = $model->getParameterByName('dataAttr');
+   
    if ($dataAttr) {
    	my $dataAttrSPLValue = (split /\./, $dataAttr->getValueAt(0)->getSPLExpression())[-1];
    	SPL::CodeGen::checkMinimalSchema ($inputPort, { name => $dataAttrSPLValue, type => ["blob", "rstring"] });
@@ -31,6 +33,22 @@ sub main::generate($$) {
    }
    
    my $dataAttrCppValue = $dataAttr ? $dataAttr->getValueAt(0)->getCppExpression() : 'iport$0.get_'.$inputPort->getAttributeAt(0)->getName().'()';
+   
+   my @passAttrs = ($model->getParameterByName('passAttrs')) ? map { (split /\./, $_->getSPLExpression())[-1] } @{$model->getParameterByName('passAttrs')->getValues()} : ();
+   
+   if (@passAttrs) {
+   	my $outputAttrs = $model->getOutputPortAt(0)->getAttributes();
+   	if (@passAttrs >= @{$outputAttrs}) {
+   		SPL::CodeGen::exitln("The number of passed input attributes must be less than the number of output attributes", $inputPort->getSourceLocation());
+   	}
+   	
+   	foreach my $attr (@{$outputAttrs}) {
+   		my $attrName = $attr->getName();
+   		if (($attrName ~~ @passAttrs) && ($attr->getCppType() ne $inputPort->getAttributeByName($attrName)->getCppType())) {
+   			SPL::CodeGen::exitln("The passed input attribute '%s' must be of the same type in the corresponding output port", $attrName, $inputPort->getSourceLocation());
+   		}
+   	}
+   }
    
    SPL::CodeGen::exitln("Error output port and input port schemas must match", $inputPort->getSourceLocation()) if($outputPort2 && $inputPort->getCppTupleType() ne $outputPort2->getCppTupleType());
    
@@ -66,6 +84,19 @@ sub main::generate($$) {
    print "\n";
    print '		OPort0Type otuple;', "\n";
    print "\n";
+   if (@passAttrs) {
+   	foreach my $attrName (@passAttrs) {
+   print "\n";
+   print '		otuple.set_';
+   print $attrName;
+   print '(iport$0.get_';
+   print $attrName;
+   print '());', "\n";
+   print '	';
+   }
+   }
+   print "\n";
+   print '		', "\n";
    print '		bool isCommented = false;', "\n";
    print '		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);', "\n";
    print "\n";

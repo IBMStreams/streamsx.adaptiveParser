@@ -41,6 +41,7 @@ sub main::generate($$) {
    $parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
    $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   @{$parserOpt->{'passAttrs'}} = ($model->getParameterByName('passAttrs')) ? map { (split /\./, $_->getSPLExpression())[-1] } @{$model->getParameterByName('passAttrs')->getValues()} : ();
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
    
    my $oTupleCppType = 'oport0';

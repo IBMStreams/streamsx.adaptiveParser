@@ -73,6 +73,7 @@ sub buildStructFromTuple(@) {
 	my @attrNames = Type::getAttributeNames($splType);
 	my @attrTypes = Type::getAttributeTypes($splType);
 	my $tupleSize = @attrNames;
+	$tupleSize -= @{$parserOpt->{'passAttrs'}} if ($parserOpt->{'passAttrs'});
 	$$size = $tupleSize if($tupleSize > $$size);
 
 	(my $ruleName = $cppType) =~ s/::/_/g;
@@ -109,7 +110,10 @@ sub buildStructFromTuple(@) {
 		}
 	}
 
-	for (my $i = 0; $i < $tupleSize; $i++) {
+	for (my $i = 0; $i < @attrNames; $i++) {
+		
+		next if ($parserOpt->{'passAttrs'} && $attrNames[$i] ~~ @{$parserOpt->{'passAttrs'}});
+		
 		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType) unless ($adapted);
 
 		my $parserCustOpt;

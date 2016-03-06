@@ -68,6 +68,9 @@
         <parameter cardinality="1" expressionMode="Attribute" name="dataAttr" optional="true" type="">
           <description/>
         </parameter>
+        <parameter cardinality="-1" expressionMode="Attribute" name="passAttrs" optional="true" type="">
+          <description/>
+        </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="comment" optional="true" type="rstring">
           <description/>
         </parameter>
