@@ -373,6 +373,10 @@ namespace streams_boost { namespace spirit { namespace traits {
 	struct handles_container<ext::reparse2_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>
 	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
 
+	template <typename Subject, typename RangeSkipper, typename ReverseSkipper, typename Attribute, typename Context, typename Iterator>
+	struct handles_container<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper>, Attribute, Context, Iterator>
+	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
+
 
 	template <>
 	struct assign_to_attribute_from_value<float, SPL::decimal32> {
