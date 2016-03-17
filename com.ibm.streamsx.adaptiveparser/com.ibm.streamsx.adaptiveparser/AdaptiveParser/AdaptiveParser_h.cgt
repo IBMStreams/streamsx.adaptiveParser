@@ -10,6 +10,7 @@ BEGIN {*Type:: = *SPL::CodeGen::Type::};
 use AdaptiveParserCommon;
 
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+my $explain = ($_ = $model->getParameterByName('explain')) ? $_->getValueAt(0)->getCppExpression() : '';
 my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? $_->getValueAt(0)->getSPLExpression() : '';
 
 my $parserOpt = {};
@@ -117,7 +118,7 @@ print qq(
 	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
 	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
 
-//    	<%=$baseRule%>.name("oport0");
+    	<%=$baseRule%>.name("oport0");
 
 //		on_error<fail> (<%=$baseRule%>, std::cout
 //				<< val("Error! Expecting ")
@@ -129,6 +130,12 @@ print qq(
 //		);
 
 //		STREAMS_BOOST_SPIRIT_DEBUG_NODE(<%=$baseRule%>);
+
+<%if ($explain) {%>
+	if(<%=$explain%>)
+		qi::debug(<%=$baseRule%>);
+<%}%>
+
     }
 
 private:

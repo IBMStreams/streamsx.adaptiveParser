@@ -276,6 +276,14 @@
         <type>rstring</type>
         <cardinality>-1</cardinality>
       </parameter>
+      <parameter>
+        <name>explain</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Expression</expressionMode>
+        <cardinality>1</cardinality>
+      </parameter>
     </parameters>
     <inputPorts>
       <inputPortSet>

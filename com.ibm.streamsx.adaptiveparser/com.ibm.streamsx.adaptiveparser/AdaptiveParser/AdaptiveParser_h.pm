@@ -19,6 +19,7 @@ sub main::generate($$) {
    use AdaptiveParserCommon;
    
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   my $explain = ($_ = $model->getParameterByName('explain')) ? $_->getValueAt(0)->getCppExpression() : '';
    my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? $_->getValueAt(0)->getSPLExpression() : '';
    
    my $parserOpt = {};
@@ -138,7 +139,7 @@ sub main::generate($$) {
    print '	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];', "\n";
    print '	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";', "\n";
    print "\n";
-   print '//    	';
+   print '    	';
    print $baseRule;
    print '.name("oport0");', "\n";
    print "\n";
@@ -156,6 +157,18 @@ sub main::generate($$) {
    print '//		STREAMS_BOOST_SPIRIT_DEBUG_NODE(';
    print $baseRule;
    print ');', "\n";
+   print "\n";
+   if ($explain) {
+   print "\n";
+   print '	if(';
+   print $explain;
+   print ')', "\n";
+   print '		qi::debug(';
+   print $baseRule;
+   print ');', "\n";
+   }
+   print "\n";
+   print "\n";
    print '    }', "\n";
    print "\n";
    print 'private:', "\n";
