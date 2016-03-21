@@ -1,4 +1,4 @@
-# streamsx.XXXXX Graduation Status
+# streamsx.adaptiveParser Graduation Status
 
 
 ## Overview
