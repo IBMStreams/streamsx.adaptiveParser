@@ -402,7 +402,7 @@ namespace streams_boost { namespace spirit { namespace traits {
 	template <typename Iterator>
 	struct assign_to_attribute_from_iterators<SPL::blob, Iterator> {
 	    static void call(Iterator const& first, Iterator const& last, SPL::blob & attr) {
-			attr = SPL::blob(first, last - first);
+			attr = SPL::blob(reinterpret_cast<const unsigned char*>(first), last - first);
 	    }
 	};
 
