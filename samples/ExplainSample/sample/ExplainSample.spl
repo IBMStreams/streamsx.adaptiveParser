@@ -11,10 +11,16 @@ graph
             }
     }
     
+	/*
+	 *  AdaptiveParser expects 3 space delimited values
+	 *  explain parameter enables 'explain parsing' to be printed to the output
+	 *  explain parameter can receive dynamic values of boolean type, thus can be bound to
+	 *  the PE log/trace level by using isLoggable/isTraceable functions with a right level 
+	 */
     stream<tuple<int32 num1, rstring num2> num12, int32 num3> ParsedNums = AdaptiveParser(Row) {
     	param
 //    		explain : true;
-    		explain : isLoggable(Log.info);
+    		explain : isLoggable(Log.info); // Do not forget to run the job with Log output level set to Info.
     }
     
     () as FSink = FileSink(ParsedNums) {
