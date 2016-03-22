@@ -17,7 +17,7 @@ graph
 	 */
     stream<CEFParser.CEFHeader_t, CEFParser.CEFExtension_t> CEFEvent = CEFParser(File) {
     	param
-//    		batch : false; // set true if there is more than one record in the input
+//    		batch : true; // set true if there is more than one record in the input
     		dataAttr : data;
     }
     

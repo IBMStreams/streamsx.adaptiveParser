@@ -7,7 +7,7 @@ graph
 	stream<rstring data> CSVStream = Custom() {
         logic
             onProcess : {
-                submit({data = "1427889600.657267, (1427889600,657267,0), Apr 1 2015 14:33:10, text, 42, 3.14"}, CSVStream);
+                submit({data = "1427889600.657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14"}, CSVStream);
             }
     }
     
@@ -30,7 +30,7 @@ graph
 			ParsedStream :
 //				ts1 = Param({tsToken = "."}),	no need - '.' is a default token
 				ts2 = Param({tsFormat = "SPL"}),
-				ts3 = Param({tsFormat = "%b %d %Y %H:%M:%S"});
+				ts3 = Param({tsFormat = "%b %d %H:%M:%S"});
     }
     
     () as FSink = FileSink(ParsedStream) {
