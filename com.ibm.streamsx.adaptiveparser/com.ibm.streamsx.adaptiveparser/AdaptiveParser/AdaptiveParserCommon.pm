@@ -17,6 +17,7 @@ my %allowedParams = (
 					attrFieldName => 'rstring',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
+					hexCharPrefix => 'rstring',
 					skipChars => 'rstring',
 					attrNameDelimiter => 'rstring',
 					globalAttrNameDelimiter => 'rstring',
@@ -623,16 +624,18 @@ sub getStringMacro(@) {
 	my ($parserOpt, $quotedStrings) = @_;
 	my $macro = 'STR_';
 	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
-	my $operator = defined($parserOpt->{'skipChars'}) ? 'as_string' : 'raw';
+	my $operator = defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? 'as_string' : 'raw';
 
 	if ($quotedStrings) {
 		$macro .= 'D';
 
 		my $params = "dq,''";
+		
 		my $value = $parserOpt->{'escapeChar'}
 			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit(dq)) | byte_)"
 			: "byte_";
 		
+		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
 		$macro = "dq >> no_skip[$macro($operator,$value,$params)] >> dq";
 	}
@@ -642,10 +645,12 @@ sub getStringMacro(@) {
 		$macro .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
 		
 		my $params = "$delimiter,$parserOpt->{'skipper'}";
+		
 		my $value = ($delimiter && $parserOpt->{'escapeChar'})
-			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit($delimiter)) | byte_)"
+			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'}) | byte_)"
 			: "byte_";
 
+		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
 		$macro .= "($operator,$value,$params)";
 	}

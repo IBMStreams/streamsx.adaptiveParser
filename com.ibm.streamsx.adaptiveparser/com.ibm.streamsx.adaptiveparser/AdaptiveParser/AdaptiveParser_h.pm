@@ -175,6 +175,7 @@ sub main::generate($$) {
    print "\n";
    print '//	const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;', "\n";
    print '//	const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;', "\n";
+   print '	const qi::int_parser<unsigned char, 16, 2, 2> hex2;', "\n";
    print ' ', "\n";
    print '	boolean_ boolean;', "\n";
    print '	dummy_ dummy;', "\n";
