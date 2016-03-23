@@ -140,10 +140,10 @@ print qq(
 
 private:
 
-//	const qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
-//	const qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
-	const qi::int_parser<unsigned char, 16, 2, 2> hex2;
- 
+//	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
+//	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
+	qi::int_parser<unsigned char, 16, 2, 2> hex2;
+
 	boolean_ boolean;
 	dummy_ dummy;
 	qi::symbols<char, qi::unused_type> undefined;
