@@ -411,10 +411,10 @@ sub handlePrimitive(@) {
 		$value = getSkippedValue($parserOpt, 'boolean');
 	}
 	elsif (Type::isBlob($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 0);
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_blob', 0);
 	}
 	elsif (Type::isEnum($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
 		Spirit::traits_defEnum($structs->[-1], $cppType);
 	}
 	#elsif (Type::isEnum($splType)) {
@@ -429,10 +429,10 @@ sub handlePrimitive(@) {
 		
 	}
 	elsif (Type::isRString($splType) || Type::isUString($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
 	}
 	elsif (Type::isXml($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, $parserOpt->{'quotedStrings'});
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
 		Spirit::traits_defXml($structs->[-1], $cppType);
 	}
 	elsif (Type::isTimestamp($splType)) {
@@ -621,10 +621,10 @@ sub getSkippedValue(@) {
 }
 
 sub getStringMacro(@) {
-	my ($parserOpt, $quotedStrings) = @_;
+	my ($parserOpt, $op, $quotedStrings) = @_;
 	my $macro = 'STR_';
 	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
-	my $operator = defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? 'as_string' : 'raw';
+	my $operator = defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? $op : 'raw';
 
 	if ($quotedStrings) {
 		$macro .= 'D';

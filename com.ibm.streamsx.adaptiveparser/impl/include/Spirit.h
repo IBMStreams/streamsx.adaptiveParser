@@ -1,6 +1,8 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
+#define as_blob (as<SPL::blob>())
+
 #define STR_(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - eoi)])
 #define STR_W(OP,VALUE,DELIM,SKIPPER) (no_skip[OP[*(VALUE - eoi)]])
 #define STR_S(OP,VALUE,DELIM,SKIPPER) (OP[lexeme[*(VALUE - SKIPPER)]])
@@ -399,6 +401,13 @@ namespace streams_boost { namespace spirit { namespace traits {
 		}
 	};
 
+//	template <>
+//	struct assign_to_attribute_from_value<std::basic_string<char>, SPL::blob> {
+//		static void call(std::basic_string<char> const& val, SPL::blob& attr) {
+//			attr = SPL::blob(reinterpret_cast<const unsigned char*>(val.data()), val.length());
+//		}
+//	};
+
 	template <typename Iterator>
 	struct assign_to_attribute_from_iterators<SPL::blob, Iterator> {
 	    static void call(Iterator const& first, Iterator const& last, SPL::blob & attr) {
@@ -428,6 +437,22 @@ namespace streams_boost { namespace spirit { namespace traits {
 	    }
 	};
 
+
+	template<>
+	struct is_container<SPL::blob> : mpl::true_ {};
+
+	template<>
+    struct container_value<SPL::blob> {
+		typedef unsigned char type;
+	};
+
+	template<>
+    struct push_back_container<SPL::blob, unsigned char> {
+        static bool call(SPL::blob& b, unsigned char val) {
+            b.append(&val, 1);
+            return true;
+        }
+    };
 
     template <typename K, typename V, int N>
 	struct is_container<SPL::bmap<K,V,N> > : mpl::true_ {};
