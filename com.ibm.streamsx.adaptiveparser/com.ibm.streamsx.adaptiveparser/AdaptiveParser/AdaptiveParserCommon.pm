@@ -415,7 +415,7 @@ sub handlePrimitive(@) {
 	}
 	elsif (Type::isEnum($splType)) {
 		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
-		Spirit::traits_defEnum($structs->[-1], $cppType);
+		Spirit::traits_defEnum($structs->[-1], $cppType, $splType);
 	}
 	#elsif (Type::isEnum($splType)) {
 	#	$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType);

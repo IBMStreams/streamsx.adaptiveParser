@@ -21,10 +21,10 @@ sub symbols_defEnum(@) {
 }
 
 sub traits_defEnum(@) {
-	my ($adapt, $cppType) = @_;
+	my ($adapt, $cppType, $splType) = @_;
 
-	unless (defined($adapt->{'enum'}->{$cppType})) {
-		$adapt->{'enum'}->{$cppType} = $cppType;
+	unless (defined($adapt->{'enum'}->{$splType})) {
+		$adapt->{'enum'}->{$splType} = $cppType;
 	}
 }
 
