@@ -4,20 +4,38 @@ use strict;
 use warnings;
 
 sub symbols_defEnum(@) {
-	my ($adapt, $cppType, $splType) = @_;
+	my ($adapt, $cppType, $splType, $enumAliasesMap) = @_;
 
+	my $enumName;
+	
 	if (defined($adapt->{'symbols'}->{$splType})) {
-		return $adapt->{'symbols'}->{$splType}->{'enumName'};
+		$enumName = $adapt->{'symbols'}->{$splType}->{'enumName'};
 	}
 	else {
-		(my $enumName = $cppType) =~ s/::/_/g;
+		($enumName = $cppType) =~ s/::/_/g;
 		my @symbols = map {qq( ("$_", $cppType\::$_) )} Type::getEnumValues($splType);
 		$adapt->{'symbols'}->{$splType}->{'enumName'} = $enumName;
 		$adapt->{'symbols'}->{$splType}->{'enumType'} = $cppType;
 		$adapt->{'symbols'}->{$splType}->{'enumValues'} = \@symbols;
-		return $enumName;
 	}
 
+	if ($enumAliasesMap) {
+		for (my $i = 0; $i < @{$enumAliasesMap->getKeys()}; $i++) {
+			my $key = substr( $enumAliasesMap->getKeyAt($i)->getValue(), 1, -1);
+			my $value = substr( $enumAliasesMap->getValueAt($i)->getValue(), 1, -1);
+			
+			if ($key && $key ne $value) {
+				if ($value ~~ [Type::getEnumValues($splType)]) {
+					$adapt->{'symbols'}->{$splType}->{'enumAliasesMap'}->{$key} = qq( ("$key", $cppType\::$value) );
+				}
+				else {
+					SPL::CodeGen::warnln("'%s' is not part of enum '%s'", $value, $splType);
+				}
+			}
+		}
+	}
+	
+	return $enumName;
 }
 
 sub traits_defEnum(@) {

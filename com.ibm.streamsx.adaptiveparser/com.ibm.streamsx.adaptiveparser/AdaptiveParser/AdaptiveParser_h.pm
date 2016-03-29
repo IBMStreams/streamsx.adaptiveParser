@@ -98,7 +98,7 @@ sub main::generate($$) {
    
    for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
    print qq(
-   		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} ;
+   		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} @{[values %{$symbols->{'enumAliasesMap'}}]};
    );
    }
    
@@ -244,19 +244,19 @@ sub main::generate($$) {
    	
    	foreach my $cppType (@enumDefs) {
    print qq(
-   	namespace streams_boost { namespace spirit { namespace traits {
-   	template <typename Iterator>
-   	struct assign_to_attribute_from_iterators<$cppType, Iterator> {
-   		static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
-   			const std::string enumValue(first,last);
-   			if(attr.isValidValue(enumValue)) {
-   				attr = enumValue;
-   			}
-   			else {
-   				SPLAPPLOG(L_ERROR, enumValue << " is not part of $cppType enum.", "AdaptiveParser");
-   			}
-   		}
-   	};
+   //	namespace streams_boost { namespace spirit { namespace traits {
+   //	template <typename Iterator>
+   //	struct assign_to_attribute_from_iterators<$cppType, Iterator> {
+   //		static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
+   //			const std::string enumValue(first,last);
+   //			if(attr.isValidValue(enumValue)) {
+   //				attr = enumValue;
+   //			}
+   //			else {
+   //				SPLAPPLOG(L_ERROR, enumValue << " is not part of $cppType enum.", "AdaptiveParser");
+   //			}
+   //		}
+   //	};
    	
    //	template <>
    //	struct assign_to_attribute_from_value<std::string, $cppType> {
@@ -267,7 +267,7 @@ sub main::generate($$) {
    //			}
    //		}
    //	};
-   	}}}
+   //	}}}
    );
    	}
    

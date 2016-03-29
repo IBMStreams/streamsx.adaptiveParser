@@ -15,6 +15,7 @@ my %allowedParams = (
 					globalAttrNameAsPrefix => 'boolean',
 					globalAttrNameQuoted => 'boolean',
 					attrFieldName => 'rstring',
+					enumAliasesMap => 'map<rstring,rstring>',
 					delimiter => 'rstring',
 					escapeChar => 'rstring',
 					hexCharPrefix => 'rstring',
@@ -413,14 +414,14 @@ sub handlePrimitive(@) {
 	elsif (Type::isBlob($splType)) {
 		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_blob', 0);
 	}
-	elsif (Type::isEnum($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
-		Spirit::traits_defEnum($structs->[-1], $cppType, $splType);
-	}
 	#elsif (Type::isEnum($splType)) {
-	#	$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType);
-	#	$value = getSkippedValue($parserOpt, $value);
+	#	$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
+	#	Spirit::traits_defEnum($structs->[-1], $cppType, $splType);
 	#}
+	elsif (Type::isEnum($splType)) {
+		$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType, $parserOpt->{'enumAliasesMap'});
+		$value = getSkippedValue($parserOpt, $value);
+	}
 	elsif(Type::isBString($splType)) {
 		my $bound = Type::getBound($splType);
 		
@@ -585,6 +586,9 @@ sub setParserCustOpt(@) {
 				}
 				elsif ($expectedAttrs->{$paramAttrNames->[$k]} eq 'rstring') {
 					$parserCustOpt->{$paramAttrNames->[$k]} = AdaptiveParserCommon::getStringValue( $paramAttrVals->[$k]->getValue());
+				}
+				elsif ($expectedAttrs->{$paramAttrNames->[$k]} =~ /^map/) {
+					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k];
 				}
 				else {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue();
