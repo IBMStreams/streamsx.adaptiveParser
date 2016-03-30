@@ -628,7 +628,7 @@ sub getStringMacro(@) {
 	my ($parserOpt, $op, $quotedStrings) = @_;
 	my $macro = 'STR_';
 	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
-	my $operator = defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? $op : 'raw';
+	my $operator = defined($parserOpt->{'escapeChar'}) || defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? $op : 'raw';
 
 	if ($quotedStrings) {
 		$macro .= 'D';
@@ -636,7 +636,7 @@ sub getStringMacro(@) {
 		my $params = "dq,''";
 		
 		my $value = $parserOpt->{'escapeChar'}
-			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'} >> -lit(dq)) | byte_)"
+			? "(-lit($parserOpt->{'escapeChar'}) >> byte_)"
 			: "byte_";
 		
 		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
@@ -650,8 +650,8 @@ sub getStringMacro(@) {
 		
 		my $params = "$delimiter,$parserOpt->{'skipper'}";
 		
-		my $value = ($delimiter && $parserOpt->{'escapeChar'})
-			? "((&lit($parserOpt->{'escapeChar'}) >> $parserOpt->{'escapeChar'}) | byte_)"
+		my $value = ($parserOpt->{'escapeChar'})
+			? "(-lit($parserOpt->{'escapeChar'}) >> byte_)"
 			: "byte_";
 
 		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
