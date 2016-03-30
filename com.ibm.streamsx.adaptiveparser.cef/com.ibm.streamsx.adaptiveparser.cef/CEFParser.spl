@@ -43,7 +43,7 @@ graph
 		output
 			CEFEvent :
 				version = Param({prefix = "CEF:"}),
-				severity = Param({skipChars = "-"}),
+				severity = Param({enumAliasesMap = {"Very-High" : "VeryHigh"}}),
 				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = "", globalEscapeChar = ""},
 					  				{key = ParamN({delimiter = "="}), value = ParamN({cutCharsetDelim = "a-zA-Z0-9_.)(-"})});
     }
