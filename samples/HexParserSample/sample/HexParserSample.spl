@@ -1,0 +1,29 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite HexParserSample {
+graph
+	stream<rstring data> HexStream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "\\x31\\x32\\x33\\x34"}, HexStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as string of 4 encoded hex numbers
+	 *  Output string has 4 characters with those hex codes.
+	 */
+    stream<rstring hexNums> ParsedStream = AdaptiveParser(HexStream) {
+    	output ParsedStream :
+    		hexNums = Param({hexCharPrefix = "\\x"});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
