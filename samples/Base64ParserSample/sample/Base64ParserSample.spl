@@ -1,0 +1,29 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite Base64ParserSample {
+graph
+	stream<rstring data> Base64Stream = Custom() {
+        logic
+            onProcess : {
+                submit({data = "SGVsbG8sIHdvcmxkIQ=="}, Base64Stream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be a rstring
+	 *  The data arrives as base64 encoded string
+	 *  Output type can be a blob or a rstring
+	 */
+    stream<rstring base64Decoded> ParsedStream = AdaptiveParser(Base64Stream) {
+    	output ParsedStream :
+    		base64Decoded = Param({base64Mode = true});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
