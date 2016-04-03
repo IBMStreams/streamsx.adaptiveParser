@@ -10,6 +10,7 @@ my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapP
 
 my %allowedParams = (
 					binaryMode => 'boolean',
+					base64Mode => 'boolean',
 					attrNameAsPrefix => 'boolean',
 					attrNameQuoted => 'boolean',
 					globalAttrNameAsPrefix => 'boolean',
@@ -628,7 +629,7 @@ sub getStringMacro(@) {
 	my ($parserOpt, $op, $quotedStrings) = @_;
 	my $macro = 'STR_';
 	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
-	my $operator = defined($parserOpt->{'escapeChar'}) || defined($parserOpt->{'hexCharPrefix'}) || defined($parserOpt->{'skipChars'}) ? $op : 'raw';
+	my $operator = $parserOpt->{'escapeChar'} || $parserOpt->{'hexCharPrefix'} || $parserOpt->{'skipChars'} ? $op : 'raw';
 
 	if ($quotedStrings) {
 		$macro .= 'D';
@@ -657,6 +658,11 @@ sub getStringMacro(@) {
 		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
 		$macro .= "($operator,$value,$params)";
+	}
+	
+	if ($parserOpt->{'base64Mode'}) {
+		$macro = "attr_cast<SPL::blob,iterator_range<charPtr> >($macro)" if ($op eq 'as_blob');
+		$macro = "attr_cast<std::string,iterator_range<charPtr> >($macro)" if ($op eq 'as_string');
 	}
 	
 	return $macro;

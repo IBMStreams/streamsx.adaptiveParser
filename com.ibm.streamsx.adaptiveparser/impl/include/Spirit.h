@@ -2,6 +2,7 @@
 #define SPIRIT_H_
 
 #define as_blob (as<SPL::blob>())
+#define as_base64 (as<iterator_range<base64Iter> >())
 
 #define STR_(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - eoi)])
 #define STR_W(OP,VALUE,DELIM,SKIPPER) (no_skip[OP[*(VALUE - eoi)]])
@@ -12,6 +13,9 @@
 #define STR_DS(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])])
 #define STR_DSW(OP,VALUE,DELIM,SKIPPER) (skip(SKIPPER)[OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
+#include <streams_boost/algorithm/string/trim.hpp>
+#include <streams_boost/archive/iterators/binary_from_base64.hpp>
+#include <streams_boost/archive/iterators/transform_width.hpp>
 #include <streams_boost/config/warning_disable.hpp>
 #include <streams_boost/spirit/include/phoenix.hpp>
 #include <streams_boost/fusion/include/adapt_struct.hpp>
@@ -20,9 +24,12 @@
 #include <streams_boost/spirit/home/support/container.hpp>
 #include <streams_boost/spirit/repository/include/qi_kwd.hpp>
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
+#include <streams_boost/type_traits/is_same.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
+namespace algorithm = streams_boost::algorithm;
+namespace iterators = streams_boost::archive::iterators;
 namespace extension = streams_boost::fusion::extension;
 namespace fusion = streams_boost::fusion;
 namespace mpl = streams_boost::mpl;
@@ -35,6 +42,7 @@ namespace math = SPL::Functions::Math;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
 using fusion::at_c; using qi::locals; using qi::_val;
+using iterators::binary_from_base64; using iterators::transform_width;
 using phoenix::bind; using phoenix::function; using phoenix::construct; using phoenix::ref; using phoenix::val;
 using qi::alnum; using qi::alpha; using qi::blank; using qi::string; using qi::symbols;
 using qi::bin; using qi::hex; using qi::inf; using qi::oct;
@@ -51,6 +59,7 @@ using namespace qi::labels;
 
 typedef const char* charPtr;
 typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
+typedef transform_width<binary_from_base64<charPtr>, 8, 6> base64Iter;
 typedef SPL::timestamp ts;
 
 namespace ext {
@@ -495,6 +504,29 @@ namespace streams_boost { namespace spirit { namespace traits {
             return true;
         }
     };
+
+	template <typename Attr>
+	struct transform_attribute<Attr, iterator_range<charPtr>, qi::domain>
+//	struct transform_attribute<iterator_range<base64Iter>, iterator_range<charPtr>, qi::domain>
+	{
+		typedef iterator_range<charPtr> type;
+		typedef iterator_range<charPtr> const& const_type;
+		typedef Attr & typeToCast;
+
+		static void setData(std::string & val, std::string const& data) { val = data; }
+		static void setData(SPL::blob & val, std::string const& data) {
+			size_t size = data.size();
+			val.setData(reinterpret_cast<const unsigned char*>(data.data()), size);
+		}
+
+		static type pre(typeToCast d) { return type(); }
+		static void post(typeToCast val, const_type attr) {
+			const iterator_range<base64Iter> base64IterRange(trim_right_copy_if(attr, is_any_of("=")));
+			const std::string base64Decoded(base64IterRange.begin(), base64IterRange.end());
+			setData(val, base64Decoded);
+		}
+		static void fail(typeToCast) {}
+	};
 
 //	template <>
 //	struct strip_single_element_vector<fusion::vector1<char> > {
