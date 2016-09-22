@@ -19,8 +19,8 @@ sub main::generate($$) {
    use AdaptiveParserCommon;
    
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-   my $explain = ($_ = $model->getParameterByName('explain')) ? $_->getValueAt(0)->getCppExpression() : '';
-   my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   my $explain = ($_ = $model->getParameterByName('explain')) ? $_->getValueAt(0)->getCppExpression() : 0;
+   my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    
    my $parserOpt = {};
    $parserOpt->{'allowEmpty'} = ($_ = $model->getParameterByName('allowEmpty')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
@@ -28,20 +28,20 @@ sub main::generate($$) {
    $parserOpt->{'globalAttrNameAsPrefix'} = ($_ = $model->getParameterByName('globalAttrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'globalAttrNameQuoted'} = ($_ = $model->getParameterByName('globalAttrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-   $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'globalAttrNameDelimiter'} = ($_ = $model->getParameterByName('globalAttrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
    $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
-   $parserOpt->{'listPrefix'} = ($_ = $model->getParameterByName('listPrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'listSuffix'} = ($_ = $model->getParameterByName('listSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'mapPrefix'} = ($_ = $model->getParameterByName('mapPrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'mapSuffix'} = ($_ = $model->getParameterByName('mapSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'tuplePrefix'} = ($_ = $model->getParameterByName('tuplePrefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? $_->getValueAt(0)->getSPLExpression() : '';
-   $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? $_->getValueAt(0)->getSPLExpression() : '';
+   $parserOpt->{'listPrefix'} = ($_ = $model->getParameterByName('listPrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'listSuffix'} = ($_ = $model->getParameterByName('listSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'mapPrefix'} = ($_ = $model->getParameterByName('mapPrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'mapSuffix'} = ($_ = $model->getParameterByName('mapSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'tuplePrefix'} = ($_ = $model->getParameterByName('tuplePrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    @{$parserOpt->{'passAttrs'}} = ($model->getParameterByName('passAttrs')) ? map { (split /\./, $_->getSPLExpression())[-1] } @{$model->getParameterByName('passAttrs')->getValues()} : ();
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
    
