@@ -34,8 +34,8 @@ graph
 	 */
 	stream<TupleProperties_t> ParsedTupleStream = AdaptiveParser(CSVStream){
 		param
-			attrNameAsPrefix : true ;
-			attrNameDelimiter : "=" ;
+			globalAttrNameAsPrefix : true ;
+			globalAttrNameDelimiter : "=" ;
 			globalDelimiter : "," ;
 	}
 
