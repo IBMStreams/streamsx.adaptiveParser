@@ -1,0 +1,3 @@
+namespace com.ibm.streamsx.adaptiveparser.clf;
+
+type CLFEvent_t = rstring clientIp, rstring clientId, rstring userId, timestamp ts, rstring clientRequest, uint16 statusCode, uint16 size;

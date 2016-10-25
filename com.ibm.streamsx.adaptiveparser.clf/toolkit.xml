@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.1.0.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <toolkit name="com.ibm.streamsx.adaptiveparser.clf" requiredProductVersion="4.1.0.0" version="1.0.0">
+    <description/>
+    <uriTable>
+      <uri index="2" value="com.ibm.streamsx.adaptiveparser.clf/CLFParser.spl"/>
+      <uri index="1" value="com.ibm.streamsx.adaptiveparser.clf/Types.spl"/>
+    </uriTable>
+    <namespace name="com.ibm.streamsx.adaptiveparser.clf">
+      <compositeOp column="18" line="13" name="CLFParser" potentialMain="false" public="true" uriIndex="2">
+        <parameter metaType="Attribute" name="dataAttr" optional="false"/>
+        <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
+        <inputPort name="RawData" portIndex="0"/>
+        <outputPort name="LogEvent" portIndex="0"/>
+      </compositeOp>
+      <type column="6" line="3" name="CLFEvent_t" static="true" type="rstring clientIp, rstring clientId, rstring userId, timestamp ts, rstring clientRequest, uint16 statusCode, uint16 size" uriIndex="1"/>
+    </namespace>
+    <dependency>
+      <common:name>com.ibm.streamsx.adaptiveparser</common:name>
+      <common:version>2.0.0</common:version>
+    </dependency>
+    <sabFiles>
+      <ti:include path="toolkit.xml" root="toolkitDir"/>
+      <ti:include path="impl/java/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/java/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/bin/**" root="toolkitDir"/>
+      <ti:include path="impl/lib/**" root="toolkitDir"/>
+      <ti:include path="impl/nl/*.dat" root="toolkitDir"/>
+      <ti:include path="etc/**" root="toolkitDir"/>
+      <ti:include path="lib/**" root="toolkitDir"/>
+      <ti:include path="nl/**" root="toolkitDir"/>
+      <ti:include path="opt/**" root="toolkitDir"/>
+    </sabFiles>
+  </toolkit>
+
+</toolkitModel>

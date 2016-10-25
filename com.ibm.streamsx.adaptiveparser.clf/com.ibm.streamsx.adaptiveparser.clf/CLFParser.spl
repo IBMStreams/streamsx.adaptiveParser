@@ -1,0 +1,26 @@
+namespace com.ibm.streamsx.adaptiveparser.clf;
+
+use com.ibm.streamsx.adaptiveparser::* ;
+
+/*
+ *  AdaptiveParser input port type expects dataAttr parameter holding an input attribute to parse
+ *  AdaptiveParser output port type generates the CLF parser
+ *  Parameters define general behavior: expected value for undefined values is '-' and skipping (enabled by default)
+ *  Custom formats can be handled by custom output functions:
+ *  'ts' parses timestamp surrounded by square parentheses like '[10/Oct/2000:13:55:36 -0700]'
+ *  'clientRequest' expects quoted string
+ */
+public composite CLFParser(input RawData; output LogEvent) {
+	param
+		attribute $dataAttr ;
+		expression<boolean> $batch : false ;
+	graph
+		stream<CLFEvent_t> LogEvent = AdaptiveParser(RawData) {
+			param
+				undefined : "-";
+
+			output LogEvent:
+				ts = Param({prefix = "[", suffix = "]", tsFormat = "%d/%b/%Y:%H:%M:%S %z"}),
+				clientRequest = Param({quotedStrings = true});
+		}
+}
