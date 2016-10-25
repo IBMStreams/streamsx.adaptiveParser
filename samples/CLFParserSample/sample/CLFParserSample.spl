@@ -1,0 +1,30 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser.clf::*;
+
+composite CLFParserSample {
+graph
+	stream<rstring data> File = FileSource() {
+        param
+            file : "CLFData.txt";
+        	format : line;
+    }
+    
+	/*
+	 *  CLFParserSample uses CLFParser toolkit with AdaptiveParser as dependency
+	 *  CLFParser expects the input attribute to be of type blob or rstring
+	 *  CLFParser output port type expected to be: CLFEvent_t
+	 */
+	stream<CLFEvent_t> CLFEvent = CLFParser(File) {
+    	param
+//    		batch : true; // set true if there is more than one record in the input tuple
+    		dataAttr : data;
+    }
+    
+    () as DSink = FileSink(CLFEvent)   {
+        param
+        	file : "/dev/stdout";
+        	flush : 1u;
+        	format : txt;
+	    }
+}
