@@ -149,7 +149,6 @@ sub buildStructFromTuple(@) {
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
 
-	#Spirit::ext_defDummyStructMember($struct) if ($tupleSize == 1);
 	Spirit::traits_defTuple1($structs->[-1], $splType, $cppType) if ($tupleSize == 1);
 	
 	$struct->{'extension'} .= ")" unless ($adapted);
