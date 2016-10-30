@@ -14,7 +14,10 @@ public composite JSONParser(input RawData ; output JSONEvent) {
 param
 	attribute $dataAttr;
 	expression<boolean> $batch : false;
+	expression<boolean> $explain : false;
     expression<boolean> $keyQuoted : true;
+    expression<rstring> $tsFormat : "";
+    expression<rstring> $tsToken: "";
 	type $JSONType;
 
 graph
@@ -23,6 +26,7 @@ graph
     	param
     		batch : $batch;
     		dataAttr : $dataAttr;
+    		explain : $explain;
     		globalDelimiter : ",";
     		globalAttrNameAsPrefix : true;
     		globalAttrNameDelimiter : ":";
@@ -34,5 +38,7 @@ graph
     		mapSuffix : "}";
     		tuplePrefix : "{";
     		tupleSuffix : "}";
+    		tsFormat : $tsFormat;
+    		tsToken : $tsToken;
     }
 }
