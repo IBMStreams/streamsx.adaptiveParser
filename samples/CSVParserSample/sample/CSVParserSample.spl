@@ -7,7 +7,7 @@ graph
 	stream<rstring data> CSVStream = Custom() {
         logic
             onProcess : {
-                submit({data = "1427889600.657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14"}, CSVStream);
+				submit({data = "1427889600, 1427889600.657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14"}, CSVStream);
             }
     }
     
@@ -21,15 +21,15 @@ graph
 	 *  timestamp ts2 has has a standard SPL format
 	 *  timestamp ts3 has has a formatted string timestamp
 	 */
-    stream<timestamp ts1, timestamp ts2, timestamp ts3, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
+    stream<timestamp ts1, timestamp ts2, timestamp ts3, timestamp ts4, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
     	param
     		globalDelimiter : ",";
     		globalSkipper : whitespace;
 		output
 			ParsedStream :
-//				ts1 = Param({tsToken = "."}),	no need - '.' is a default token
-				ts2 = Param({tsFormat = "SPL"}),
-				ts3 = Param({tsFormat = "%b %d %H:%M:%S"});
+				ts2 = Param({tsToken = "."}),
+				ts3 = Param({tsFormat = "SPL"}),
+				ts4 = Param({tsFormat = "%b %d %H:%M:%S"});
     }
     
     () as FSink = FileSink(ParsedStream) {

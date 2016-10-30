@@ -34,17 +34,15 @@ graph
 	 *  delimiter is used to separate tuples in the list
 	 */
     stream<list<WalkedOnTheMoon_t> walkedOnTheMoon> ParsedStream = AdaptiveParser(HStream) {
-    	param
-    		dataAttr : data;
 		output
 			ParsedStream :
-				walkedOnTheMoon = Param({skipper = Skipper.whitespace},
-						 {value = ParamN({delimiter = "|"})});
+				walkedOnTheMoon = Param({globalDelimiter = "|"}, {value = ParamN({globalDelimiter = ""})});
+
     }
     
     () as FSink = FileSink(ParsedStream) {
         param
-            file : "/dev/pts/0";
+            file : "/dev/stdout";
             flush : 1u;
     }
 }
