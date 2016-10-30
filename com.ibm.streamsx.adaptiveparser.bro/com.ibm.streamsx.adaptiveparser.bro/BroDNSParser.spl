@@ -12,6 +12,7 @@ public composite BroDNSParser(input RawData ; output BroEvent) {
 			param
 				comment : "#" ;
 				globalSkipper : tab ;
+				tsToken : ".";
 				undefined : "-", "(empty)" ;
 			output BroEvent:
 				answers = Param({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),

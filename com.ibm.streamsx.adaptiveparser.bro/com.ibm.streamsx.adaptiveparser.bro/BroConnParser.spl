@@ -12,6 +12,7 @@ public composite BroConnParser(input RawData ; output BroEvent) {
 			param
 				comment : "#" ;
 				globalSkipper : tab ;
+				tsToken : ".";
 				undefined : "-", "(empty)";
 
 			output BroEvent:

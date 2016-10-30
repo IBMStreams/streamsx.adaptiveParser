@@ -11,6 +11,7 @@ public composite BroNoticeParser(input RawData ; output BroEvent){
 			param
 				comment : "#" ;
 				globalSkipper : tab ;
+				tsToken : ".";
 				undefined : "-", "(empty)";
 
 			output BroEvent:

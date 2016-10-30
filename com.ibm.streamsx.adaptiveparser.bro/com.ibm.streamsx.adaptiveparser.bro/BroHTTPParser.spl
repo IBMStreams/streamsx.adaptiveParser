@@ -12,6 +12,7 @@ public composite BroHTTPParser(input RawData ; output BroEvent) {
 			param
 				comment : "#" ;
 				globalSkipper : tab ;
+				tsToken : ".";
 				undefined : "-", "(empty)";
 
 			output BroEvent:

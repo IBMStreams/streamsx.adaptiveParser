@@ -16,6 +16,7 @@ graph
     	param
     		comment : "#";
     		globalSkipper : tab;
+    		tsToken : ".";
     		undefined : "-", "(empty)";
     }
 }

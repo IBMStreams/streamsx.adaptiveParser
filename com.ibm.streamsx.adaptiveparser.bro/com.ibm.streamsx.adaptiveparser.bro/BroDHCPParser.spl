@@ -12,6 +12,7 @@ public composite BroDHCPParser(input RawData ; output BroEvent) {
 			param
 				comment : "#" ;
 				globalSkipper : tab ;
+				tsToken : ".";
 				undefined : "-", "(empty)";
 		}
 
