@@ -5,55 +5,7 @@ use warnings;
 
 use Data::Dumper;
 use Spirit;
-
-my @inheritedParams = ('allowEmpty','binaryMode','listPrefix','listSuffix','mapPrefix','mapSuffix','tuplePrefix','tupleSuffix','prefix','suffix','quotedStrings','globalAttrNameAsPrefix','globalAttrNameDelimiter','globalAttrNameQuoted','globalDelimiter','globalEscapeChar','globalSkipper','undefined');
-
-my %allowedParams = (
-					binaryMode => 'boolean',
-					base64Mode => 'boolean',
-					attrNameAsPrefix => 'boolean',
-					attrNameQuoted => 'boolean',
-					globalAttrNameAsPrefix => 'boolean',
-					globalAttrNameQuoted => 'boolean',
-					attrFieldName => 'rstring',
-					enumAliasesMap => 'map<rstring,rstring>',
-					delimiter => 'rstring',
-					escapeChar => 'rstring',
-					hexCharPrefix => 'rstring',
-					skipChars => 'rstring',
-					attrNameDelimiter => 'rstring',
-					globalAttrNameDelimiter => 'rstring',
-					globalDelimiter => 'rstring',
-					globalEscapeChar => 'rstring',
-					cutCharsetDelim => 'rstring',
-					cutStringDelim => 'rstring',
-					cutSkipper => 'Skipper.Skippers',
-					prefix => 'rstring',
-					suffix => 'rstring',
-					listPrefix => 'rstring',
-					listSuffix => 'rstring',
-					mapPrefix => 'rstring',
-					mapSuffix => 'rstring',
-					tuplePrefix => 'rstring',
-					tupleSuffix => 'rstring',
-					skipper => 'Skipper.Skippers',
-					globalSkipper => 'Skipper.Skippers',
-					optional => 'boolean',
-					quotedStrings => 'boolean',
-					tsFormat => 'rstring',
-					tsToken => 'rstring',
-					tupleId => 'boolean'
-				);
-
-my %skippers = (
-	none => '',
-	blank => 'blank',
-	control => 'cntrl',
-	endl => 'eol',
-	punct => 'punct',
-	tab => 'char_(9)',
-	whitespace => 'space'
-);
+use Types;
 
 sub buildStructs(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $oAttrParams, $parserOpt, $size) = @_;
@@ -120,7 +72,7 @@ sub buildStructFromTuple(@) {
 		Spirit::ext_defStructMember($struct, $attrNames[$i], $cppType) unless ($adapted);
 
 		my $parserCustOpt;
-		@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
+		@{$parserCustOpt}{@Types::inheritedParams} = @{$parserOpt}{@Types::inheritedParams};
 		$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipper'};
 		
 		my $attr;
@@ -147,7 +99,7 @@ sub buildStructFromTuple(@) {
 				next;
 			}
 			else {
-				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
+				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%Types::allowedParams);
 			}
 		}
 		
@@ -157,6 +109,7 @@ sub buildStructFromTuple(@) {
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'tupleSuffix'} if ($parserOpt->{'tupleSuffix'});
 				
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
 
@@ -216,7 +169,7 @@ sub handleListOrSet(@) {
 	my $parser;
 
 	my $parserCustOpt;
-	@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
+	@{$parserCustOpt}{@Types::inheritedParams} = @{$parserOpt}{@Types::inheritedParams};
 	$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipperLast'};
 	
 	SPL::CodeGen::errorln("Only parameter attribute 'value' is allowed for a list/set attribute type '%s'", $splType, $srcLocation)
@@ -235,7 +188,7 @@ sub handleListOrSet(@) {
 				next;
 			}
 			else {
-				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
+				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%Types::allowedParams);
 			}
 		}
 		
@@ -245,6 +198,7 @@ sub handleListOrSet(@) {
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'listSuffix'} if ($parserOpt->{'listSuffix'});
 		
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
 	
@@ -314,7 +268,7 @@ sub handleMap(@) {
 	foreach my $attrName (('key','value')) {
 
 		my $parserCustOpt;
-		@{$parserCustOpt}{@inheritedParams} = @{$parserOpt}{@inheritedParams};
+		@{$parserCustOpt}{@Types::inheritedParams} = @{$parserOpt}{@Types::inheritedParams};
 		$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipperLast'};
 		
 		my $attr = $attrParams{$attrName};
@@ -331,7 +285,7 @@ sub handleMap(@) {
 				next;
 			}
 			else {
-				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%allowedParams);
+				setParserCustOpt($srcLocation, $parserCustOpt, $param1, $param2, \%Types::allowedParams);
 			}
 		}
 
@@ -340,6 +294,7 @@ sub handleMap(@) {
 		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'mapSuffix'} if ($parserOpt->{'mapSuffix'});
 		
 		if ($attrName eq 'key') {
 			$parserCustOpt->{'delimiter'} //= $parserCustOpt->{'attrNameAsPrefix'} ? $parserCustOpt->{'attrNameDelimiter'} : $parserOpt->{'globalDelimiter'};
@@ -413,10 +368,10 @@ sub handlePrimitive(@) {
 		$value = getSkippedValue($parserOpt, 'boolean');
 	}
 	elsif (Type::isBlob($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_blob', 0);
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_blob', 0, 0);
 	}
 	#elsif (Type::isEnum($splType)) {
-	#	$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
+	#	$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
 	#	Spirit::traits_defEnum($structs->[-1], $cppType, $splType);
 	#}
 	elsif (Type::isEnum($splType)) {
@@ -431,10 +386,10 @@ sub handlePrimitive(@) {
 		
 	}
 	elsif (Type::isRString($splType) || Type::isUString($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
 	}
 	elsif (Type::isXml($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'});
+		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
 		Spirit::traits_defXml($structs->[-1], $cppType);
 	}
 	elsif (Type::isTimestamp($splType)) {
@@ -446,9 +401,11 @@ sub handlePrimitive(@) {
 				$value = "timestampFMT(val($parserOpt->{'tsFormat'}))";
 			}
 		}
-		else {
-			$parserOpt->{'tsToken'} //= '"."';
+		elsif (AdaptiveParserCommon::getStringValue( $parserOpt->{'tsToken'})) {
 			$value = "timestamp(val($parserOpt->{'tsToken'}))";
+		}
+		else {
+			$value = getSkippedValue($parserOpt, 'ulong_');
 		}
 	}
 	elsif (Type::isComplex($splType)) {
@@ -611,7 +568,7 @@ sub getStringValue($) {
 sub getSkipper($) {
 	my ($skipper) = @_;
 	
-	return $skippers{$skipper};
+	return $Types::skippers{$skipper};
 }
 
 sub getSkippedValue(@) {
@@ -626,12 +583,11 @@ sub getSkippedValue(@) {
 }
 
 sub getStringMacro(@) {
-	my ($parserOpt, $op, $quotedStrings) = @_;
+	my ($parserOpt, $op, $quotedStrings, $quotedOptStrings) = @_;
 	my $macro = 'STR_';
-	my $delimiter = $parserOpt->{'suffix'} ? $parserOpt->{'suffix'} : $parserOpt->{'delimiter'};
 	my $operator = $parserOpt->{'escapeChar'} || $parserOpt->{'hexCharPrefix'} || $parserOpt->{'skipChars'} ? $op : 'raw';
 
-	if ($quotedStrings) {
+	if ($quotedStrings || $quotedOptStrings) {
 		$macro .= 'D';
 
 		my $params = "dq,''";
@@ -644,7 +600,18 @@ sub getStringMacro(@) {
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
 		$macro = "dq >> no_skip[$macro($operator,$value,$params)] >> dq";
 	}
-	else {
+	
+	unless ($quotedStrings) {
+		$macro = "((&lit(dq) >> $macro) | STR_" if ($quotedOptStrings);
+		
+		my $delimiter = $parserOpt->{'delimiter'};
+		if ($parserOpt->{'suffix'}) {
+			$delimiter = $parserOpt->{'suffix'};
+		}
+		elsif ($parserOpt->{'lastSuffix'}) {
+			$delimiter = "(lit($delimiter) | $parserOpt->{'lastSuffix'})";
+		}
+		
 		$macro .= 'D' if ($delimiter);
 		$macro .= 'S' if ($parserOpt->{'skipper'});
 		$macro .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
@@ -658,6 +625,7 @@ sub getStringMacro(@) {
 		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
 		$macro .= "($operator,$value,$params)";
+		$macro .= ')' if ($quotedOptStrings);
 	}
 	
 	if ($parserOpt->{'base64Mode'}) {

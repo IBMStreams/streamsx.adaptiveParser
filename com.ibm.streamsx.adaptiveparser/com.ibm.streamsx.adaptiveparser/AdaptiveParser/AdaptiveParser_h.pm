@@ -27,6 +27,7 @@ sub main::generate($$) {
    $parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'globalAttrNameAsPrefix'} = ($_ = $model->getParameterByName('globalAttrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'globalAttrNameQuoted'} = ($_ = $model->getParameterByName('globalAttrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
+   $parserOpt->{'quotedOptStrings'} = ($_ = $model->getParameterByName('quotedOptStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    $parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'globalAttrNameDelimiter'} = ($_ = $model->getParameterByName('globalAttrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
@@ -42,6 +43,8 @@ sub main::generate($$) {
    $parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    $parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'tsFormat'} = ($_ = $model->getParameterByName('tsFormat')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+   $parserOpt->{'tsToken'} = ($_ = $model->getParameterByName('tsToken')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
    @{$parserOpt->{'passAttrs'}} = ($model->getParameterByName('passAttrs')) ? map { (split /\./, $_->getSPLExpression())[-1] } @{$model->getParameterByName('passAttrs')->getValues()} : ();
    $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
    
