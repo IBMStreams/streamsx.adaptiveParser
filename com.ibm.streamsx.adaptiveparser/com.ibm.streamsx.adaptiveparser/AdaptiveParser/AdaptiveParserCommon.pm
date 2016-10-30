@@ -142,9 +142,9 @@ sub buildStructFromTuple(@) {
 				$parser = qq(lit("$attrName") >> $parser);
 			}
 		}
-		elsif ($parserCustOpt->{'globalAttrNameAsPrefix'} && $tupleSize > 1) {
-			SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
-		}
+		#elsif ($parserCustOpt->{'globalAttrNameAsPrefix'} && $tupleSize > 1) {
+		#	SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
+		#}
 		
 		push @{$struct->{'ruleBody'}}, $parser;
 	}
