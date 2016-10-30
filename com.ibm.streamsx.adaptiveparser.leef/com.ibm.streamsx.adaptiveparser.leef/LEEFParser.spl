@@ -55,10 +55,11 @@ graph
     		batch : $batch;
     		dataAttr : $dataAttr;
     		globalSkipper : tab;
+    		tsFormat : "%b %d %Y %H:%M:%S";
 		output
 			LEEFEvent :
-				syslog = Param({ globalSkipper = Skipper.whitespace}, { date = ParamN({ tsFormat = "%b %d %Y %H:%M:%S"}) }),
-				eventHeader = Param({ globalDelimiter = "|", prefix = "LEEF:"}),
-				eventAttributes = Param({ attrNameAsPrefix = true, attrNameDelimiter = "="});
+				syslog = Param({ globalSkipper = Skipper.whitespace}),
+				eventHeader = Param({ globalDelimiter = "|", tuplePrefix = "LEEF:"}),
+				eventAttributes = Param({ globalAttrNameAsPrefix = true, globalAttrNameDelimiter = "="});
     }
 }

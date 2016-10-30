@@ -3,7 +3,7 @@
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.leef</info:name>
     <info:description></info:description>
-    <info:version>2.0</info:version>
+    <info:version>2.0.0.3</info:version>
     <info:requiredProductVersion>4.0.1</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>
