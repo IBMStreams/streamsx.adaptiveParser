@@ -1,6 +1,13 @@
 namespace com.ibm.streamsx.adaptiveparser;
 
+type Anonymous = enum{_};
+
 public composite Skipper {
 	type
 		static Skippers = enum{none, blank, control, endl, punct, tab, whitespace};
+}
+
+public composite TupleScheme {
+	type
+		static Schemes = enum{firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered};
 }

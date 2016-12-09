@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <operatorModel xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.ibm.com/xmlns/prod/streams/spl/operator" xmlns:cmn="http://www.ibm.com/xmlns/prod/streams/spl/common" xsi:schemaLocation="http://www.ibm.com/xmlns/prod/streams/spl/operator operatorModel.xsd">
   <cppOperatorModel>
-    <context>
+    <context verificationModule="">
       <description>
 AdaptiveParser operator has two custom output functions: 
 * Param applies parsing options for top level attributes.
@@ -23,6 +23,14 @@ AdaptiveParser operator has two custom output functions:
           <value>tab</value>
           <value>whitespace</value>
         </enumeration>
+        <enumeration>
+          <name>Schemes</name>
+          <value>firstTypePaired</value>
+          <value>openAttrNamePaired</value>
+          <value>openTypeOrdered</value>
+          <value>openTypeUnordered</value>
+          <value>strictTypeOrdered</value>
+        </enumeration>
       </customLiterals>
       <customOutputFunctions>
         <customOutputFunction>
@@ -37,11 +45,19 @@ AdaptiveParser operator has two custom output functions:
           </function>
           <function pseudoFunction="true">
             <description></description>
+            <prototype>&lt;any A, tuple T> A Param(enum{_} options, T deepOptions)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
             <prototype>&lt;any A, tuple T1, tuple T2> A Param(T1 options, T2 deepOptions)</prototype>
           </function>
           <function pseudoFunction="true">
             <description></description>
             <prototype>&lt;tuple T> boolean ParamN(T options)</prototype>
+          </function>
+          <function pseudoFunction="true">
+            <description></description>
+            <prototype>&lt;tuple T> boolean ParamN(enum{_} options, T deepOptions)</prototype>
           </function>
           <function pseudoFunction="true">
             <description></description>
@@ -58,8 +74,8 @@ AdaptiveParser operator has two custom output functions:
         </library>
       </libraryDependencies>
       <providesSingleThreadedContext>Always</providesSingleThreadedContext>
-      <allowCustomLogic>false</allowCustomLogic>
-      <splExpressionTree cppCode="false" output="true"/>
+      <allowCustomLogic>true</allowCustomLogic>
+      <splExpressionTree cppCode="true" output="true"/>
     </context>
     <parameters>
       <description></description>
@@ -128,12 +144,11 @@ AdaptiveParser operator has two custom output functions:
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
-        <name>globalAttrNameAsPrefix</name>
+        <name>explain</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>Constant</expressionMode>
-        <type>boolean</type>
+        <expressionMode>Expression</expressionMode>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
@@ -179,6 +194,24 @@ AdaptiveParser operator has two custom output functions:
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>CustomLiteral</expressionMode>
         <type>Skippers</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>globalTupleScheme</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>CustomLiteral</expressionMode>
+        <type>Schemes</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>tupleScheme</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>CustomLiteral</expressionMode>
+        <type>Schemes</type>
         <cardinality>1</cardinality>
       </parameter>
       <parameter>
@@ -308,11 +341,21 @@ AdaptiveParser operator has two custom output functions:
         <cardinality>-1</cardinality>
       </parameter>
       <parameter>
-        <name>explain</name>
+        <name>skipCountAfter</name>
         <description></description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
-        <expressionMode>Expression</expressionMode>
+        <expressionMode>Constant</expressionMode>
+        <type>uint32</type>
+        <cardinality>1</cardinality>
+      </parameter>
+      <parameter>
+        <name>skipCountBefore</name>
+        <description></description>
+        <optional>true</optional>
+        <rewriteAllowed>false</rewriteAllowed>
+        <expressionMode>Constant</expressionMode>
+        <type>uint32</type>
         <cardinality>1</cardinality>
       </parameter>
     </parameters>
@@ -327,9 +370,19 @@ AdaptiveParser operator has two custom output functions:
         <cardinality>1</cardinality>
         <optional>false</optional>
       </inputPortSet>
+      <inputPortSet>
+        <description/>
+        <windowingDescription/>
+        <tupleMutationAllowed>false</tupleMutationAllowed>
+        <windowingMode>NonWindowed</windowingMode>
+        <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
+        <controlPort>true</controlPort>
+        <cardinality>1</cardinality>
+        <optional>true</optional>
+      </inputPortSet>
     </inputPorts>
     <outputPorts>
-      <outputPortSet>
+      <outputPortOpenSet>
         <description></description>
         <expressionMode>AttributeFree</expressionMode>
         <autoAssignment>false</autoAssignment>
@@ -343,21 +396,7 @@ AdaptiveParser operator has two custom output functions:
         <windowPunctuationInputPort>0</windowPunctuationInputPort>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <allowNestedCustomOutputFunctions>true</allowNestedCustomOutputFunctions>
-        <cardinality>1</cardinality>
-        <optional>false</optional>
-      </outputPortSet>
-      <outputPortSet>
-        <description></description>
-        <expressionMode>Expression</expressionMode>
-        <autoAssignment>false</autoAssignment>
-        <completeAssignment>false</completeAssignment>
-        <rewriteAllowed>true</rewriteAllowed>
-        <windowPunctuationOutputMode>Preserving</windowPunctuationOutputMode>
-        <windowPunctuationInputPort>0</windowPunctuationInputPort>
-        <tupleMutationAllowed>false</tupleMutationAllowed>
-        <cardinality>1</cardinality>
-        <optional>true</optional>
-      </outputPortSet>
+      </outputPortOpenSet>
     </outputPorts>
   </cppOperatorModel>
 </operatorModel>

@@ -4,7 +4,13 @@
 use AdaptiveParserCommon;
 
 my $inputPort = $model->getInputPortAt(0);
-my $outputPort2 = $model->getOutputPortAt(1) if ($model->getNumberOfOutputPorts() > 1) ;
+my $lastOutputPortNum = $model->getNumberOfOutputPorts() - 1;
+my $errorPortExists = $inputPort->getCppTupleType() eq $model->getOutputPortAt($lastOutputPortNum)->getCppTupleType();
+my $lastDataPortNum = $errorPortExists ? $lastOutputPortNum -1 : $lastOutputPortNum;
+
+if ($errorPortExists && $lastOutputPortNum == 0) {
+	SPL::CodeGen::exitln("There is only 1 output port defined and it's identical for the input port - specify data output port", $inputPort->getSourceLocation());
+}
 
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
@@ -40,8 +46,6 @@ if (@passAttrs) {
 	}
 }
 
-SPL::CodeGen::exitln("Error output port and input port schemas must match", $inputPort->getSourceLocation()) if($outputPort2 && $inputPort->getCppTupleType() ne $outputPort2->getCppTupleType());
-
 my $oTupleName = 'oport0';
 my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
 my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
@@ -49,11 +53,47 @@ my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
 
 # [----- perl code -----]%>
 
-MY_OPERATOR::MY_OPERATOR() : tupleParser() {}
+MY_OPERATOR::MY_OPERATOR() : <%= join ',', map { "tupleParser$_(new TupleParserGrammar$_<charPtr,MY_OPERATOR>(*this))" } (0..$lastDataPortNum) %> {}
 MY_OPERATOR::~MY_OPERATOR() {}
 
 void MY_OPERATOR::allPortsReady() {}
 void MY_OPERATOR::prepareToShutdown() {}
+
+template<typename OTuple, typename TupleParser>
+inline bool MY_OPERATOR::parse(OTuple & otuple, TupleParser const& tupleParser, uint32_t port, charPtr iter_start, charPtr iter_end) {
+	
+<%if (@passAttrs) {
+	foreach my $attrName (@passAttrs) {%>
+		otuple.set_<%=$attrName%>(iport$0.get_<%=$attrName%>());
+	<%}
+}%>
+		
+		bool parsed = false;
+		bool isCommented = false;
+		
+		parsed = qi::parse(iter_start, iter_end, (*tupleParser)(ref(isCommented)), otuple);
+
+		if(isCommented) {
+			parsed = true;
+		}
+		else {
+			if(!parsed <%=$batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end'%>) {
+				parsed = false;
+				
+			<%unless ($errorPortExists) {%>
+				if(port == <%=$lastDataPortNum%>) {
+					SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");
+					submit(otuple, port);
+				}
+			<%}%>
+			}
+			else {
+				submit(otuple, port);
+				parsed = true;
+			}
+		}
+		return parsed;
+}
 
 void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 
@@ -62,36 +102,32 @@ void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 	charPtr iter_start;
 	charPtr iter_end;
 	
-	setInputIterators(<%=$dataAttrCppValue%>, iter_start, iter_end);
-
 <%if ($batch) {%>
 	while(iter_start < iter_end) {
 <%}%>
-		OPort0Type otuple;
 
-<%if (@passAttrs) {
-	foreach my $attrName (@passAttrs) {%>
-		otuple.set_<%=$attrName%>(iport$0.get_<%=$attrName%>());
-	<%}
-}%>
-		
-		bool isCommented = false;
-		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);
+	bool parsed = false;
 
-		if(!isCommented) {
-			if(!parsed <%=$batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end'%>) {
-				<%if ($model->getNumberOfOutputPorts() > 1) {%>
-					submit(tuple, 1);
-				<%}
-				else {%>
-					SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");
-					submit(otuple, 0);
-				<%}%>
+	for(int i = 0; i <= <%=$lastDataPortNum%> && !parsed; i++) {
+		setInputIterators(<%=$dataAttrCppValue%>, iter_start, iter_end);
+	
+		switch(i) {
+		<%foreach my $i (0..$lastDataPortNum) {%>
+			case <%=$i%>: {
+				oport<%=$i%> otuple;
+				parsed = parse(otuple, tupleParser<%=$i%>, i, iter_start, iter_end);
+				break;
 			}
-			else {
-				submit(otuple, 0);
-			}
+		<%}%>
 		}
+	}
+	
+<%if ($errorPortExists) {%>
+	if(!parsed) {
+		submit(iport$0, <%=$lastOutputPortNum%>);
+	}
+<%}%>
+
 <%if ($batch) {%>
 	}
 <%}%>

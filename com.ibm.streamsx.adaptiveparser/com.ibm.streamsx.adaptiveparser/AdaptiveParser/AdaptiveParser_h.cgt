@@ -1,6 +1,7 @@
 #include <SPL/Runtime/Type/Enum.h>
 #include <SPL/Runtime/Type/SPLType.h>
 #include <SPL/Runtime/Function/TimeFunctions.h>
+#include <streams_boost/scoped_ptr.hpp>
 #include "time.h"
 
 // #define STREAMS_BOOST_SPIRIT_QI_DEBUG
@@ -11,41 +12,100 @@ use AdaptiveParserCommon;
 
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 my $explain = ($_ = $model->getParameterByName('explain')) ? $_->getValueAt(0)->getCppExpression() : 0;
-my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+my $startFrom = ($_ = $model->getParameterByName('startFrom')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
 
 my $parserOpt = {};
 $parserOpt->{'allowEmpty'} = ($_ = $model->getParameterByName('allowEmpty')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'binaryMode'} = ($_ = $model->getParameterByName('binaryMode')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-$parserOpt->{'globalAttrNameAsPrefix'} = ($_ = $model->getParameterByName('globalAttrNameAsPrefix')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'globalAttrNameQuoted'} = ($_ = $model->getParameterByName('globalAttrNameQuoted')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'quotedOptStrings'} = ($_ = $model->getParameterByName('quotedOptStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
 $parserOpt->{'quotedStrings'} = ($_ = $model->getParameterByName('quotedStrings')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
-$parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'skipCountAfter'} = ($_ = $model->getParameterByName('skipCountAfter')) ? $_->getValueAt(0)->getSPLExpression() : 0;
+$parserOpt->{'skipCountBefore'} = ($_ = $model->getParameterByName('skipCountBefore')) ? $_->getValueAt(0)->getSPLExpression() : 0;
+$parserOpt->{'comment'} = ($_ = $model->getParameterByName('comment')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
 $parserOpt->{'globalAttrNameDelimiter'} = ($_ = $model->getParameterByName('globalAttrNameDelimiter')) ? $_->getValueAt(0)->getSPLExpression() : '';
-$parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? AdaptiveParserCommon::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
+$parserOpt->{'globalDelimiter'} = ($_ = $model->getParameterByName('globalDelimiter')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'globalEscapeChar'} = ($_ = $model->getParameterByName('globalEscapeChar')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'globalSkipper'} = ($_ = $model->getParameterByName('globalSkipper')) ? Types::getSkipper($_->getValueAt(0)->getSPLExpression()) : 'space';
+$parserOpt->{'globalTupleScheme'} = ($_ = $model->getParameterByName('globalTupleScheme')) ? Types::getSchemeOp($_->getValueAt(0)->getSPLExpression()) : '>>';
 $parserOpt->{'skipper'} = $parserOpt->{'skipperLast'} = $parserOpt->{'globalSkipper'};
-$parserOpt->{'listPrefix'} = ($_ = $model->getParameterByName('listPrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'listSuffix'} = ($_ = $model->getParameterByName('listSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'mapPrefix'} = ($_ = $model->getParameterByName('mapPrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'mapSuffix'} = ($_ = $model->getParameterByName('mapSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'tuplePrefix'} = ($_ = $model->getParameterByName('tuplePrefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'tsFormat'} = ($_ = $model->getParameterByName('tsFormat')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
-$parserOpt->{'tsToken'} = ($_ = $model->getParameterByName('tsToken')) ? AdaptiveParserCommon::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'tupleScheme'} = ($_ = $model->getParameterByName('tupleScheme')) ? Types::getSchemeOp($_->getValueAt(0)->getSPLExpression()) : $parserOpt->{'globalTupleScheme'};
+$parserOpt->{'listPrefix'} = ($_ = $model->getParameterByName('listPrefix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'listSuffix'} = ($_ = $model->getParameterByName('listSuffix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'mapPrefix'} = ($_ = $model->getParameterByName('mapPrefix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'mapSuffix'} = ($_ = $model->getParameterByName('mapSuffix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'tuplePrefix'} = ($_ = $model->getParameterByName('tuplePrefix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'tupleSuffix'} = ($_ = $model->getParameterByName('tupleSuffix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'prefix'} = ($_ = $model->getParameterByName('prefix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'suffix'} = ($_ = $model->getParameterByName('suffix')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'tsFormat'} = ($_ = $model->getParameterByName('tsFormat')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
+$parserOpt->{'tsToken'} = ($_ = $model->getParameterByName('tsToken')) ? Types::getStringValue($_->getValueAt(0)->getSPLExpression()) : '';
 @{$parserOpt->{'passAttrs'}} = ($model->getParameterByName('passAttrs')) ? map { (split /\./, $_->getSPLExpression())[-1] } @{$model->getParameterByName('passAttrs')->getValues()} : ();
 $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
 
-my $oTupleCppType = 'oport0';
-my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
-my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
+my $lastOutputPortNum = $model->getNumberOfOutputPorts() - 1;
+my $errorPortExists = $model->getInputPortAt(0)->getCppTupleType() eq $model->getOutputPortAt($lastOutputPortNum)->getCppTupleType();
+my $lastDataPortNum = $errorPortExists ? $lastOutputPortNum -1 : $lastOutputPortNum;
+
+# [----- perl code -----]%>
+
+
+<%foreach my $i (0..$lastDataPortNum) {%>
+  template <typename Iterator, typename MY_OP> struct TupleParserGrammar<%=$i%>;
+<%}%>
+
+
+<%SPL::CodeGen::headerPrologue($model);%>
+
+class MY_OPERATOR : public MY_BASE_OPERATOR {
+public:
+  typedef const char* charPtr;
+
+  MY_OPERATOR();
+  virtual ~MY_OPERATOR(); 
+
+  void allPortsReady(); 
+  void prepareToShutdown(); 
+
+  template<typename OTuple, typename TupleParser>
+  bool parse(OTuple & otuple, TupleParser const& tupleParser, uint32_t port, charPtr iter_start, charPtr iter_end);
+  void process(Tuple const & tuple, uint32_t port);
+  void process(Punctuation const & punct, uint32_t port);
+
+  inline void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {
+	iter_start = reinterpret_cast<charPtr>(raw.getData());
+	iter_end = reinterpret_cast<charPtr>(raw.getData() + raw.getSize());
+  }
+  
+  inline void setInputIterators(const std::string & row, charPtr & iter_start, charPtr & iter_end) {
+	iter_start = row.data();
+	iter_end = iter_start + row.size();
+  }
+
+private:
+  
+  <%foreach my $i (0..$lastDataPortNum)	{%>
+  	streams_boost::scoped_ptr<TupleParserGrammar<%=$i%><charPtr,MY_OPERATOR> > tupleParser<%=$i%>;
+  <%}%> 
+}; 
+
+<%SPL::CodeGen::headerEpilogue($model);%>
+
+<%foreach my $i (0..$lastDataPortNum)	{%>
+  typedef <%=$model->getOutputPortAt($i)->getCppTupleType()%> oport<%=$i%>;
+<%}%> 
+
+<%# [----- perl code -----]
+foreach my $i (0..$lastDataPortNum)	{
+
+my $oTupleCppType = "oport$i";
+my $oTupleSplType = $model->getOutputPortAt($i)->getSPLTupleType();
+my $oTupleSrcLocation = $model->getOutputPortAt($i)->getSourceLocation();
 my $structs = [];
 
-my $oAttrParams = $model->getOutputPortAt(0);
-#my %oAttrNames = map { $_->getName() => ($_->hasAssignment() ? $_ : undef) } @{$model->getOutputPortAt(0)->getAttributes()};
+my $oAttrParams = $model->getOutputPortAt($i);
+
+our %stateVars = map { (split /\$/, $_->getName())[-1] => [$_->getName(), $_->getCppType(), $_->getSPLType()] } @{$model->getContext()->getStateVariables()};
 
 my $STREAMS_FUSION_MAX_VECTOR_SIZE = 10;
 AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
@@ -64,18 +124,13 @@ SPL::CodeGen::errorln("More than 50 attributes on the same level of tuple is not
 
 #include "Spirit.h"
 
-<%SPL::CodeGen::headerPrologue($model);%>
-<%my $baseRule = 'oport0_base';%>
+<%my $baseRule = "oport$i\_base";%>
 
 using namespace ::ext;
 
-typedef MY_BASE_OPERATOR::OPort0Type oport0;
-
-const std::string dq = "\"";
-
-template <typename Iterator>
-struct TupleParserGrammar : qi::grammar<Iterator, oport0(bool&)> {
-    TupleParserGrammar() : TupleParserGrammar::base_type(<%=$baseRule%>) {
+template <typename Iterator, typename MY_OP>
+struct TupleParserGrammar<%=$i%> : qi::grammar<Iterator, oport<%=$i%>(bool&)> {
+    TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) {
 
 <%# [----- perl code -----]
 
@@ -96,32 +151,47 @@ print qq(
 
 }
 
+#for my $state (keys %stateVars) {
+#	my $cppCode = $stateVars{$state}->[0];
+#	my $cppType = $stateVars{$state}->[1];
+#	my $splType = $stateVars{$state}->[2];
+#	my $parseToState = Types::getPrimitiveValue($oTupleSrcLocation, $cppType, $splType, $structs, $parserOpt);
+#print qq(
+#		$state = $parseToState\[ref(op.$cppCode) = _1];
+#);
+#}
+
 foreach my $struct (@{$structs}) {
 if (scalar %{$struct}) {
+	my $operator = $struct->{'tupleScheme'};
+	my $eq =  $operator eq '|' ? '=' : '%=';
 	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
-#my $assign = $struct->{'size'} == 1 ? '=' : '%=';
-	my $operator = $struct->{'globalAttrNameAsPrefix'} ? ' / ' : ' >> ';
-	my $rule = join($operator, @{$struct->{'ruleBody'}});
-	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tuplePrefix'});
+
+	my $rule = join(" $operator ", @{$struct->{'ruleBody'}});
+	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq "oport$i" && $parserOpt->{'tuplePrefix'});
 	$rule = "eps >> $rule" if ($struct->{'size'} == 1); # patch for single element tuple
 	$rule = $skipper."[$rule]";
-	if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'tupleSuffix'}) {
-		$rule = "$rule >> lit($parserOpt->{'tupleSuffix'})" if ($batch);
-		$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
+	if ($struct->{'cppType'} eq "oport$i") {
+		if ($parserOpt->{'tupleSuffix'}) {
+			$rule = "$rule >> lit($parserOpt->{'tupleSuffix'})" if ($batch);
+			$rule = "reparse2(byte_ - (lit($parserOpt->{'tupleSuffix'}) | eoi))[$rule] >> lit($parserOpt->{'tupleSuffix'})" unless ($batch);
+		}
+		$rule = "advance($parserOpt->{'skipCountBefore'}) >> $rule" if ($parserOpt->{'skipCountBefore'});
+		$rule .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+		$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($startFrom);
+		$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($parserOpt->{'comment'});
 	}
-	$rule = "skip(byte_ - lit($startFrom))[eps] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $startFrom);
-	$rule = "!lit($parserOpt->{'comment'})[_r1 = val(true)] >> eps[_r1 = val(false)] >> $rule" if ($struct->{'cppType'} eq 'oport0' && $parserOpt->{'comment'});
 print qq(
-		$struct->{'ruleName'} %= $rule;
+		$struct->{'ruleName'} $eq $rule;
 );
 }
 }
 # [----- perl code -----]%>
 
-	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
-	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
+//	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
+//	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
 
-    	<%=$baseRule%>.name("oport0");
+    	<%=$baseRule%>.name("oport<%=$i%>");
 
 //		on_error<fail> (<%=$baseRule%>, std::cout
 //				<< val("Error! Expecting ")
@@ -143,16 +213,16 @@ print qq(
 
 private:
 
+    MY_OP & op;
 //	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
 //	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
+//	qi::rule<Iterator,  ts(std::string)> timestamp;
+//	qi::rule<Iterator,  ts()> timestampS;
 	qi::int_parser<unsigned char, 16, 2, 2> hex2;
 
 	boolean_ boolean;
 	dummy_ dummy;
 	qi::symbols<char, qi::unused_type> undefined;
-
-	qi::rule<Iterator,  ts(std::string)> timestamp;
-	qi::rule<Iterator,  ts()> timestampS;
     
 <%# [----- perl code -----]
 
@@ -162,8 +232,14 @@ print qq(
 );
 }
 
+#for my $state (keys %stateVars) {
+#print qq(
+#	qi::rule<Iterator> $state;
+#);
+#}
+
 foreach my $struct (@{$structs}) {
-	if (scalar %{$struct} && $struct->{'cppType'} ne 'oport0') {
+	if (scalar %{$struct} && $struct->{'cppType'} ne "oport$i") {
 print qq(
 	qi::rule<Iterator, $struct->{'cppType'}()> $struct->{'ruleName'};
 );
@@ -171,38 +247,9 @@ print qq(
 }
 # [----- perl code -----]%>
 
-    qi::rule<Iterator, oport0(bool&)> oport0_base;
+    qi::rule<Iterator, oport<%=$i%>(bool&)> oport<%=$i%>_base;
 
 };
-
-class MY_OPERATOR : public MY_BASE_OPERATOR {
-public:
-  MY_OPERATOR();
-  virtual ~MY_OPERATOR(); 
-
-  void allPortsReady(); 
-  void prepareToShutdown(); 
-
-  void process(Tuple const & tuple, uint32_t port);
-  void process(Punctuation const & punct, uint32_t port);
-
-  inline void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {
-	iter_start = reinterpret_cast<charPtr>(raw.getData());
-	iter_end = reinterpret_cast<charPtr>(raw.getData() + raw.getSize());
-  }
-  
-  inline void setInputIterators(const std::string & row, charPtr & iter_start, charPtr & iter_end) {
-	iter_start = row.data();
-	iter_end = iter_start + row.size();
-  }
-
-private:
-	TupleParserGrammar<charPtr> tupleParser;
-}; 
-
-<%SPL::CodeGen::headerEpilogue($model);%>
-
-typedef <%=$model->getOutputPortAt(0)->getCppTupleType()%> oport0;
 
 <%# [----- perl code -----]
 if (defined($structs->[-1]->{'enum'})) {
@@ -256,6 +303,7 @@ print qq(
 	}
 
 }
+
 if (defined($structs->[-1]->{'tuple1'})) {
 	my @splTupleDefs = keys %{$structs->[-1]->{'tuple1'}};
 	my @cppTupleDefs = values %{$structs->[-1]->{'tuple1'}};
@@ -280,11 +328,13 @@ print qq(
 
 }
 
-
 foreach my $struct (@{$structs}) {
 print qq(
 	$struct->{'traits'}
 	$struct->{'extension'}
 );
 }
+
+}
+
 # [----- perl code -----]%>

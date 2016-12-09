@@ -22,9 +22,11 @@
 #include <streams_boost/fusion/include/std_pair.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
 #include <streams_boost/spirit/home/support/container.hpp>
+#include <streams_boost/spirit/repository/include/qi_advance.hpp>
 #include <streams_boost/spirit/repository/include/qi_kwd.hpp>
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include <streams_boost/type_traits/is_same.hpp>
+#include <streams_boost/variant.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -41,9 +43,9 @@ namespace traits = streams_boost::spirit::traits;
 namespace math = SPL::Functions::Math;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
-using fusion::at_c; using qi::locals; using qi::_val;
+using fusion::at_c; using qi::locals; using qi::_pass; using qi::_val;
 using iterators::binary_from_base64; using iterators::transform_width;
-using phoenix::bind; using phoenix::function; using phoenix::construct; using phoenix::ref; using phoenix::val;
+using phoenix::arg_names::arg1; using phoenix::bind; using phoenix::function; using phoenix::construct; using phoenix::ref; using phoenix::val;
 using qi::alnum; using qi::alpha; using qi::blank; using qi::string; using qi::symbols;
 using qi::bin; using qi::hex; using qi::inf; using qi::oct;
 using qi::float_; using qi::double_; using qi::long_double;
@@ -52,7 +54,7 @@ using qi::ushort_; using qi::uint_; using qi::ulong_;
 using qi::byte_; using qi::word; using qi::dword; using qi::qword;
 using qi::eoi; using qi::eol; using qi::eps; using qi::lit;
 using qi::debug; using qi::fail; using qi::on_error;
-using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using qi::lazy; using repo::kwd;
+using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using repo::advance; using repo::kwd;
 using qi::lexeme; using qi::no_skip; using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
 using streams_boost::enable_if; using streams_boost::is_base_of; using streams_boost::iterator_range;
 using namespace qi::labels;
@@ -61,6 +63,8 @@ typedef const char* charPtr;
 typedef iterator_range<charPtr>::const_iterator (iterator_range<charPtr>::*IterType)(void) const;
 typedef transform_width<binary_from_base64<charPtr>, 8, 6> base64Iter;
 typedef SPL::timestamp ts;
+
+const std::string dq = "\"";
 
 namespace ext {
 
@@ -270,6 +274,11 @@ namespace ext {
 
         const char* value_;
 	};
+
+    qi::rule<charPtr,  ts(std::string)> timestamp =
+    		skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
+    qi::rule<charPtr,  ts()> timestampS =
+    		skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
 }
 
 
@@ -504,6 +513,19 @@ namespace streams_boost { namespace spirit { namespace traits {
             return true;
         }
     };
+
+//	template <typename Attr, typename Val>
+//	struct transform_attribute<Attr, Val, qi::domain, typename enable_if< typename is_base_of<SPL::Tuple, Attr>::value>::type>
+////	struct transform_attribute<iterator_range<base64Iter>, iterator_range<charPtr>, qi::domain>
+//	{
+//		typedef Val type;
+//		typedef Val const& const_type;
+//		typedef Attr & typeToCast;
+//
+//		static type pre(typeToCast d) { return type(); }
+//		static void post(typeToCast, const_type) {}
+//		static void fail(typeToCast) {}
+//	};
 
 	template <typename Attr>
 	struct transform_attribute<Attr, iterator_range<charPtr>, qi::domain>

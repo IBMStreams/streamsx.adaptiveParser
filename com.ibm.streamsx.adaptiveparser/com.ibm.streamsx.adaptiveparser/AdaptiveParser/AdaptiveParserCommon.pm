@@ -38,8 +38,8 @@ sub buildStructFromTuple(@) {
 	$adapt->{'cppType'} = $cppType;
 	$adapt->{'ruleName'} = $ruleName;
 	$adapt->{'ruleBody'} = [];
-	$adapt->{'globalAttrNameAsPrefix'} = $parserOpt->{'globalAttrNameAsPrefix'};
 	$adapt->{'skipper'} = $parserOpt->{'skipper'};
+	$adapt->{'tupleScheme'} = $parserOpt->{'tupleScheme'};
 	$adapt->{'size'} = $tupleSize;
 	$adapt->{'symbols'} = {};
 	$adapt->{'xml'} = {};
@@ -103,12 +103,12 @@ sub buildStructFromTuple(@) {
 			}
 		}
 		
-		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
 		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
 		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
 		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'tupleSuffix'} if ($parserOpt->{'tupleSuffix'});
 				
 		my $parser = buildStructs($srcLocation, "$cppType\::$attrNames[$i]\_type", $attrTypes[$i], $structs, $param2, $parserCustOpt, $size);
@@ -121,42 +121,53 @@ sub buildStructFromTuple(@) {
 		}
 
 		if (Type::isComposite($attrTypes[$i])) {
-			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 		
-		if ($parserCustOpt->{'attrNameAsPrefix'}) {
+		if ($parserOpt->{'tupleScheme'} eq '/') {
 			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
-			$attrNameDelimiter ||= $parserCustOpt->{'delimiter'};
+			$attrNameDelimiter //= $parserCustOpt->{'delimiter'};
 			my $attrName =  $parserCustOpt->{'attrFieldName'} ? $parserCustOpt->{'attrFieldName'}  : $attrNames[$i];
 			$attrName =~ tr/\"//d;
 			$attrName =  qq(\\"$attrName\\") if ($parserCustOpt->{'attrNameQuoted'});
 			$parser = "lit($attrNameDelimiter) >> $parser" if ($attrNameDelimiter);
 
-			if ($tupleSize > 1 && $parserOpt->{'globalAttrNameAsPrefix'}) {
+			if ($tupleSize > 1 && $parserOpt->{'tupleScheme'} eq '/') {
 				$parser = qq(kwd("$attrName",0,inf)[$parser]);
 			}
 			else {
 				$parser = qq(lit("$attrName") >> $parser);
 			}
 		}
-		#elsif ($parserCustOpt->{'globalAttrNameAsPrefix'} && $tupleSize > 1) {
-		#	SPL::CodeGen::errorln("attrNameAsPrefix cannot be set to false when globalAttrNameAsPrefix is true", $srcLocation);
-		#}
 		
-		push @{$struct->{'ruleBody'}}, $parser;
+		if ($parserOpt->{'tupleScheme'} eq '|') {
+			$parser = "as<$cppType\::$attrNames[$i]\_type>()[($parser)][bind(&$cppType\::set_$attrNames[$i],_val,_1)]";
+		}
+		
+		push @{$struct->{'ruleBody'}}, "$parser";
 	}
 
 	Spirit::traits_defTuple1($structs->[-1], $splType, $cppType) if ($tupleSize == 1);
 	
 	$struct->{'extension'} .= ")" unless ($adapted);
 
-	#$ruleName = "attr_cast<$cppType, $cppType\::$attrNames[0]\_type>($ruleName)" if ($tupleSize == 1);
 	$ruleName = "lit($parserOpt->{'tuplePrefix'}) >> $ruleName" if ($parserOpt->{'tuplePrefix'});
 	$ruleName .= " >> lit($parserOpt->{'tupleSuffix'})" if ($parserOpt->{'tupleSuffix'});
 
+	$ruleName = "advance($parserOpt->{'skipCountBefore'}) >> $ruleName" if ($parserOpt->{'skipCountBefore'});
+	$ruleName .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+
+	if ($parserOpt->{'parseToState'}) {
+		SPL::CodeGen::errorln("State '%s' is not defined", $parserOpt->{'parseToState'}, $srcLocation)
+			unless ( exists($AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}));
+
+		my $cppType = $AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}->[0];
+		my $splType = $AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}->[1];
+		my $parseToState = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
+		$ruleName = "omit[$parseToState\[ref($parserOpt->{'parseToState'}) = _1]] >> $ruleName";
+	}
+	
 	return $ruleName;
 }
 
@@ -191,12 +202,12 @@ sub handleListOrSet(@) {
 			}
 		}
 		
-		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
 		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
 		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
 		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'listSuffix'} if ($parserOpt->{'listSuffix'});
 		
 		$parser = buildStructs($srcLocation, "$cppType\::value_type", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -223,10 +234,13 @@ sub handleListOrSet(@) {
 		}
 	}
 	
+	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
 	$parser = "lit($parserOpt->{'listPrefix'}) >> $parser" if ($parserOpt->{'listPrefix'});
 	$parser .= " >> lit($parserOpt->{'listSuffix'})" if ($parserOpt->{'listSuffix'});
-	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
-	
+
+	$parser = "advance($parserOpt->{'skipCountBefore'}) >> $parser" if ($parserOpt->{'skipCountBefore'});
+	$parser .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+
 	return $parser;
 }
 
@@ -288,15 +302,15 @@ sub handleMap(@) {
 			}
 		}
 
-		$parserCustOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
 		$parserCustOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
 		$parserCustOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 		$parserCustOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 		$parserCustOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+		$parserCustOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
 		$parserCustOpt->{'lastSuffix'} = $parserOpt->{'mapSuffix'} if ($parserOpt->{'mapSuffix'});
 		
 		if ($attrName eq 'key') {
-			$parserCustOpt->{'delimiter'} //= $parserCustOpt->{'attrNameAsPrefix'} ? $parserCustOpt->{'attrNameDelimiter'} : $parserOpt->{'globalDelimiter'};
+			$parserCustOpt->{'delimiter'} //= $parserCustOpt->{'tupleScheme'} eq '/' ? $parserCustOpt->{'attrNameDelimiter'} : $parserOpt->{'globalDelimiter'};
 			$parserCustOpt->{'quotedStrings'} = defined($parserCustOpt->{'attrNameQuoted'}) ? $parserCustOpt->{'attrNameQuoted'} : $parserCustOpt->{'quotedStrings'};
 			$keyDelimiter = $parserCustOpt->{'delimiter'};
 			$parser = buildStructs($srcLocation, "$cppType\::key_type", $keyType, $structs, $param2, $parserCustOpt, $size);
@@ -344,9 +358,12 @@ sub handleMap(@) {
 		$parser = "*(($ruleName >> eps) - eoi)";
 	}
 	
+	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
 	$parser = "lit($parserOpt->{'mapPrefix'}) >> $parser" if ($parserOpt->{'mapPrefix'});
 	$parser .= " >> lit($parserOpt->{'mapSuffix'})" if ($parserOpt->{'mapSuffix'});
-	$parser = "(attr_cast<$cppType>(undefined) | $parser)" if ($parserOpt->{'undefined'});
+
+	$parser = "advance($parserOpt->{'skipCountBefore'}) >> $parser" if ($parserOpt->{'skipCountBefore'});
+	$parser .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
 
 	return $parser;
 }
@@ -354,131 +371,15 @@ sub handleMap(@) {
 
 sub handlePrimitive(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
-	my $value = '';
 	
-	$parserOpt->{'attrNameAsPrefix'} //= $parserOpt->{'globalAttrNameAsPrefix'};
 	$parserOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
 	$parserOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
 	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
 	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
 	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+	$parserOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
 	
-	if (Type::isBoolean($splType)) {
-		$value = getSkippedValue($parserOpt, 'boolean');
-	}
-	elsif (Type::isBlob($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_blob', 0, 0);
-	}
-	#elsif (Type::isEnum($splType)) {
-	#	$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
-	#	Spirit::traits_defEnum($structs->[-1], $cppType, $splType);
-	#}
-	elsif (Type::isEnum($splType)) {
-		$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType, $parserOpt->{'enumAliasesMap'});
-		$value = getSkippedValue($parserOpt, $value);
-	}
-	elsif(Type::isBString($splType)) {
-		my $bound = Type::getBound($splType);
-		
-		$value = "raw[repeat($bound)[char_]]";
-		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
-		
-	}
-	elsif (Type::isRString($splType) || Type::isUString($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
-	}
-	elsif (Type::isXml($splType)) {
-		$value = AdaptiveParserCommon::getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
-		Spirit::traits_defXml($structs->[-1], $cppType);
-	}
-	elsif (Type::isTimestamp($splType)) {
-		if ($parserOpt->{'tsFormat'}) {
-			if ($parserOpt->{'tsFormat'} eq '"SPL"') {
-				$value = 'timestampS';
-			}
-			else {
-				$value = "timestampFMT(val($parserOpt->{'tsFormat'}))";
-			}
-		}
-		elsif (AdaptiveParserCommon::getStringValue( $parserOpt->{'tsToken'})) {
-			$value = "timestamp(val($parserOpt->{'tsToken'}))";
-		}
-		else {
-			$value = getSkippedValue($parserOpt, 'ulong_');
-		}
-	}
-	elsif (Type::isComplex($splType)) {
-		SPL::CodeGen::errorln("The type '%s' is not supported.", $splType, $srcLocation);
-	}
-	elsif ($parserOpt->{'binaryMode'}) {
-	
-		if (Type::isDecimal($splType)) {
-			SPL::CodeGen::errorln("The type '%s' is not supported in binary mode.", $splType, $srcLocation);
-			$value = 'double_';
-		}
-		elsif (Type::isFloat32($splType)) {
-			$value = 'float_';
-		}
-		elsif (Type::isFloat64($splType)) {
-			$value = 'double_';
-		}
-		elsif (Type::isInt8($splType) || Type::isUint8($splType)) {
-			$value = 'byte_';
-		}
-		elsif (Type::isInt16($splType) || Type::isUint16($splType)) {
-			$value = 'word';
-		}
-		elsif (Type::isInt32($splType) || Type::isUint32($splType)) {
-			$value = 'dword';
-		}
-		elsif (Type::isInt64($splType) || Type::isUint64($splType)) {
-			$value = 'qword';
-		}
-	}
-	else {
-	
-		if (Type::isDecimal32($splType)) {
-			$value = getSkippedValue($parserOpt, 'float_');
-		}
-		if (Type::isDecimal64($splType)) {
-			$value = getSkippedValue($parserOpt, 'double_');
-		}
-		if (Type::isDecimal128($splType)) {
-			$value = getSkippedValue($parserOpt, 'long_double');
-		}
-		elsif (Type::isFloat32($splType)) {
-			$value = getSkippedValue($parserOpt, 'float_');
-			$value = "($value | attr(math::nanw()))";
-		}
-		elsif (Type::isFloat64($splType)) {
-			$value = getSkippedValue($parserOpt, 'double_');
-			$value = "($value | attr(math::nanl()))";
-		}
-		elsif (Type::isInt8($splType)) {
-			$value = getSkippedValue($parserOpt, 'short_');
-		}
-		elsif (Type::isUint8($splType)) {
-			$value = getSkippedValue($parserOpt, 'ushort_');
-		}
-		elsif (Type::isInt16($splType)) {
-			$value = getSkippedValue($parserOpt, 'short_');
-		}
-		elsif (Type::isUint16($splType)) {
-			$value = getSkippedValue($parserOpt, 'ushort_');
-		}
-		elsif (Type::isInt32($splType)) {
-			$value = getSkippedValue($parserOpt, 'int_');
-		}
-		elsif (Type::isUint32($splType)) {
-			$value = getSkippedValue($parserOpt, 'uint_');
-		}
-		elsif (Type::isInt64($splType)) {
-			$value = getSkippedValue($parserOpt, 'long_');
-		}
-		elsif (Type::isUint64($splType)) {
-			$value = getSkippedValue($parserOpt, 'ulong_');
-		}
-	}
+	my $value = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
 	
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "($value | as<$cppType>()[eps])" if ($parserOpt->{'allowEmpty'});
@@ -486,6 +387,22 @@ sub handlePrimitive(@) {
 	$value .= " >> lit($parserOpt->{'suffix'})" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
 	$value = "-($value)" if ($parserOpt->{'optional'});
+	$value = "advance($parserOpt->{'skipCountBefore'}) >> $value" if ($parserOpt->{'skipCountBefore'});
+	$value .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+
+	if ($parserOpt->{'parseToState'}) {
+		(my $state = $parserOpt->{'parseToState'}) =~ tr/\"//d;
+		SPL::CodeGen::errorln("State '%s' is not defined", $state, $srcLocation) unless (exists($AdaptiveParser_h::stateVars{$state}));
+
+		#$value = "$state >> $value";
+
+		my $cppCode = $AdaptiveParser_h::stateVars{$state}->[0];
+		my $cppType = $AdaptiveParser_h::stateVars{$state}->[1];
+		my $splType = $AdaptiveParser_h::stateVars{$state}->[2];
+		my $parseToState = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
+		$value = "omit[$parseToState\[ref(op.$cppCode) = _1]] >> $value";
+	}
+	
 	return $value;
 }
 
@@ -519,9 +436,11 @@ sub getFuncNameParams(@) {
 
 sub setParserCustOpt(@) {
 	my ($srcLocation, $parserCustOpt, $param1, $param2, $expectedAttrs) = @_;
-	SPL::CodeGen::errorln("Parameter '%s' is not a tuple literal", $param1->toString(), $srcLocation) unless ($param1->isTupleLiteral());
+	SPL::CodeGen::errorln("Parameter '%s' is not a tuple literal", $param1->toString(), $srcLocation) unless ($param1->isEnum() || $param1->isTupleLiteral());
 	SPL::CodeGen::errorln("Parameter '%s' is not a tuple literal", $param2->toString(), $srcLocation) unless (!$param2 || $param2->isTupleLiteral());
 
+	if( $param1->isEnum()) { return };
+	
 	my $paramAttrNames = $param1->getAttributes();
 	my $paramAttrVals = $param1->getLiterals();
 	
@@ -529,23 +448,32 @@ sub setParserCustOpt(@) {
 		
 		if (exists($expectedAttrs->{$paramAttrNames->[$k]})) {
 			if ($paramAttrNames->[$k] ~~ ['skipper','globalSkipper','cutSkipper']) {
-				my $skipper = AdaptiveParserCommon::getSkipper( $paramAttrVals->[$k]->getValue());
+				my $skipper = Types::getSkipper( $paramAttrVals->[$k]->getValue());
 				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;
 			}
+			elsif ($paramAttrNames->[$k] ~~ ['globalTupleScheme','tupleScheme']) {
+				my $scheme = Types::getSchemeOp( $paramAttrVals->[$k]->getValue());
+				SPL::CodeGen::errorln("Attribute '%s' is not valid, expected type: TupleScheme.Schemes.", $paramAttrNames->[$k], $srcLocation) unless (defined($scheme));
+				$parserCustOpt->{$paramAttrNames->[$k]} = $scheme;
+			}
 			else {
-				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected type: '%s'.",
-										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), $expectedAttrs->{$paramAttrNames->[$k]}, $srcLocation)
-					unless ($paramAttrVals->[$k]->getType() eq $expectedAttrs->{$paramAttrNames->[$k]});
+				SPL::CodeGen::errorln("Attribute '%s' of type '%s' is not valid, expected types: '%s'.",
+										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), Dumper($expectedAttrs->{$paramAttrNames->[$k]}), $srcLocation)
+					unless ($paramAttrVals->[$k]->getType() ~~ [$expectedAttrs->{$paramAttrNames->[$k]}]);
 	
 				if ($expectedAttrs->{$paramAttrNames->[$k]} eq 'boolean') {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue() eq 'true';
 				}
 				elsif ($expectedAttrs->{$paramAttrNames->[$k]} eq 'rstring') {
-					$parserCustOpt->{$paramAttrNames->[$k]} = AdaptiveParserCommon::getStringValue( $paramAttrVals->[$k]->getValue());
+					$parserCustOpt->{$paramAttrNames->[$k]} = Types::getStringValue( $paramAttrVals->[$k]->getValue());
 				}
 				elsif ($expectedAttrs->{$paramAttrNames->[$k]} =~ /^map/) {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k];
+				}
+				elsif ($paramAttrVals->[$k]->isExpressionLiteral()) {
+					#SPL::CodeGen::println($paramAttrVals->[$k]->getCppCode());
+					$parserCustOpt->{$paramAttrNames->[$k]} = "bind(&MY_OP::${\($paramAttrVals->[$k]->getCppCode())}, &op)";
 				}
 				else {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue();
@@ -556,83 +484,6 @@ sub setParserCustOpt(@) {
 			SPL::CodeGen::errorln("Attribute '%s' is not valid, expected: '%s'.", $paramAttrNames->[$k], Dumper($expectedAttrs), $srcLocation);
 		}
 	}
-}
-
-sub getStringValue($) {
-	my ($str) = @_;
-	
-	return ($str eq '""' ? '' : $str);
-}
-
-sub getSkipper($) {
-	my ($skipper) = @_;
-	
-	return $Types::skippers{$skipper};
-}
-
-sub getSkippedValue(@) {
-	my ($parserOpt, $value) = @_;
-
-	if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'}) {
-		$value = "skip($parserOpt->{'skipper'})[$value]" if ($parserOpt->{'skipper'});
-		$value = "lexeme[$value]" unless ($parserOpt->{'skipper'});
-	}
-	
-	return $value;
-}
-
-sub getStringMacro(@) {
-	my ($parserOpt, $op, $quotedStrings, $quotedOptStrings) = @_;
-	my $macro = 'STR_';
-	my $operator = $parserOpt->{'escapeChar'} || $parserOpt->{'hexCharPrefix'} || $parserOpt->{'skipChars'} ? $op : 'raw';
-
-	if ($quotedStrings || $quotedOptStrings) {
-		$macro .= 'D';
-
-		my $params = "dq,''";
-		
-		my $value = $parserOpt->{'escapeChar'}
-			? "(-lit($parserOpt->{'escapeChar'}) >> byte_)"
-			: "byte_";
-		
-		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
-		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
-		$macro = "dq >> no_skip[$macro($operator,$value,$params)] >> dq";
-	}
-	
-	unless ($quotedStrings) {
-		$macro = "((&lit(dq) >> $macro) | STR_" if ($quotedOptStrings);
-		
-		my $delimiter = $parserOpt->{'delimiter'};
-		if ($parserOpt->{'suffix'}) {
-			$delimiter = $parserOpt->{'suffix'};
-		}
-		elsif ($parserOpt->{'lastSuffix'}) {
-			$delimiter = "(lit($delimiter) | $parserOpt->{'lastSuffix'})";
-		}
-		
-		$macro .= 'D' if ($delimiter);
-		$macro .= 'S' if ($parserOpt->{'skipper'});
-		$macro .= 'W' if ($parserOpt->{'skipper'} ne $parserOpt->{'skipperLast'});
-		
-		my $params = "$delimiter,$parserOpt->{'skipper'}";
-		
-		my $value = ($parserOpt->{'escapeChar'})
-			? "(-lit($parserOpt->{'escapeChar'}) >> byte_)"
-			: "byte_";
-
-		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
-		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
-		$macro .= "($operator,$value,$params)";
-		$macro .= ')' if ($quotedOptStrings);
-	}
-	
-	if ($parserOpt->{'base64Mode'}) {
-		$macro = "attr_cast<SPL::blob,iterator_range<charPtr> >($macro)" if ($op eq 'as_blob');
-		$macro = "attr_cast<std::string,iterator_range<charPtr> >($macro)" if ($op eq 'as_string');
-	}
-	
-	return $macro;
 }
 
 1;

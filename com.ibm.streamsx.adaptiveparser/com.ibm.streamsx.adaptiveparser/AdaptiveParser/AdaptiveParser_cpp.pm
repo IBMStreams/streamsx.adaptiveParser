@@ -14,7 +14,13 @@ sub main::generate($$) {
    use AdaptiveParserCommon;
    
    my $inputPort = $model->getInputPortAt(0);
-   my $outputPort2 = $model->getOutputPortAt(1) if ($model->getNumberOfOutputPorts() > 1) ;
+   my $lastOutputPortNum = $model->getNumberOfOutputPorts() - 1;
+   my $errorPortExists = $inputPort->getCppTupleType() eq $model->getOutputPortAt($lastOutputPortNum)->getCppTupleType();
+   my $lastDataPortNum = $errorPortExists ? $lastOutputPortNum -1 : $lastOutputPortNum;
+   
+   if ($errorPortExists && $lastOutputPortNum == 0) {
+   	SPL::CodeGen::exitln("There is only 1 output port defined and it's identical for the input port - specify data output port", $inputPort->getSourceLocation());
+   }
    
    my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
    my $parsingMode = ($_ = $model->getParameterByName('parsingMode')) ? $_->getValueAt(0)->getSPLExpression() : 'full';
@@ -50,8 +56,6 @@ sub main::generate($$) {
    	}
    }
    
-   SPL::CodeGen::exitln("Error output port and input port schemas must match", $inputPort->getSourceLocation()) if($outputPort2 && $inputPort->getCppTupleType() ne $outputPort2->getCppTupleType());
-   
    my $oTupleName = 'oport0';
    my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
    my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
@@ -60,30 +64,17 @@ sub main::generate($$) {
    # [----- perl code -----]
    print "\n";
    print "\n";
-   print 'MY_OPERATOR_SCOPE::MY_OPERATOR::MY_OPERATOR() : tupleParser() {}', "\n";
+   print 'MY_OPERATOR_SCOPE::MY_OPERATOR::MY_OPERATOR() : ';
+   print  join ',', map { "tupleParser$_(new TupleParserGrammar$_<charPtr,MY_OPERATOR>(*this))" } (0..$lastDataPortNum) ;
+   print ' {}', "\n";
    print 'MY_OPERATOR_SCOPE::MY_OPERATOR::~MY_OPERATOR() {}', "\n";
    print "\n";
    print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::allPortsReady() {}', "\n";
    print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::prepareToShutdown() {}', "\n";
    print "\n";
-   print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {', "\n";
-   print "\n";
-   print '	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);', "\n";
-   print "\n";
-   print '	charPtr iter_start;', "\n";
-   print '	charPtr iter_end;', "\n";
+   print 'template<typename OTuple, typename TupleParser>', "\n";
+   print 'inline bool MY_OPERATOR_SCOPE::MY_OPERATOR::parse(OTuple & otuple, TupleParser const& tupleParser, uint32_t port, charPtr iter_start, charPtr iter_end) {', "\n";
    print '	', "\n";
-   print '	setInputIterators(';
-   print $dataAttrCppValue;
-   print ', iter_start, iter_end);', "\n";
-   print "\n";
-   if ($batch) {
-   print "\n";
-   print '	while(iter_start < iter_end) {', "\n";
-   }
-   print "\n";
-   print '		OPort0Type otuple;', "\n";
-   print "\n";
    if (@passAttrs) {
    	foreach my $attrName (@passAttrs) {
    print "\n";
@@ -97,31 +88,94 @@ sub main::generate($$) {
    }
    print "\n";
    print '		', "\n";
+   print '		bool parsed = false;', "\n";
    print '		bool isCommented = false;', "\n";
-   print '		bool parsed = qi::parse(iter_start, iter_end, tupleParser(ref(isCommented)), otuple);', "\n";
+   print '		', "\n";
+   print '		parsed = qi::parse(iter_start, iter_end, (*tupleParser)(ref(isCommented)), otuple);', "\n";
    print "\n";
-   print '		if(!isCommented) {', "\n";
+   print '		if(isCommented) {', "\n";
+   print '			parsed = true;', "\n";
+   print '		}', "\n";
+   print '		else {', "\n";
    print '			if(!parsed ';
    print $batch || ($parsingMode eq 'partial') ? '' : '|| iter_start != iter_end';
    print ') {', "\n";
-   print '				';
-   if ($model->getNumberOfOutputPorts() > 1) {
+   print '				parsed = false;', "\n";
+   print '				', "\n";
+   print '			';
+   unless ($errorPortExists) {
    print "\n";
-   print '					submit(tuple, 1);', "\n";
-   print '				';
-   }
-   				else {
-   print "\n";
+   print '				if(port == ';
+   print $lastDataPortNum;
+   print ') {', "\n";
    print '					SPLAPPLOG(L_ERROR, "Parsing did not complete successfully", "PARSE");', "\n";
-   print '					submit(otuple, 0);', "\n";
-   print '				';
+   print '					submit(otuple, port);', "\n";
+   print '				}', "\n";
+   print '			';
    }
    print "\n";
    print '			}', "\n";
    print '			else {', "\n";
-   print '				submit(otuple, 0);', "\n";
+   print '				submit(otuple, port);', "\n";
+   print '				parsed = true;', "\n";
    print '			}', "\n";
    print '		}', "\n";
+   print '		return parsed;', "\n";
+   print '}', "\n";
+   print "\n";
+   print 'void MY_OPERATOR_SCOPE::MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {', "\n";
+   print "\n";
+   print '	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);', "\n";
+   print "\n";
+   print '	charPtr iter_start;', "\n";
+   print '	charPtr iter_end;', "\n";
+   print '	', "\n";
+   if ($batch) {
+   print "\n";
+   print '	while(iter_start < iter_end) {', "\n";
+   }
+   print "\n";
+   print "\n";
+   print '	bool parsed = false;', "\n";
+   print "\n";
+   print '	for(int i = 0; i <= ';
+   print $lastDataPortNum;
+   print ' && !parsed; i++) {', "\n";
+   print '		setInputIterators(';
+   print $dataAttrCppValue;
+   print ', iter_start, iter_end);', "\n";
+   print '	', "\n";
+   print '		switch(i) {', "\n";
+   print '		';
+   foreach my $i (0..$lastDataPortNum) {
+   print "\n";
+   print '			case ';
+   print $i;
+   print ': {', "\n";
+   print '				oport';
+   print $i;
+   print ' otuple;', "\n";
+   print '				parsed = parse(otuple, tupleParser';
+   print $i;
+   print ', i, iter_start, iter_end);', "\n";
+   print '				break;', "\n";
+   print '			}', "\n";
+   print '		';
+   }
+   print "\n";
+   print '		}', "\n";
+   print '	}', "\n";
+   print '	', "\n";
+   if ($errorPortExists) {
+   print "\n";
+   print '	if(!parsed) {', "\n";
+   print '		submit(iport$0, ';
+   print $lastOutputPortNum;
+   print ');', "\n";
+   print '	}', "\n";
+   }
+   print "\n";
+   print "\n";
    if ($batch) {
    print "\n";
    print '	}', "\n";

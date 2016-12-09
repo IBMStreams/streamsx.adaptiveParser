@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.1.0.0" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.0.1" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.adaptiveparser" requiredProductVersion="4.0.0" version="2.0.0.3">
+  <toolkit name="com.ibm.streamsx.adaptiveparser" requiredProductVersion="4.0.0" version="2.1">
     <description/>
     <uriTable>
       <uri index="2" value="com.ibm.streamsx.adaptiveparser/AdaptiveParser"/>
@@ -27,6 +27,13 @@ AdaptiveParser operator has two custom output functions:
           <value name="tab"/>
           <value name="whitespace"/>
         </customLiterals>
+        <customLiterals name="Schemes">
+          <value name="firstTypePaired"/>
+          <value name="openAttrNamePaired"/>
+          <value name="openTypeOrdered"/>
+          <value name="openTypeUnordered"/>
+          <value name="strictTypeOrdered"/>
+        </customLiterals>
         <outputFunctions name="AdaptiveParserFS">
           <function name="AsIs" returnType="T">
             <description/>
@@ -40,6 +47,12 @@ AdaptiveParser operator has two custom output functions:
           </function>
           <function name="Param" returnType="A">
             <description/>
+            <prototype>&lt;any A, tuple T&gt; A Param(enum{_} options, T deepOptions)</prototype>
+            <parameter name="options" type="enum { _ }"/>
+            <parameter name="deepOptions" type="T"/>
+          </function>
+          <function name="Param" returnType="A">
+            <description/>
             <prototype>&lt;any A, tuple T1, tuple T2&gt; A Param(T1 options, T2 deepOptions)</prototype>
             <parameter name="options" type="T1"/>
             <parameter name="deepOptions" type="T2"/>
@@ -48,6 +61,12 @@ AdaptiveParser operator has two custom output functions:
             <description/>
             <prototype>&lt;tuple T&gt; boolean ParamN(T options)</prototype>
             <parameter name="options" type="T"/>
+          </function>
+          <function name="ParamN" returnType="boolean">
+            <description/>
+            <prototype>&lt;tuple T&gt; boolean ParamN(enum{_} options, T deepOptions)</prototype>
+            <parameter name="options" type="enum { _ }"/>
+            <parameter name="deepOptions" type="T"/>
           </function>
           <function name="ParamN" returnType="boolean">
             <description/>
@@ -78,7 +97,7 @@ AdaptiveParser operator has two custom output functions:
         <parameter cardinality="1" expressionMode="Constant" name="comment" optional="true" type="rstring">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Constant" name="globalAttrNameAsPrefix" optional="true" type="boolean">
+        <parameter cardinality="1" expressionMode="Expression" name="explain" optional="true">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="globalAttrNameQuoted" optional="true" type="boolean">
@@ -94,6 +113,12 @@ AdaptiveParser operator has two custom output functions:
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="CustomLiteral" name="globalSkipper" optional="true" type="Skippers">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="CustomLiteral" name="globalTupleScheme" optional="true" type="Schemes">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="CustomLiteral" name="tupleScheme" optional="true" type="Schemes">
           <description/>
         </parameter>
         <parameter cardinality="1" expressionMode="Constant" name="startFrom" optional="true" type="rstring">
@@ -138,23 +163,27 @@ AdaptiveParser operator has two custom output functions:
         <parameter cardinality="-1" expressionMode="Constant" name="undefined" optional="true" type="rstring">
           <description/>
         </parameter>
-        <parameter cardinality="1" expressionMode="Expression" name="explain" optional="true">
+        <parameter cardinality="1" expressionMode="Constant" name="skipCountAfter" optional="true" type="uint32">
+          <description/>
+        </parameter>
+        <parameter cardinality="1" expressionMode="Constant" name="skipCountBefore" optional="true" type="uint32">
           <description/>
         </parameter>
         <inputPort maxNumPorts="1" minNumPorts="1" optional="false" windowPunctInputMode="Oblivious">
           <description/>
           <windowPolicy>NonWindowed</windowPolicy>
         </inputPort>
-        <outputPort expressionMode="AttributeFree" maxNumPorts="1" minNumPorts="1" optional="false" windowPunctOutputMode="Preserving">
+        <inputPort maxNumPorts="1" minNumPorts="1" optional="true" windowPunctInputMode="Oblivious">
           <description/>
-        </outputPort>
-        <outputPort expressionMode="Expression" maxNumPorts="1" minNumPorts="1" optional="true" windowPunctOutputMode="Preserving">
+          <windowPolicy>NonWindowed</windowPolicy>
+        </inputPort>
+        <outputPort expressionMode="AttributeFree" minNumPorts="0" optional="true" windowPunctOutputMode="Preserving">
           <description/>
         </outputPort>
       </primitiveOp>
-      <compositeOp column="18" line="3" name="Skipper" potentialMain="true" public="true" uriIndex="1">
-        <type column="10" line="5" name="Skippers" static="true" type="enum { none, blank, control, endl, punct, tab, whitespace }" uriIndex="1"/>
-        <enumLiterals column="26" line="5" static="true" typeName="Skippers" uriIndex="1">
+      <compositeOp column="18" line="5" name="Skipper" potentialMain="true" public="true" uriIndex="1">
+        <type column="10" line="7" name="Skippers" static="true" type="enum { none, blank, control, endl, punct, tab, whitespace }" uriIndex="1"/>
+        <enumLiterals column="26" line="7" static="true" typeName="Skippers" uriIndex="1">
           <enum>none</enum>
           <enum>blank</enum>
           <enum>control</enum>
@@ -164,6 +193,20 @@ AdaptiveParser operator has two custom output functions:
           <enum>whitespace</enum>
         </enumLiterals>
       </compositeOp>
+      <compositeOp column="18" line="10" name="TupleScheme" potentialMain="true" public="true" uriIndex="1">
+        <type column="10" line="12" name="Schemes" static="true" type="enum { firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered }" uriIndex="1"/>
+        <enumLiterals column="25" line="12" static="true" typeName="Schemes" uriIndex="1">
+          <enum>firstTypePaired</enum>
+          <enum>openAttrNamePaired</enum>
+          <enum>openTypeOrdered</enum>
+          <enum>openTypeUnordered</enum>
+          <enum>strictTypeOrdered</enum>
+        </enumLiterals>
+      </compositeOp>
+      <type column="6" line="3" name="Anonymous" static="true" type="enum { _ }" uriIndex="1"/>
+      <enumLiterals column="23" line="3" typeName="Anonymous" uriIndex="1">
+        <enum>_</enum>
+      </enumLiterals>
     </namespace>
     <sabFiles>
       <ti:include path="toolkit.xml" root="toolkitDir"/>
