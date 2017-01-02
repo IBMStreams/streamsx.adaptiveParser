@@ -115,6 +115,7 @@ void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 		<%foreach my $i (0..$lastDataPortNum) {%>
 			case <%=$i%>: {
 				oport<%=$i%> otuple;
+				tupleParser<%=$i%> ->setDefaultValues(otuple);
 				parsed = parse(otuple, tupleParser<%=$i%>, i, iter_start, iter_end);
 				break;
 			}

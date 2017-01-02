@@ -72,18 +72,18 @@ public:
   void process(Tuple const & tuple, uint32_t port);
   void process(Punctuation const & punct, uint32_t port);
 
-  inline void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {
+private:
+  
+  void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {
 	iter_start = reinterpret_cast<charPtr>(raw.getData());
 	iter_end = reinterpret_cast<charPtr>(raw.getData() + raw.getSize());
   }
   
-  inline void setInputIterators(const std::string & row, charPtr & iter_start, charPtr & iter_end) {
+  void setInputIterators(const std::string & row, charPtr & iter_start, charPtr & iter_end) {
 	iter_start = row.data();
 	iter_end = iter_start + row.size();
   }
 
-private:
-  
   <%foreach my $i (0..$lastDataPortNum)	{%>
   	streams_boost::scoped_ptr<TupleParserGrammar<%=$i%><charPtr,MY_OPERATOR> > tupleParser<%=$i%>;
   <%}%> 
@@ -101,14 +101,14 @@ foreach my $i (0..$lastDataPortNum)	{
 my $oTupleCppType = "oport$i";
 my $oTupleSplType = $model->getOutputPortAt($i)->getSPLTupleType();
 my $oTupleSrcLocation = $model->getOutputPortAt($i)->getSourceLocation();
-my $structs = [];
 
 my $oAttrParams = $model->getOutputPortAt($i);
 
 our %stateVars = map { (split /\$/, $_->getName())[-1] => [$_->getName(), $_->getCppType(), $_->getSPLType()] } @{$model->getContext()->getStateVariables()};
-
+my @states = keys %stateVars;
+		
 my $STREAMS_FUSION_MAX_VECTOR_SIZE = 10;
-AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
+AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $Types::structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
 
 SPL::CodeGen::errorln("More than 50 attributes on the same level of tuple is not supported", $oTupleSrcLocation)  if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 50);
 # [----- perl code -----]%>
@@ -130,11 +130,13 @@ using namespace ::ext;
 
 template <typename Iterator, typename MY_OP>
 struct TupleParserGrammar<%=$i%> : qi::grammar<Iterator, oport<%=$i%>(bool&)> {
-    TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) {
+	typedef TupleParserGrammar<%=$i%><Iterator,MY_OP> TPG;
+
+    TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) <%=map {", $stateVars{$_}->[0](_op.$stateVars{$_}->[0])"} @states%> {
 
 <%# [----- perl code -----]
 
-for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+for my $symbols (values %{$Types::structs->[-1]->{'symbols'}}) {
 print qq(
 		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} @{[values %{$symbols->{'enumAliasesMap'}}]};
 );
@@ -151,17 +153,7 @@ print qq(
 
 }
 
-#for my $state (keys %stateVars) {
-#	my $cppCode = $stateVars{$state}->[0];
-#	my $cppType = $stateVars{$state}->[1];
-#	my $splType = $stateVars{$state}->[2];
-#	my $parseToState = Types::getPrimitiveValue($oTupleSrcLocation, $cppType, $splType, $structs, $parserOpt);
-#print qq(
-#		$state = $parseToState\[ref(op.$cppCode) = _1];
-#);
-#}
-
-foreach my $struct (@{$structs}) {
+foreach my $struct (@{$Types::structs}) {
 if (scalar %{$struct}) {
 	my $operator = $struct->{'tupleScheme'};
 	my $eq =  $operator eq '|' ? '=' : '%=';
@@ -188,9 +180,6 @@ print qq(
 }
 # [----- perl code -----]%>
 
-//	timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
-//	timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
-
     	<%=$baseRule%>.name("oport<%=$i%>");
 
 //		on_error<fail> (<%=$baseRule%>, std::cout
@@ -208,16 +197,18 @@ print qq(
 	if(<%=$explain%>)
 		qi::debug(<%=$baseRule%>);
 <%}%>
+	
+    }
 
+    void setDefaultValues(<%=$oTupleCppType%> & otuple) {
+    	<%=@{$Types::structs->[-1]->{'defaults'}}%>
     }
 
 private:
 
-    MY_OP & op;
+	MY_OP & op;
 //	qi::real_parser<double, qi::strict_ureal_policies<double> > double_;
 //	qi::real_parser<float, qi::strict_ureal_policies<float> > float_;
-//	qi::rule<Iterator,  ts(std::string)> timestamp;
-//	qi::rule<Iterator,  ts()> timestampS;
 	qi::int_parser<unsigned char, 16, 2, 2> hex2;
 
 	boolean_ boolean;
@@ -225,20 +216,27 @@ private:
 	qi::symbols<char, qi::unused_type> undefined;
     
 <%# [----- perl code -----]
+    
+for my $state (@states) {
+print qq(
+	$stateVars{$state}->[1] & $stateVars{$state}->[0];
+);
+}
 
-for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
+my $cppExprs = $Types::structs->[-1]->{'cppExprs'};
+for my $cppExpr (keys %{$cppExprs}) {
+print qq(
+    STREAMS_BOOST_TYPEOF($cppExprs->{$cppExpr}[1]) $cppExpr() { return $cppExprs->{$cppExpr}[1]; }
+);
+}
+
+for my $symbols (values %{$Types::structs->[-1]->{'symbols'}}) {
 print qq(
 	qi::symbols<char, $symbols->{'enumType'}> $symbols->{'enumName'};
 );
 }
 
-#for my $state (keys %stateVars) {
-#print qq(
-#	qi::rule<Iterator> $state;
-#);
-#}
-
-foreach my $struct (@{$structs}) {
+foreach my $struct (@{$Types::structs}) {
 	if (scalar %{$struct} && $struct->{'cppType'} ne "oport$i") {
 print qq(
 	qi::rule<Iterator, $struct->{'cppType'}()> $struct->{'ruleName'};
@@ -252,42 +250,9 @@ print qq(
 };
 
 <%# [----- perl code -----]
-if (defined($structs->[-1]->{'enum'})) {
-	my @enumDefs = values %{$structs->[-1]->{'enum'}};
-	
-	foreach my $cppType (@enumDefs) {
-print qq(
-//	namespace streams_boost { namespace spirit { namespace traits {
-//	template <typename Iterator>
-//	struct assign_to_attribute_from_iterators<$cppType, Iterator> {
-//		static void call(Iterator const& first, Iterator const& last, $cppType & attr) {
-//			const std::string enumValue(first,last);
-//			if(attr.isValidValue(enumValue)) {
-//				attr = enumValue;
-//			}
-//			else {
-//				SPLAPPLOG(L_ERROR, enumValue << " is not part of $cppType enum.", "AdaptiveParser");
-//			}
-//		}
-//	};
-	
-//	template <>
-//	struct assign_to_attribute_from_value<std::string, $cppType> {
-//		static void call(std::string & enumValue, $cppType & attr) {
-//			std::cout << enumValue << std::endl;
-//			if(attr.isValidValue(enumValue)) {
-//				attr = enumValue;
-//			}
-//		}
-//	};
-//	}}}
-);
-	}
 
-}
-
-if (defined($structs->[-1]->{'xml'})) {
-	my @xmlDefs = values %{$structs->[-1]->{'xml'}};
+if (defined($Types::structs->[-1]->{'xml'})) {
+	my @xmlDefs = values %{$Types::structs->[-1]->{'xml'}};
 	
 	foreach my $cppType (@xmlDefs) {
 print qq(
@@ -304,9 +269,9 @@ print qq(
 
 }
 
-if (defined($structs->[-1]->{'tuple1'})) {
-	my @splTupleDefs = keys %{$structs->[-1]->{'tuple1'}};
-	my @cppTupleDefs = values %{$structs->[-1]->{'tuple1'}};
+if (defined($Types::structs->[-1]->{'tuple1'})) {
+	my @splTupleDefs = keys %{$Types::structs->[-1]->{'tuple1'}};
+	my @cppTupleDefs = values %{$Types::structs->[-1]->{'tuple1'}};
 	
 	for (my $i = 0; $i < @splTupleDefs; $i++) {
 		my $splAttrName = (Type::getAttributeNames($splTupleDefs[$i]))[0];
@@ -328,7 +293,7 @@ print qq(
 
 }
 
-foreach my $struct (@{$structs}) {
+foreach my $struct (@{$Types::structs}) {
 print qq(
 	$struct->{'traits'}
 	$struct->{'extension'}

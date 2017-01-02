@@ -3,6 +3,24 @@ package Spirit;
 use strict;
 use warnings;
 
+sub cppExpr_wrap(@) {
+	my ($adapt, $cppType, $paramName, $value) = @_;
+
+	my $func = "$cppType\_$paramName";
+	$func =~ s/::/_/g;
+	$adapt->{'cppExprs'}->{$func}[0] = $cppType;
+	$adapt->{'cppExprs'}->{$func}[1] = $value;
+	return "bind(&TPG::$func, this)";
+}
+
+sub defaults_setValue(@) {
+	my ($adapt, $cppType, $value) = @_;
+
+	(my $setExpr = $cppType) =~ s/^.*?::/otuple::/;
+	$setExpr =~ s/::(.*?)_type/.get_${1}()/g;
+	push $adapt->{'defaults'}, "$setExpr = $value;\n\t\t";
+}
+
 sub symbols_defEnum(@) {
 	my ($adapt, $cppType, $splType, $enumAliasesMap) = @_;
 

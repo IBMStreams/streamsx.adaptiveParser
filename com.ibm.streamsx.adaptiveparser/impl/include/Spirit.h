@@ -26,7 +26,9 @@
 #include <streams_boost/spirit/repository/include/qi_kwd.hpp>
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include <streams_boost/type_traits/is_same.hpp>
+#include <streams_boost/typeof/typeof.hpp>
 #include <streams_boost/variant.hpp>
+//#include <streams_boost/xpressive/xpressive.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -314,16 +316,6 @@ namespace streams_boost { namespace spirit {
 
 namespace streams_boost { namespace spirit { namespace qi {
 
-//	template <typename RangeSkipper, typename Subject, typename Modifiers>
-//    struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
-//        typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
-//        typedef ext::reparse_parser<Subject, rangeSkipper_type> result_type;
-//
-//        result_type operator()(unused_type, Subject const& subject, unused_type) const {
-//            return result_type(subject);
-//        }
-//    };
-
 	template <typename RangeSkipper, typename Subject, typename Modifiers>
     struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
         typedef typename result_of::compile<qi::domain, RangeSkipper, Modifiers>::type rangeSkipper_type;
@@ -441,6 +433,13 @@ namespace streams_boost { namespace spirit { namespace traits {
 //	    }
 //	};
 
+	template <typename Iterator>
+	struct assign_to_attribute_from_iterators<SPL::rstring, Iterator> {
+	    static void call(Iterator const& first, Iterator const& last, SPL::rstring & attr) {
+			attr = SPL::rstring(first,last);
+	    }
+	};
+
 	template <typename Iterator, int N>
 	struct assign_to_attribute_from_iterators<SPL::bstring<N>, Iterator> {
 	    static void call(Iterator const& first, Iterator const& last, SPL::bstring<N> & attr) {
@@ -514,22 +513,8 @@ namespace streams_boost { namespace spirit { namespace traits {
         }
     };
 
-//	template <typename Attr, typename Val>
-//	struct transform_attribute<Attr, Val, qi::domain, typename enable_if< typename is_base_of<SPL::Tuple, Attr>::value>::type>
-////	struct transform_attribute<iterator_range<base64Iter>, iterator_range<charPtr>, qi::domain>
-//	{
-//		typedef Val type;
-//		typedef Val const& const_type;
-//		typedef Attr & typeToCast;
-//
-//		static type pre(typeToCast d) { return type(); }
-//		static void post(typeToCast, const_type) {}
-//		static void fail(typeToCast) {}
-//	};
-
 	template <typename Attr>
 	struct transform_attribute<Attr, iterator_range<charPtr>, qi::domain>
-//	struct transform_attribute<iterator_range<base64Iter>, iterator_range<charPtr>, qi::domain>
 	{
 		typedef iterator_range<charPtr> type;
 		typedef iterator_range<charPtr> const& const_type;
@@ -549,11 +534,6 @@ namespace streams_boost { namespace spirit { namespace traits {
 		}
 		static void fail(typeToCast) {}
 	};
-
-//	template <>
-//	struct strip_single_element_vector<fusion::vector1<char> > {
-//		typedef fusion::vector1<char> type;
-//	};
 }}}
 
 #endif /* SPIRIT_H_ */

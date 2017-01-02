@@ -5,6 +5,8 @@ use warnings;
 
 $Data::Dumper::Indent = 0;
 
+our $structs = [];
+
 our @inheritedParams = (
 	'allowEmpty',
 	'binaryMode',
@@ -32,6 +34,7 @@ our @inheritedParams = (
 );
 
 our %allowedParams = (
+	defaultValue => 'attr',
 	base64Mode => 'boolean',
 	binaryMode => 'boolean',
 	bounded => 'boolean',
@@ -126,6 +129,33 @@ sub getStringValue($) {
 	return ($str eq '""' ? '' : $str);
 }
 
+sub getCppExpr($) {
+	my ($expr) = @_;
+	
+	if ($expr->isExpressionLiteral()) {
+		my $cppExpr = SPL::Operator::Instance::ExpressionTreeCppGenVisitor->new();
+		$cppExpr->visit($expr->getExpression());
+		return $cppExpr->getCppCode();
+	}
+	else {
+		return $expr->getCppCode();
+	}
+}
+
+sub getFormattedValue($) {
+	my ($value) = @_;
+	
+	unless (ref($value)) {
+		return $value;
+	}
+	elsif (ref($value) eq "ARRAY") {
+		return join(',', @{$value});
+	}
+	else {
+		return Dumper($value);
+	}
+}
+
 sub getStringMacro(@) {
 	my ($parserOpt, $op, $quotedStrings, $quotedOptStrings) = @_;
 	my $macro = 'STR_';
@@ -197,7 +227,7 @@ sub getPrimitiveValue(@) {
 	elsif(Type::isBString($splType)) {
 		my $bound = Type::getBound($splType);
 		
-		$value = "raw[repeat($bound)[char_]]";
+		$value = "raw[repeat($bound)[byte_]]";
 		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
 		
 	}
