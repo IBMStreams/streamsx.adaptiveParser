@@ -5,8 +5,6 @@ use warnings;
 
 $Data::Dumper::Indent = 0;
 
-our $structs = [];
-
 our @inheritedParams = (
 	'allowEmpty',
 	'binaryMode',
@@ -61,6 +59,7 @@ our %allowedParams = (
 	cutStringDelim => 'rstring',
 	cutSkipper => 'Skipper.Skippers',
 	parseToState => 'rstring',
+	regexFilter => 'rstring',
 	prefix => 'rstring',
 	suffix => 'rstring',
 	listPrefix => 'rstring',
@@ -203,8 +202,9 @@ sub getStringMacro(@) {
 	}
 	
 	if ($parserOpt->{'base64Mode'}) {
-		$macro = "attr_cast<SPL::blob,iterator_range<charPtr> >($macro)" if ($op eq 'as_blob');
-		$macro = "attr_cast<std::string,iterator_range<charPtr> >($macro)" if ($op eq 'as_string');
+		#$macro = "attr_cast<SPL::blob,iterator_range<charPtr> >($macro)" if ($op eq 'as_blob');
+		#$macro = "attr_cast<std::string,iterator_range<charPtr> >($macro)" if ($op eq 'as_string');
+		$macro = "base64[$macro]";
 	}
 	
 	return $macro;

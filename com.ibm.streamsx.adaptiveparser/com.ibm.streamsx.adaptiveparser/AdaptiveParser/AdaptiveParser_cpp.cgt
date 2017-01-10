@@ -46,14 +46,13 @@ if (@passAttrs) {
 	}
 }
 
-my $oTupleName = 'oport0';
 my $oTupleCppType = $model->getOutputPortAt(0)->getCppTupleType();
 my $oTupleSplType = $model->getOutputPortAt(0)->getSPLTupleType();
 my $oTupleSrcLocation = $model->getOutputPortAt(0)->getSourceLocation();
 
 # [----- perl code -----]%>
 
-MY_OPERATOR::MY_OPERATOR() : <%= join ',', map { "tupleParser$_(new TupleParserGrammar$_<charPtr,MY_OPERATOR>(*this))" } (0..$lastDataPortNum) %> {}
+MY_OPERATOR::MY_OPERATOR() : <%= join ',', map { "tupleParser$_(new TupleParserGrammar$_<charPtr, MY_OPERATOR>(*this))" } (0..$lastDataPortNum) %> {}
 MY_OPERATOR::~MY_OPERATOR() {}
 
 void MY_OPERATOR::allPortsReady() {}
@@ -115,7 +114,7 @@ void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 		<%foreach my $i (0..$lastDataPortNum) {%>
 			case <%=$i%>: {
 				oport<%=$i%> otuple;
-				tupleParser<%=$i%> ->setDefaultValues(otuple);
+				setDefaultValues(otuple);
 				parsed = parse(otuple, tupleParser<%=$i%>, i, iter_start, iter_end);
 				break;
 			}

@@ -46,14 +46,42 @@ $parserOpt->{'undefined'} = $model->getParameterByName('undefined');
 my $lastOutputPortNum = $model->getNumberOfOutputPorts() - 1;
 my $errorPortExists = $model->getInputPortAt(0)->getCppTupleType() eq $model->getOutputPortAt($lastOutputPortNum)->getCppTupleType();
 my $lastDataPortNum = $errorPortExists ? $lastOutputPortNum -1 : $lastOutputPortNum;
+my $operatorDefined = 0;
 
+foreach my $i (0..$lastDataPortNum)	{
+
+my $oTupleCppType = "oport$i";
+my $oTupleSplType = $model->getOutputPortAt($i)->getSPLTupleType();
+my $oTupleSrcLocation = $model->getOutputPortAt($i)->getSourceLocation();
+
+my $oAttrParams = $model->getOutputPortAt($i);
+
+our %stateVars = map { (split /\$/, $_->getName())[-1] => [$_->getName(), $_->getCppType(), $_->getSPLType()] } @{$model->getContext()->getStateVariables()};
+my @states = keys %stateVars;
+
+my $structs = [];
+my $STREAMS_FUSION_MAX_VECTOR_SIZE = 10;
+AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
+
+SPL::CodeGen::errorln("More than 50 attributes on the same level of tuple is not supported", $oTupleSrcLocation)  if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 50);
 # [----- perl code -----]%>
 
+#define STREAMS_FUSION_MAX_VECTOR_SIZE <%=$STREAMS_FUSION_MAX_VECTOR_SIZE%>
+//#define STREAMS_BOOST_FUSION_DONT_USE_PREPROCESSED_FILES
+
+<% if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 20) {%>
+#define STREAMS_BOOST_MPL_LIMIT_LIST_SIZE <%=int($STREAMS_FUSION_MAX_VECTOR_SIZE / 10 + 0.99)*10%>
+#define STREAMS_BOOST_MPL_LIMIT_VECTOR_SIZE STREAMS_BOOST_MPL_LIMIT_LIST_SIZE
+#define STREAMS_BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
+<%}%>
+
+#include "Spirit.h"
+
+<%unless ($operatorDefined) { $operatorDefined = 1;%>
 
 <%foreach my $i (0..$lastDataPortNum) {%>
   template <typename Iterator, typename MY_OP> struct TupleParserGrammar<%=$i%>;
 <%}%>
-
 
 <%SPL::CodeGen::headerPrologue($model);%>
 
@@ -71,9 +99,36 @@ public:
   bool parse(OTuple & otuple, TupleParser const& tupleParser, uint32_t port, charPtr iter_start, charPtr iter_end);
   void process(Tuple const & tuple, uint32_t port);
   void process(Punctuation const & punct, uint32_t port);
+  
+  template<typename OTuple>
+  void setDefaultValues(OTuple & otuple) {
+	  <%=@{$structs->[-1]->{'defaults'}}%>
+  }
+
+<%# [----- perl code -----]
+  my $cppExprs = $structs->[-1]->{'cppExprs'};
+  for my $cppExpr (keys %{$cppExprs}) {
+  print qq(
+	typedef STREAMS_BOOST_TYPEOF(($cppExprs->{$cppExpr})) t_$cppExpr;
+	t_$cppExpr $cppExpr() {
+	  return $cppExprs->{$cppExpr};
+	}
+  );
+  }
+
+  my $regexes = $structs->[-1]->{'regexes'};
+  for my $regex (keys %{$regexes}) {
+  print qq(
+	bool $regex(iterator_range<charPtr> const& range) {
+	  static cregex re = cregex::compile($regexes->{$regex});
+	  return regex_search(range.begin(), range.end(), re);
+	}
+  );
+  }
+# [----- perl code -----]%>
 
 private:
-  
+
   void setInputIterators(const blob & raw, charPtr & iter_start, charPtr & iter_end) {
 	iter_start = reinterpret_cast<charPtr>(raw.getData());
 	iter_end = reinterpret_cast<charPtr>(raw.getData() + raw.getSize());
@@ -84,59 +139,28 @@ private:
 	iter_end = iter_start + row.size();
   }
 
-  <%foreach my $i (0..$lastDataPortNum)	{%>
-  	streams_boost::scoped_ptr<TupleParserGrammar<%=$i%><charPtr,MY_OPERATOR> > tupleParser<%=$i%>;
+  <%foreach my $k (0..$lastDataPortNum)	{%>
+  	streams_boost::scoped_ptr<TupleParserGrammar<%=$k%><charPtr, MY_OPERATOR> > tupleParser<%=$k%>;
   <%}%> 
 }; 
 
 <%SPL::CodeGen::headerEpilogue($model);%>
-
-<%foreach my $i (0..$lastDataPortNum)	{%>
-  typedef <%=$model->getOutputPortAt($i)->getCppTupleType()%> oport<%=$i%>;
-<%}%> 
-
-<%# [----- perl code -----]
-foreach my $i (0..$lastDataPortNum)	{
-
-my $oTupleCppType = "oport$i";
-my $oTupleSplType = $model->getOutputPortAt($i)->getSPLTupleType();
-my $oTupleSrcLocation = $model->getOutputPortAt($i)->getSourceLocation();
-
-my $oAttrParams = $model->getOutputPortAt($i);
-
-our %stateVars = map { (split /\$/, $_->getName())[-1] => [$_->getName(), $_->getCppType(), $_->getSPLType()] } @{$model->getContext()->getStateVariables()};
-my @states = keys %stateVars;
-		
-my $STREAMS_FUSION_MAX_VECTOR_SIZE = 10;
-AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $Types::structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
-
-SPL::CodeGen::errorln("More than 50 attributes on the same level of tuple is not supported", $oTupleSrcLocation)  if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 50);
-# [----- perl code -----]%>
-
-#define STREAMS_FUSION_MAX_VECTOR_SIZE <%=$STREAMS_FUSION_MAX_VECTOR_SIZE%>
-//#define STREAMS_BOOST_FUSION_DONT_USE_PREPROCESSED_FILES
-
-<% if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 20) {%>
-#define STREAMS_BOOST_MPL_LIMIT_LIST_SIZE <%=int($STREAMS_FUSION_MAX_VECTOR_SIZE / 10 + 0.99)*10%>
-#define STREAMS_BOOST_MPL_LIMIT_VECTOR_SIZE STREAMS_BOOST_MPL_LIMIT_LIST_SIZE
-#define STREAMS_BOOST_MPL_CFG_NO_PREPROCESSED_HEADERS
 <%}%>
 
-#include "Spirit.h"
+typedef <%=$model->getOutputPortAt($i)->getCppTupleType()%> oport<%=$i%>;
 
 <%my $baseRule = "oport$i\_base";%>
 
 using namespace ::ext;
-
 template <typename Iterator, typename MY_OP>
 struct TupleParserGrammar<%=$i%> : qi::grammar<Iterator, oport<%=$i%>(bool&)> {
-	typedef TupleParserGrammar<%=$i%><Iterator,MY_OP> TPG;
+//	typedef TupleParserGrammar<%=$i%><Iterator, MY_OP> TPG;
 
-    TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) <%=map {", $stateVars{$_}->[0](_op.$stateVars{$_}->[0])"} @states%> {
+    TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) {
 
 <%# [----- perl code -----]
 
-for my $symbols (values %{$Types::structs->[-1]->{'symbols'}}) {
+for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
 print qq(
 		$symbols->{'enumName'}.add @{$symbols->{'enumValues'}} @{[values %{$symbols->{'enumAliasesMap'}}]};
 );
@@ -153,7 +177,7 @@ print qq(
 
 }
 
-foreach my $struct (@{$Types::structs}) {
+foreach my $struct (@{$structs}) {
 if (scalar %{$struct}) {
 	my $operator = $struct->{'tupleScheme'};
 	my $eq =  $operator eq '|' ? '=' : '%=';
@@ -200,10 +224,6 @@ print qq(
 	
     }
 
-    void setDefaultValues(<%=$oTupleCppType%> & otuple) {
-    	<%=@{$Types::structs->[-1]->{'defaults'}}%>
-    }
-
 private:
 
 	MY_OP & op;
@@ -216,27 +236,14 @@ private:
 	qi::symbols<char, qi::unused_type> undefined;
     
 <%# [----- perl code -----]
-    
-for my $state (@states) {
-print qq(
-	$stateVars{$state}->[1] & $stateVars{$state}->[0];
-);
-}
 
-my $cppExprs = $Types::structs->[-1]->{'cppExprs'};
-for my $cppExpr (keys %{$cppExprs}) {
-print qq(
-    STREAMS_BOOST_TYPEOF($cppExprs->{$cppExpr}[1]) $cppExpr() { return $cppExprs->{$cppExpr}[1]; }
-);
-}
-
-for my $symbols (values %{$Types::structs->[-1]->{'symbols'}}) {
+for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
 print qq(
 	qi::symbols<char, $symbols->{'enumType'}> $symbols->{'enumName'};
 );
 }
 
-foreach my $struct (@{$Types::structs}) {
+foreach my $struct (@{$structs}) {
 	if (scalar %{$struct} && $struct->{'cppType'} ne "oport$i") {
 print qq(
 	qi::rule<Iterator, $struct->{'cppType'}()> $struct->{'ruleName'};
@@ -251,8 +258,8 @@ print qq(
 
 <%# [----- perl code -----]
 
-if (defined($Types::structs->[-1]->{'xml'})) {
-	my @xmlDefs = values %{$Types::structs->[-1]->{'xml'}};
+if (defined($structs->[-1]->{'xml'})) {
+	my @xmlDefs = values %{$structs->[-1]->{'xml'}};
 	
 	foreach my $cppType (@xmlDefs) {
 print qq(
@@ -269,9 +276,9 @@ print qq(
 
 }
 
-if (defined($Types::structs->[-1]->{'tuple1'})) {
-	my @splTupleDefs = keys %{$Types::structs->[-1]->{'tuple1'}};
-	my @cppTupleDefs = values %{$Types::structs->[-1]->{'tuple1'}};
+if (defined($structs->[-1]->{'tuple1'})) {
+	my @splTupleDefs = keys %{$structs->[-1]->{'tuple1'}};
+	my @cppTupleDefs = values %{$structs->[-1]->{'tuple1'}};
 	
 	for (my $i = 0; $i < @splTupleDefs; $i++) {
 		my $splAttrName = (Type::getAttributeNames($splTupleDefs[$i]))[0];
@@ -293,7 +300,7 @@ print qq(
 
 }
 
-foreach my $struct (@{$Types::structs}) {
+foreach my $struct (@{$structs}) {
 print qq(
 	$struct->{'traits'}
 	$struct->{'extension'}
@@ -301,5 +308,4 @@ print qq(
 }
 
 }
-
 # [----- perl code -----]%>

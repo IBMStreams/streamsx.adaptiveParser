@@ -154,11 +154,8 @@ sub buildStructFromTuple(@) {
 	$ruleName = "lit($parserOpt->{'tuplePrefix'}) >> $ruleName" if ($parserOpt->{'tuplePrefix'});
 	$ruleName .= " >> lit($parserOpt->{'tupleSuffix'})" if ($parserOpt->{'tupleSuffix'});
 
-	#$ruleName = "advance($parserOpt->{'skipCountBefore'}) >> $ruleName" if ($parserOpt->{'skipCountBefore'});
-	#$ruleName .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
-
-	$ruleName = "advance( bind(&MY_OP::${\(Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}))}, &op)) >> $ruleName" if ($parserOpt->{'skipCountBefore'});
-	$ruleName .= " >> advance( bind(&MY_OP::${\(Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}))}, &op))" if ($parserOpt->{'skipCountAfter'});
+	$ruleName = 'advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}) .") >> $ruleName" if ($parserOpt->{'skipCountBefore'});
+	$ruleName .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
 
 	if ($parserOpt->{'parseToState'}) {
 		SPL::CodeGen::errorln("State '%s' is not defined", $parserOpt->{'parseToState'}, $srcLocation)
@@ -240,8 +237,8 @@ sub handleListOrSet(@) {
 	$parser = "lit($parserOpt->{'listPrefix'}) >> $parser" if ($parserOpt->{'listPrefix'});
 	$parser .= " >> lit($parserOpt->{'listSuffix'})" if ($parserOpt->{'listSuffix'});
 
-	$parser = "advance($parserOpt->{'skipCountBefore'}) >> $parser" if ($parserOpt->{'skipCountBefore'});
-	$parser .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+	$parser = 'advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}) .") >> $parser" if ($parserOpt->{'skipCountBefore'});
+	$parser .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
 
 	return $parser;
 }
@@ -364,8 +361,8 @@ sub handleMap(@) {
 	$parser = "lit($parserOpt->{'mapPrefix'}) >> $parser" if ($parserOpt->{'mapPrefix'});
 	$parser .= " >> lit($parserOpt->{'mapSuffix'})" if ($parserOpt->{'mapSuffix'});
 
-	$parser = "advance($parserOpt->{'skipCountBefore'}) >> $parser" if ($parserOpt->{'skipCountBefore'});
-	$parser .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
+	$parser = 'advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}) .") >> $parser" if ($parserOpt->{'skipCountBefore'});
+	$parser .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
 
 	return $parser;
 }
@@ -383,14 +380,13 @@ sub handlePrimitive(@) {
 	
 	my $value = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
 	
+	$value = "($value)[_pass = ". Spirit::regex_defExpr($structs->[-1], $cppType, $parserOpt->{'regexFilter'}) .']' if ($parserOpt->{'regexFilter'});
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "($value | as<$cppType>()[eps])" if ($parserOpt->{'allowEmpty'});
 	$value = "lit($parserOpt->{'prefix'}) >> $value" if ($parserOpt->{'prefix'});
 	$value .= " >> lit($parserOpt->{'suffix'})" if ($parserOpt->{'suffix'});
 	$value .= " >> -lit($parserOpt->{'delimiter'})" if ($parserOpt->{'delimiter'});
 	$value = "-($value)" if ($parserOpt->{'optional'});
-	#$value = "advance($parserOpt->{'skipCountBefore'}) >> $value" if ($parserOpt->{'skipCountBefore'});
-	#$value .= " >> advance($parserOpt->{'skipCountAfter'})" if ($parserOpt->{'skipCountAfter'});
 
 	$value = 'advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}) .") >> $value" if ($parserOpt->{'skipCountBefore'});
 	$value .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
@@ -398,8 +394,6 @@ sub handlePrimitive(@) {
 	if ($parserOpt->{'parseToState'}) {
 		(my $state = $parserOpt->{'parseToState'}) =~ tr/\"//d;
 		SPL::CodeGen::errorln("State '%s' is not defined", $state, $srcLocation) unless (exists($AdaptiveParser_h::stateVars{$state}));
-
-		#$value = "$state >> $value";
 
 		my $cppCode = $AdaptiveParser_h::stateVars{$state}->[0];
 		my $cppType = $AdaptiveParser_h::stateVars{$state}->[1];
@@ -469,7 +463,7 @@ sub setParserCustOpt(@) {
 										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), Types::getFormattedValue($expectedType), $srcLocation)
 					unless ($paramAttrVals->[$k]->getType() ~~ [$expectedType]);
 	
-				if ($expectedAttrs->{$paramAttrNames->[$k]} eq 'attr' || $paramAttrNames->[$k] ~~ ['skipCountAfter','skipCountBefore']) {
+				if ($expectedAttrs->{$paramAttrNames->[$k]} eq 'attr' || $paramAttrNames->[$k] ~~ ['regexFilter','skipCountAfter','skipCountBefore']) {
 					#SPL::CodeGen::errorln("Side effected expressions are not supported.", $srcLocation)
 						#if ($paramAttrVals->[$k]->isExpressionLiteral() && $paramAttrVals->[$k]->getExpression()->hasSideEffects());
 						

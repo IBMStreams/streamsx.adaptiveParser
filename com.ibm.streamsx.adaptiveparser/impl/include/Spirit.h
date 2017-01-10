@@ -1,8 +1,8 @@
 #ifndef SPIRIT_H_
 #define SPIRIT_H_
 
-#define as_blob (as<SPL::blob>())
-#define as_base64 (as<iterator_range<base64Iter> >())
+//#define as_blob (as<SPL::blob>())
+//#define as_base64 (as<iterator_range<base64Iter> >())
 
 #define STR_(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - eoi)])
 #define STR_W(OP,VALUE,DELIM,SKIPPER) (no_skip[OP[*(VALUE - eoi)]])
@@ -13,6 +13,7 @@
 #define STR_DS(OP,VALUE,DELIM,SKIPPER) (OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])])
 #define STR_DSW(OP,VALUE,DELIM,SKIPPER) (skip(SKIPPER)[OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
+#include <streams_boost/preprocessor/cat.hpp>
 #include <streams_boost/algorithm/string/trim.hpp>
 #include <streams_boost/archive/iterators/binary_from_base64.hpp>
 #include <streams_boost/archive/iterators/transform_width.hpp>
@@ -26,9 +27,7 @@
 #include <streams_boost/spirit/repository/include/qi_kwd.hpp>
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include <streams_boost/type_traits/is_same.hpp>
-#include <streams_boost/typeof/typeof.hpp>
-#include <streams_boost/variant.hpp>
-//#include <streams_boost/xpressive/xpressive.hpp>
+#include <streams_boost/xpressive/xpressive_dynamic.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -42,6 +41,7 @@ namespace ascii = streams_boost::spirit::ascii;
 namespace qi = streams_boost::spirit::qi;
 namespace repo = streams_boost::spirit::repository::qi;
 namespace traits = streams_boost::spirit::traits;
+namespace xpressive = streams_boost::xpressive;
 namespace math = SPL::Functions::Math;
 
 using ascii::char_; using ascii::cntrl; using ascii::punct; using ascii::space;
@@ -59,6 +59,7 @@ using qi::debug; using qi::fail; using qi::on_error;
 using qi::as; using qi::as_string; using qi::attr; using qi::attr_cast; using repo::advance; using repo::kwd;
 using qi::lexeme; using qi::no_skip; using qi::omit; using qi::raw; using qi::repeat; using qi::skip;
 using streams_boost::enable_if; using streams_boost::is_base_of; using streams_boost::iterator_range;
+using xpressive::regex_search; using xpressive::cregex;
 using namespace qi::labels;
 
 typedef const char* charPtr;
@@ -106,6 +107,59 @@ namespace ext {
 		}
 	};
 
+	STREAMS_BOOST_SPIRIT_TERMINAL_EX(base64);
+
+	template <typename Subject>
+	struct base64_parser : qi::unary_parser<base64_parser<Subject> > {
+		typedef Subject subject_type;
+
+		template <typename Context, typename Iterator>
+		struct attribute {
+//			typedef streams_boost::variant<std::string,SPL::blob> type;
+			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
+		};
+
+		base64_parser(Subject const& subject) : subject(subject) {}
+
+		template <typename Iterator, typename Context, typename Skipper, typename Attribute>
+		bool parse(Iterator& first, Iterator const& last, Context& context, Skipper const& skipper, Attribute& attr) const {
+			Iterator rangeFirst, rangeLast;
+			rangeFirst = rangeLast = first;
+
+			subject.parse(rangeLast, last, context, skipper, qi::unused);
+
+		    try {
+				const iterator_range<base64Iter> base64IterRange(trim_right_copy_if(iterator_range<Iterator>(rangeFirst,rangeLast), algorithm::is_any_of("=")));
+				const std::string base64Decoded(base64IterRange.begin(), base64IterRange.end());
+				setAttr(attr, base64Decoded);
+				first = rangeLast;
+
+			} catch (...) {
+				return false;
+			}
+
+			return true;
+		}
+
+		static void setAttr(std::string & attr, std::string const& base64Decoded) {
+//			traits::assign_to(streams_boost::variant<std::string,SPL::blob>(base64Decoded), attr);
+			traits::assign_to(base64Decoded, attr);
+		}
+
+		static void setAttr(SPL::blob & attr, std::string const& base64Decoded) {
+//			traits::assign_to(streams_boost::variant<std::string,SPL::blob>(SPL::blob(reinterpret_cast<const unsigned char*>(base64Decoded.data())), base64Decoded.size()), attr);
+			traits::assign_to(SPL::blob(reinterpret_cast<const unsigned char*>(base64Decoded.data()), base64Decoded.size()), attr);
+		}
+
+		template <typename Context>
+		streams_boost::spirit::info what(Context&) const {
+			return streams_boost::spirit::info("base64");
+		}
+
+		Subject subject;
+	};
+
+
 	STREAMS_BOOST_SPIRIT_TERMINAL_EX(reparse);
 
 	template <typename Subject, typename RangeSkipper>
@@ -151,7 +205,6 @@ namespace ext {
 		typedef Subject subject_type;
 
 		template <typename Context, typename Iterator>
-//		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
 		struct attribute {
 			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
 		};
@@ -193,7 +246,6 @@ namespace ext {
 		typedef Subject subject_type;
 
 		template <typename Context, typename Iterator>
-//		struct attribute : traits::attribute_of<Subject, Context, Iterator> {};
 		struct attribute {
 			typedef typename traits::attribute_of<Subject, Context, Iterator>::type type;
 		};
@@ -285,6 +337,13 @@ namespace ext {
 
 
 namespace streams_boost { namespace spirit {
+    template <>
+	struct use_directive<qi::domain, ext::tag::base64> : mpl::true_ {};
+
+//    template <>
+//	struct use_lazy_directive<qi::domain, ext::tag::base64, 1> : mpl::true_ {};
+
+
     template <typename RangeSkipper>
 	struct use_directive<qi::domain, terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> > > : mpl::true_ {};
 
@@ -315,6 +374,16 @@ namespace streams_boost { namespace spirit {
 }}
 
 namespace streams_boost { namespace spirit { namespace qi {
+
+	template <typename Subject, typename Modifiers>
+    struct make_directive<ext::tag::base64, Subject, Modifiers> {
+        typedef ext::base64_parser<Subject> result_type;
+
+        result_type operator()(unused_type, Subject const& subject, unused_type) const {
+            return result_type(subject);
+        }
+    };
+
 
 	template <typename RangeSkipper, typename Subject, typename Modifiers>
     struct make_directive<terminal_ex<ext::tag::reparse, fusion::vector1<RangeSkipper> >, Subject, Modifiers> {
@@ -367,8 +436,10 @@ namespace streams_boost { namespace spirit { namespace qi {
 
 namespace streams_boost { namespace spirit { namespace traits {
 
+	template <typename Subject>
+    struct has_semantic_action<ext::base64_parser<Subject> > : unary_has_semantic_action<Subject> {};
+
 	template <typename Subject, typename RangeSkipper>
-//  struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : unary_has_semantic_action<Subject> {};
     struct has_semantic_action<ext::reparse_parser<Subject, RangeSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper> > {};
 
 	template <typename Subject, typename RangeSkipper>
@@ -376,6 +447,10 @@ namespace streams_boost { namespace spirit { namespace traits {
 
 	template <typename Subject, typename RangeSkipper, typename ReverseSkipper>
     struct has_semantic_action<ext::reverse_parser<Subject, RangeSkipper, ReverseSkipper> > : mpl::or_<has_semantic_action<Subject>, has_semantic_action<RangeSkipper>, has_semantic_action<ReverseSkipper> > {};
+
+	template <typename Subject, typename Attribute, typename Context, typename Iterator>
+	struct handles_container<ext::base64_parser<Subject>, Attribute, Context, Iterator>
+	  : unary_handles_container<Subject, Attribute, Context, Iterator> {};
 
 	template <typename Subject, typename RangeSkipper, typename Attribute, typename Context, typename Iterator>
 	struct handles_container<ext::reparse_parser<Subject, RangeSkipper>, Attribute, Context, Iterator>
@@ -513,27 +588,27 @@ namespace streams_boost { namespace spirit { namespace traits {
         }
     };
 
-	template <typename Attr>
-	struct transform_attribute<Attr, iterator_range<charPtr>, qi::domain>
-	{
-		typedef iterator_range<charPtr> type;
-		typedef iterator_range<charPtr> const& const_type;
-		typedef Attr & typeToCast;
-
-		static void setData(std::string & val, std::string const& data) { val = data; }
-		static void setData(SPL::blob & val, std::string const& data) {
-			size_t size = data.size();
-			val.setData(reinterpret_cast<const unsigned char*>(data.data()), size);
-		}
-
-		static type pre(typeToCast d) { return type(); }
-		static void post(typeToCast val, const_type attr) {
-			const iterator_range<base64Iter> base64IterRange(trim_right_copy_if(attr, is_any_of("=")));
-			const std::string base64Decoded(base64IterRange.begin(), base64IterRange.end());
-			setData(val, base64Decoded);
-		}
-		static void fail(typeToCast) {}
-	};
+//	template <typename Attr>
+//	struct transform_attribute<Attr, iterator_range<charPtr>, qi::domain>
+//	{
+//		typedef iterator_range<charPtr> type;
+//		typedef iterator_range<charPtr> const& const_type;
+//		typedef Attr & typeToCast;
+//
+//		static void setData(std::string & val, std::string const& data) { val = data; }
+//		static void setData(SPL::blob & val, std::string const& data) {
+//			size_t size = data.size();
+//			val.setData(reinterpret_cast<const unsigned char*>(data.data()), size);
+//		}
+//
+//		static type pre(typeToCast d) { return type(); }
+//		static void post(typeToCast val, const_type attr) {
+//			const iterator_range<base64Iter> base64IterRange(trim_right_copy_if(attr, is_any_of("=")));
+//			const std::string base64Decoded(base64IterRange.begin(), base64IterRange.end());
+//			setData(val, base64Decoded);
+//		}
+//		static void fail(typeToCast) {}
+//	};
 }}}
 
 #endif /* SPIRIT_H_ */

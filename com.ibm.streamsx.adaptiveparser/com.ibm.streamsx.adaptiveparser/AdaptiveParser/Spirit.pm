@@ -8,9 +8,8 @@ sub cppExpr_wrap(@) {
 
 	my $func = "$cppType\_$paramName";
 	$func =~ s/::/_/g;
-	$adapt->{'cppExprs'}->{$func}[0] = $cppType;
-	$adapt->{'cppExprs'}->{$func}[1] = $value;
-	return "bind(&TPG::$func, this)";
+	$adapt->{'cppExprs'}->{$func} = $value;
+	return "bind(&MY_OP::$func, op)";
 }
 
 sub defaults_setValue(@) {
@@ -19,6 +18,15 @@ sub defaults_setValue(@) {
 	(my $setExpr = $cppType) =~ s/^.*?::/otuple::/;
 	$setExpr =~ s/::(.*?)_type/.get_${1}()/g;
 	push $adapt->{'defaults'}, "$setExpr = $value;\n\t\t";
+}
+
+sub regex_defExpr(@) {
+	my ($adapt, $cppType, $value) = @_;
+
+	my $regex = "re_$cppType";
+	$regex =~ s/::/_/g;
+	$adapt->{'regexes'}->{$regex} = $value;
+	return "bind(&MY_OP::$regex, op, _1)";
 }
 
 sub symbols_defEnum(@) {
