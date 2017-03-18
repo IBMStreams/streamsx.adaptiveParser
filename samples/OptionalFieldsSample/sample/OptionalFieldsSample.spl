@@ -1,0 +1,41 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite OptionalFieldsSample {
+param
+	expression<rstring> $data : getSubmissionTimeValue("data", 'true, 42, "text", (1427889600,657267,0)');
+graph
+	stream<rstring data> OptionalCSVFieldsStream = Custom() {
+        logic
+            onProcess : {
+				submit({data = $data}, OptionalCSVFieldsStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type generates the optional CSV parser
+	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
+	 *  Custom formats can be handled by custom output functions: Param and ParamN
+	 */
+    stream<boolean bl, int32 it, rstring str, timestamp ts> ParsedStream = AdaptiveParser(OptionalCSVFieldsStream) {
+		logic
+			state : boolean bl = (boolean)getSubmissionTimeValue("bl", "true");
+    	param
+    		globalDelimiter : ",";
+    		globalSkipper : whitespace;
+    		quotedStrings : true;
+    		tupleScheme : openTypeOrdered;
+    		tsFormat : "SPL";
+		output ParsedStream:
+			bl = Param({defaultValue = bl});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
