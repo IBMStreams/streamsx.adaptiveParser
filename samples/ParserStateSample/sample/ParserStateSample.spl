@@ -1,0 +1,41 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite ParserStateSample {
+param
+	expression<rstring> $data : getSubmissionTimeValue("data", '11## Start ## true, 42, "text", (1427889600,657267,0) ## End ##');
+graph
+	stream<rstring data> CSVFieldsStream = Custom() {
+        logic
+            onProcess : {
+				submit({data = $data}, CSVFieldsStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  Output SPL type generates the parser
+	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
+	 *  Custom formats can be handled by custom output functions: Param and ParamN
+	 */
+    stream<boolean bl, int32 it, rstring str, timestamp ts> ParsedStream = AdaptiveParser(CSVFieldsStream) {
+    	logic
+    		state : { mutable uint32 count = 1u; mutable rstring str = "0123456789"; }
+    	param
+    		globalDelimiter : ",";
+    		globalSkipper : whitespace;
+    		quotedStrings : true;
+    		tsFormat : "SPL";
+    	output ParsedStream:
+    		bl = Param({parseToState = "count", skipCountBefore = count}),
+    		ts = Param({skipCountAfter = 9u});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
+
