@@ -1,0 +1,40 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite RandomOrderSample {
+param
+	expression<rstring> $data : getSubmissionTimeValue("data", 'true, 42, "text", (1427889600,657267,0)');
+//	expression<rstring> $data : getSubmissionTimeValue("data", '(1427889600,657267,0), "text", 42, true');
+graph
+	stream<rstring data> RandomCSVStream = Custom() {
+        logic
+            onProcess : {
+				submit({data = $data}, RandomCSVStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type generates the random CSV parser
+	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
+	 *  Custom formats can be handled by custom output functions: Param and ParamN
+	 */
+    stream<boolean bl, int32 it, rstring str, timestamp ts> ParsedStream = AdaptiveParser(RandomCSVStream) {
+    	param
+    		globalDelimiter : ",";
+    		globalSkipper : whitespace;
+    		quotedStrings : true;
+    		tupleScheme : openTypeUnordered;
+    		tsFormat : "SPL";
+		output ParsedStream:
+			bl = Param({defaultValue = true});
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
