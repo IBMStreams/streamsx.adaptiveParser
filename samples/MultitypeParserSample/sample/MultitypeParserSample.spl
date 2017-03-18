@@ -1,0 +1,43 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite MultitypeParserSample {
+param
+	expression<rstring> $data : getSubmissionTimeValue("data", 'true, 42, "text", (1427889600,657267,0)');
+//	expression<rstring> $data : getSubmissionTimeValue("data", '(1427889600,657267,0), "text", 42, true');
+type
+	Itype1 = boolean bl, int32 it, rstring str, timestamp ts;
+	Itype2 = timestamp ts, rstring str, int32 it, boolean bl;
+graph
+	stream<rstring data> CSVStream = Custom() {
+        logic
+            onProcess : {
+				submit({data = $data}, CSVStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type for each port generates the alternative CSV parser
+	 *  The parsers will run sequentially (from port 0 and up) until one of them succeeds or all fail
+	 *  An error port is optional, but must be the last output port and its scheme should be identical to the input port
+	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
+	 *  Custom formats can be handled by custom output functions: Param and ParamN
+	 */
+    (stream<Itype1> ParsedStream1; stream<Itype2> ParsedStream2; stream<CSVStream> ErrorStream) = AdaptiveParser(CSVStream) {
+    	param
+    		globalDelimiter : ",";
+    		globalSkipper : whitespace;
+    		quotedStrings : true;
+    		tsFormat : "SPL";
+    }
+    
+    () as DSink = Custom(ParsedStream1; ParsedStream2; ErrorStream) {
+    	logic
+    		onTuple ParsedStream1: { printStringLn("Data arrived from ParsedStream1:"); println(ParsedStream1); }
+    		onTuple ParsedStream2: { printStringLn("Data arrived from ParsedStream2:"); println(ParsedStream2); }
+    		onTuple ErrorStream: { printStringLn("Error arrived from ErrorStream:"); println(ErrorStream); }
+    }
+}
