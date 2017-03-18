@@ -35,7 +35,6 @@ our %allowedParams = (
 	defaultValue => 'attr',
 	base64Mode => 'boolean',
 	binaryMode => 'boolean',
-	bounded => 'boolean',
 	attrNameAsPrefix => 'boolean',
 	attrNameQuoted => 'boolean',
 	globalAttrNameAsPrefix => 'boolean',
@@ -210,6 +209,8 @@ sub getStringMacro(@) {
 	return $macro;
 }
 
+sub getPrimitiveValue(@);
+
 sub getPrimitiveValue(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
 	my $value = '';
@@ -224,10 +225,27 @@ sub getPrimitiveValue(@) {
 		$value = Spirit::symbols_defEnum($structs->[-1], $cppType, $splType, $parserOpt->{'enumAliasesMap'});
 		$value = getSkippedValue($parserOpt, $value);
 	}
-	elsif(Type::isBString($splType)) {
-		my $bound = Type::getBound($splType);
+	elsif(Type::isBString($splType) || (Type::isString($splType) && $parserOpt->{'bound'})) {
+		my $bound;
 		
-		$value = "raw[repeat($bound)[byte_]]";
+		if($parserOpt->{'bound'}) {
+			if($parserOpt->{'bound'}->getValue() == 0) {
+				$bound = Spirit::locals_define($structs->[-1], $cppType, $parserOpt->{'bound'}->getType());
+				my $parseBound = getPrimitiveValue($srcLocation, undef, $parserOpt->{'bound'}->getType(), $structs, $parserOpt);
+				$value = "omit[$parseBound\[ref($bound) = _1]] >> ";
+				$bound = "bind(&TPG::$bound, this)";
+			}
+			else {
+				$bound = Types::getCppExpr($parserOpt->{'bound'});
+				$bound = Spirit::cppExpr_wrap($structs->[-1], $cppType, 'bound', $bound);
+			}
+		}
+		else {
+			$bound = Type::getBound($splType);
+		}
+	
+		my $unskip = $parserOpt->{'skipper'} ? 'lexeme' : 'no_skip';
+		$value .= "$unskip\[raw[repeat($bound)[byte_]]]";
 		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
 		
 	}

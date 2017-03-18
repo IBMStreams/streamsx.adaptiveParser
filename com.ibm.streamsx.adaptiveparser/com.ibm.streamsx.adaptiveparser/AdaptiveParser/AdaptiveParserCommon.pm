@@ -1,5 +1,8 @@
 package AdaptiveParserCommon;
 
+BEGIN {*Out:: = *SPL::CodeGen::};
+BEGIN {*Type:: = *SPL::CodeGen::Type::};
+
 use strict;
 use warnings;
 
@@ -19,7 +22,7 @@ sub buildStructs(@) {
 	
 	return handlePrimitive($srcLocation, $cppType, $splType, $structs, $parserOpt) if (Type::isPrimitive($splType));
 	
-	SPL::CodeGen::errorln("Unsupported type %s.", $splType, $srcLocation);
+	Out::errorln("Unsupported type %s.", $splType, $srcLocation);
 }
 
 
@@ -42,6 +45,7 @@ sub buildStructFromTuple(@) {
 	$adapt->{'tupleScheme'} = $parserOpt->{'tupleScheme'};
 	$adapt->{'size'} = $tupleSize;
 	$adapt->{'defaults'} = [];
+	$adapt->{'locals'} = [];
 	$adapt->{'symbols'} = {};
 	$adapt->{'xml'} = {};
 
@@ -59,7 +63,7 @@ sub buildStructFromTuple(@) {
 	if (!$topLevel && $oAttrParams){
 		my $attrParamNames = $oAttrParams->getAttributes();
 		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
-			SPL::CodeGen::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
+			Out::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
 				unless ($attrParamNames->[$i] ~~ @attrNames);
 			$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
 			
@@ -128,8 +132,6 @@ sub buildStructFromTuple(@) {
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
 		
-		#$parser = "(($parser) | attr($parserCustOpt->{'defaultValue'}))" if ($parserCustOpt->{'defaultValue'});
-	
 		if ($parserOpt->{'tupleScheme'} eq '/') {
 			my $attrNameDelimiter = $parserCustOpt->{'attrNameDelimiter'};
 			$attrNameDelimiter //= $parserCustOpt->{'delimiter'};
@@ -158,11 +160,13 @@ sub buildStructFromTuple(@) {
 	$ruleName .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
 
 	if ($parserOpt->{'parseToState'}) {
-		SPL::CodeGen::errorln("State '%s' is not defined", $parserOpt->{'parseToState'}, $srcLocation)
-			unless ( exists($AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}));
+		(my $state = $parserOpt->{'parseToState'}) =~ tr/\"//d;
+		Out::errorln("State '%s' is not defined", $state, $srcLocation) unless (exists($AdaptiveParser_h::stateVars{$state}));
 
 		my $cppType = $AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}->[0];
 		my $splType = $AdaptiveParser_h::stateVars{$parserOpt->{'parseToState'}}->[1];
+		Out::errorln("State '%s' must have a primitive type", $state, $srcLocation) unless (Type::isPrimitive($splType));
+		
 		my $parseToState = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
 		$ruleName = "omit[$parseToState\[ref($parserOpt->{'parseToState'}) = _1]] >> $ruleName";
 	}
@@ -181,7 +185,7 @@ sub handleListOrSet(@) {
 	@{$parserCustOpt}{@Types::inheritedParams} = @{$parserOpt}{@Types::inheritedParams};
 	$parserCustOpt->{'skipperLast'} =  $parserOpt->{'skipperLast'};
 	
-	SPL::CodeGen::errorln("Only parameter attribute 'value' is allowed for a list/set attribute type '%s'", $splType, $srcLocation)
+	Out::errorln("Only parameter attribute 'value' is allowed for a list/set attribute type '%s'", $splType, $srcLocation)
 		unless (!$oAttrParams || ($oAttrParams->getNumberOfElements() == 1 && $oAttrParams->getAttributeAt(0) eq 'value'));
 						
 	my $param1;
@@ -219,8 +223,6 @@ sub handleListOrSet(@) {
 		}
 
 		if (Type::isComposite($valueType)) {
-			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -268,7 +270,7 @@ sub handleMap(@) {
 	if ($oAttrParams){
 		my $attrParamNames = $oAttrParams->getAttributes();
 		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
-			SPL::CodeGen::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
+			Out::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
 				unless ($attrParamNames->[$i] ~~ ['key','value']);
 			$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
 			
@@ -319,7 +321,7 @@ sub handleMap(@) {
 			my $valueSkipper = $parserCustOpt->{'skipper'};
 
 			if ($parserCustOpt->{'cutCharsetDelim'}) {
-				SPL::CodeGen::errorln("Cannot use empty skipper along with 'cutCharsetDelim'", $srcLocation) unless ($valueSkipper);
+				Out::errorln("Cannot use empty skipper along with 'cutCharsetDelim'", $srcLocation) unless ($valueSkipper);
 				
 				$parserCustOpt->{'skipper'} = '';
 				$parser = buildStructs($srcLocation, "$cppType\::$cppValuetype", $valueType, $structs, $param2, $parserCustOpt, $size);
@@ -339,8 +341,6 @@ sub handleMap(@) {
 		}
 		
 		if (Type::isComposite($attrType)) {
-			#$parser = "lit($parserCustOpt->{'prefix'}) >> $parser" if ($parserCustOpt->{'prefix'});
-			#$parser .= " >> lit($parserCustOpt->{'suffix'})" if ($parserCustOpt->{'suffix'});
 			$parser = "$parser >> -lit($parserCustOpt->{'delimiter'})" if ($parserCustOpt->{'delimiter'});
 			$parser = "-($parser)" if ($parserCustOpt->{'optional'});
 		}
@@ -393,11 +393,13 @@ sub handlePrimitive(@) {
 
 	if ($parserOpt->{'parseToState'}) {
 		(my $state = $parserOpt->{'parseToState'}) =~ tr/\"//d;
-		SPL::CodeGen::errorln("State '%s' is not defined", $state, $srcLocation) unless (exists($AdaptiveParser_h::stateVars{$state}));
+		Out::errorln("State '%s' is not defined", $state, $srcLocation) unless (exists($AdaptiveParser_h::stateVars{$state}));
 
 		my $cppCode = $AdaptiveParser_h::stateVars{$state}->[0];
 		my $cppType = $AdaptiveParser_h::stateVars{$state}->[1];
 		my $splType = $AdaptiveParser_h::stateVars{$state}->[2];
+		Out::errorln("State '%s' must have a primitive type", $state, $srcLocation) unless (Type::isPrimitive($splType));
+		
 		my $parseToState = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
 		$value = "omit[$parseToState\[ref(op.$cppCode) = _1]] >> $value";
 	}
@@ -414,7 +416,7 @@ sub getFuncNameParams(@) {
 		$funcName =~ s/^.+:://;
 		my $funcArity = scalar @{$attr->getAssignmentOutputFunctionParameterValues()};
 		
-		SPL::CodeGen::errorln("Only AsIs() or Param() are allowed as top level custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','Param']);
+		Out::errorln("Only AsIs() or Param() are allowed as top level custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','Param']);
 
 		$$param1 = $attr->getAssignmentOutputFunctionParameterValueAt(0)->getSPLExpressionTree();
 		$$param2 = $attr->getAssignmentOutputFunctionParameterValueAt(1)->getSPLExpressionTree() if ($funcArity > 1);
@@ -424,7 +426,7 @@ sub getFuncNameParams(@) {
 		$funcName =~ s/^.+:://;
 		my $funcArity = $attr->getNumberOfArguments();
 		
-		SPL::CodeGen::errorln("Only AsIs() or ParamN() are allowed as nested custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','ParamN']);
+		Out::errorln("Only AsIs() or ParamN() are allowed as nested custom output functions", $srcLocation) unless ($funcName ~~ ['AsIs','ParamN']);
 
 		$$param1 = $attr->getArgumentAt(0);
 		$$param2 = $attr->getArgumentAt(1) if ($funcArity > 1);
@@ -435,8 +437,8 @@ sub getFuncNameParams(@) {
 
 sub setParserCustOpt(@) {
 	my ($srcLocation, $parserCustOpt, $param1, $param2, $expectedAttrs, $splType) = @_;
-	SPL::CodeGen::errorln("Parameter '%s' is not a tuple literal", $param1->toString(), $srcLocation) unless ($param1->isEnum() || $param1->isTupleLiteral());
-	SPL::CodeGen::errorln("Parameter '%s' is not a tuple literal", $param2->toString(), $srcLocation) unless (!$param2 || $param2->isTupleLiteral());
+	Out::errorln("Parameter '%s' is not a tuple literal", $param1->toString(), $srcLocation) unless ($param1->isEnum() || $param1->isTupleLiteral());
+	Out::errorln("Parameter '%s' is not a tuple literal", $param2->toString(), $srcLocation) unless (!$param2 || $param2->isTupleLiteral());
 
 	if( $param1->isEnum()) { return };
 	
@@ -448,26 +450,31 @@ sub setParserCustOpt(@) {
 		if (exists($expectedAttrs->{$paramAttrNames->[$k]})) {
 			if ($paramAttrNames->[$k] ~~ ['skipper','globalSkipper','cutSkipper']) {
 				my $skipper = Types::getSkipper( $paramAttrVals->[$k]->getValue());
-				SPL::CodeGen::errorln("Parameter '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
+				Out::errorln("Parameter '%s' is not valid, expected type: Skipper.Skippers.", $paramAttrNames->[$k], $srcLocation) unless (defined($skipper));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $skipper;
 			}
 			elsif ($paramAttrNames->[$k] ~~ ['globalTupleScheme','tupleScheme']) {
 				my $scheme = Types::getSchemeOp( $paramAttrVals->[$k]->getValue());
-				SPL::CodeGen::errorln("Parameter '%s' is not valid, expected type: TupleScheme.Schemes.", $paramAttrNames->[$k], $srcLocation) unless (defined($scheme));
+				Out::errorln("Parameter '%s' is not valid, expected type: TupleScheme.Schemes.", $paramAttrNames->[$k], $srcLocation) unless (defined($scheme));
 				$parserCustOpt->{$paramAttrNames->[$k]} = $scheme;
 			}
 			else {
 				my $expectedType = $expectedAttrs->{$paramAttrNames->[$k]} eq 'attr' ? $splType : $expectedAttrs->{$paramAttrNames->[$k]};
 
-				SPL::CodeGen::errorln("Parameter '%s' of type '%s' is not valid, expected types: '%s'.",
-										$paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), Types::getFormattedValue($expectedType), $srcLocation)
-					unless ($paramAttrVals->[$k]->getType() ~~ [$expectedType]);
+				unless ($paramAttrVals->[$k]->getType() ~~ [$expectedType]) {
+					Out::errorln("Parameter '%s' of type '%s' is not valid, expected types: '%s'.",
+										  $paramAttrNames->[$k], $paramAttrVals->[$k]->getType(), Types::getFormattedValue($expectedType), $srcLocation);
+					die 'ERROR';
+				}
 	
 				if ($expectedAttrs->{$paramAttrNames->[$k]} eq 'attr' || $paramAttrNames->[$k] ~~ ['regexFilter','skipCountAfter','skipCountBefore']) {
-					#SPL::CodeGen::errorln("Side effected expressions are not supported.", $srcLocation)
+					#Out::errorln("Side effected expressions are not supported.", $srcLocation)
 						#if ($paramAttrVals->[$k]->isExpressionLiteral() && $paramAttrVals->[$k]->getExpression()->hasSideEffects());
 						
 					$parserCustOpt->{$paramAttrNames->[$k]} = Types::getCppExpr($paramAttrVals->[$k]);
+				}
+				elsif ($expectedType =~ /^map/ || $paramAttrNames->[$k] ~~ ['bound']) {
+					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k];
 				}
 				elsif ($expectedType eq 'boolean') {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue() eq 'true';
@@ -475,16 +482,13 @@ sub setParserCustOpt(@) {
 				elsif ($expectedType eq 'rstring') {
 					$parserCustOpt->{$paramAttrNames->[$k]} = Types::getStringValue( $paramAttrVals->[$k]->getValue());
 				}
-				elsif ($expectedType =~ /^map/) {
-					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k];
-				}
 				else {
 					$parserCustOpt->{$paramAttrNames->[$k]} = $paramAttrVals->[$k]->getValue();
 				}
 			}
 		}
 		else {
-			SPL::CodeGen::errorln("Attribute '%s' is not valid, expected: '%s'.", $paramAttrNames->[$k], Dumper($expectedAttrs), $srcLocation);
+			Out::errorln("Attribute '%s' is not valid, expected: '%s'.", $paramAttrNames->[$k], Dumper($expectedAttrs), $srcLocation);
 		}
 	}
 }

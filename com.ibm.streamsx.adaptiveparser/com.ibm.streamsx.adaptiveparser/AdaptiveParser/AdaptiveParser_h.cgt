@@ -7,7 +7,6 @@
 // #define STREAMS_BOOST_SPIRIT_QI_DEBUG
 
 <%# [----- perl code -----]
-BEGIN {*Type:: = *SPL::CodeGen::Type::};
 use AdaptiveParserCommon;
 
 my $batch = ($_ = $model->getParameterByName('batch')) ? $_->getValueAt(0)->getSPLExpression() eq 'true' : 0;
@@ -63,7 +62,7 @@ my $structs = [];
 my $STREAMS_FUSION_MAX_VECTOR_SIZE = 10;
 AdaptiveParserCommon::buildStructs($oTupleSrcLocation, $oTupleCppType, $oTupleSplType, $structs, $oAttrParams, $parserOpt, \$STREAMS_FUSION_MAX_VECTOR_SIZE);
 
-SPL::CodeGen::errorln("More than 50 attributes on the same level of tuple is not supported", $oTupleSrcLocation)  if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 50);
+Out::errorln("More than 50 attributes on the same level of tuple is not supported", $oTupleSrcLocation)  if ($STREAMS_FUSION_MAX_VECTOR_SIZE > 50);
 # [----- perl code -----]%>
 
 #define STREAMS_FUSION_MAX_VECTOR_SIZE <%=$STREAMS_FUSION_MAX_VECTOR_SIZE%>
@@ -154,7 +153,7 @@ typedef <%=$model->getOutputPortAt($i)->getCppTupleType()%> oport<%=$i%>;
 using namespace ::ext;
 template <typename Iterator, typename MY_OP>
 struct TupleParserGrammar<%=$i%> : qi::grammar<Iterator, oport<%=$i%>(bool&)> {
-//	typedef TupleParserGrammar<%=$i%><Iterator, MY_OP> TPG;
+	typedef TupleParserGrammar<%=$i%><Iterator, MY_OP> TPG;
 
     TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) {
 
@@ -169,7 +168,7 @@ print qq(
 if ($parserOpt->{'undefined'}) {
 	my $undefValue;
 	my @undefinedValues = map { $_->getSPLExpression() ne '""' ? '('.$_->getSPLExpression().', qi::unused)' : () } @{$parserOpt->{'undefined'}->getValues()};
-	SPL::CodeGen::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);
+	Out::errorln("Empty values cannot be assigned to parameter 'undefined'", $oTupleSrcLocation)  unless (@undefinedValues);
 
 print qq(
 		undefined.add @undefinedValues;
@@ -234,6 +233,8 @@ private:
 	boolean_ boolean;
 	dummy_ dummy;
 	qi::symbols<char, qi::unused_type> undefined;
+
+	<%=@{$structs->[-1]->{'locals'}}%>
     
 <%# [----- perl code -----]
 

@@ -20,6 +20,15 @@ sub defaults_setValue(@) {
 	push $adapt->{'defaults'}, "$setExpr = $value;\n\t\t";
 }
 
+sub locals_define(@) {
+	my ($adapt, $cppType, $splType) = @_;
+
+	my $local = "local_$cppType";
+	$local =~ s/::/_/g;
+	push $adapt->{'locals'}, "SPL::$splType $local; \n\t\t";
+	return $local;
+}
+
 sub regex_defExpr(@) {
 	my ($adapt, $cppType, $value) = @_;
 
