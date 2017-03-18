@@ -1,6 +1,5 @@
 # project specific excludes
 com.ibm.streamsx.adaptiveparser/doc
-com.ibm.streamsx.adaptiveparser/impl/include/boost
 com.ibm.streamsx.adaptiveparser/samples
 samples/*/doc
 samples/*/output
