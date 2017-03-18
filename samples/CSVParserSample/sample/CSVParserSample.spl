@@ -7,7 +7,7 @@ graph
 	stream<rstring data> CSVStream = Custom() {
         logic
             onProcess : {
-				submit({data = "1427889600, 1427889600.657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14"}, CSVStream);
+				submit({data = "1427889600, 1427889600.657267, 1427889611|657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14"}, CSVStream);
             }
     }
     
@@ -16,18 +16,19 @@ graph
 	 *  The data arrives as a string
 	 *  Output SPL type generates the CSV parser
 	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
-	 *  Custom formats can be handled by custom output functions:
+	 *  Custom formats can be handled by custom output functions: Param and ParamN
 	 *  timestamp ts1 has '.' as a token
 	 *  timestamp ts2 has has a standard SPL format
 	 *  timestamp ts3 has has a formatted string timestamp
 	 */
-    stream<timestamp ts1, timestamp ts2, timestamp ts3, timestamp ts4, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
+    stream<timestamp ts1, timestamp ts2, timestamp ts21, timestamp ts3, timestamp ts4, rstring data, uint32 meaningOfLife, float64 pi> ParsedStream = AdaptiveParser(CSVStream) {
     	param
     		globalDelimiter : ",";
     		globalSkipper : whitespace;
 		output
 			ParsedStream :
 				ts2 = Param({tsToken = "."}),
+				ts21 = Param({tsToken = "|"}),
 				ts3 = Param({tsFormat = "SPL"}),
 				ts4 = Param({tsFormat = "%b %d %H:%M:%S"});
     }
