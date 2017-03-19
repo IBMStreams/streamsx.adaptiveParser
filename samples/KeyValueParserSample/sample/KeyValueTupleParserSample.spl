@@ -27,14 +27,14 @@ graph
 	 *  Output SPL type generates the KeyValue parser and maps it to SPL tuple.		
 	 *  Parameters:  key (attribute) delimiter is "=", while value delimiter is ',', whitespaces are skipped by default		
 	 *  Parameters:
-	 *  	'attrNameAsPrefix' - enables KeyValue parser for the current tuple
+	 *  	'tupleScheme = openAttrNamePaired' - enables unordered KeyValue parser for the current tuple
 	 *  	'attrNameDelimiter' - key (attribute) delimiter
 	 *  	'globalDelimiter' - value delimiter
 	 *  	('globalSkipper' - whitespace skipper is applied implicitly)
 	 */
 	stream<TupleProperties_t> ParsedTupleStream = AdaptiveParser(CSVStream){
 		param
-			globalAttrNameAsPrefix : true ;
+			tupleScheme : openAttrNamePaired;
 			globalAttrNameDelimiter : "=" ;
 			globalDelimiter : "," ;
 	}
