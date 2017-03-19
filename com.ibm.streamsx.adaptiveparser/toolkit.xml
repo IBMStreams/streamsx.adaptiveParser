@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
 <toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.0.2" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.adaptiveparser" requiredProductVersion="4.0.0" version="2.1">
+  <toolkit name="com.ibm.streamsx.adaptiveparser" requiredProductVersion="4.0" version="2.1">
     <description/>
     <uriTable>
       <uri index="2" value="com.ibm.streamsx.adaptiveparser/AdaptiveParser"/>

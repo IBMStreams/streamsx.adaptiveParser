@@ -4,7 +4,7 @@
     <info:name>com.ibm.streamsx.adaptiveparser.bro</info:name>
     <info:description></info:description>
     <info:version>2.0.0.3</info:version>
-    <info:requiredProductVersion>4.0.1.0</info:requiredProductVersion>
+    <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>
     <info:toolkit>
