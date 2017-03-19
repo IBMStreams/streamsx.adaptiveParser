@@ -1,0 +1,30 @@
+namespace sample;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+composite TabbedCSVParserSample {
+graph
+	stream<rstring data> CSVStream = Custom() {
+        logic
+            onProcess : {
+				submit({data = "word	two words	and three words"}, CSVStream);
+            }
+    }
+    
+	/*
+	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+	 *  The data arrives as a string
+	 *  Output SPL type generates the tabbed CSV parser
+	 *  Parameters define general behavior: delimiter is empty and only tabs should be skipped (keeping spaces as a part of the data)
+	 */
+    stream<rstring str1, rstring str2, rstring str3> ParsedStream = AdaptiveParser(CSVStream) {
+    	param
+    		globalSkipper : tab;
+    }
+    
+    () as FSink = FileSink(ParsedStream) {
+        param
+            file : "/dev/stdout";
+            flush : 1u;
+    }
+}
