@@ -23,7 +23,7 @@ graph
     
     () as FSink = FileSink(ParsedStream) {
         param
-            file : "/dev/pts/0";
+            file : "/dev/stdout";
             flush : 1u;
     }
 }
