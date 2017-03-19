@@ -28,10 +28,10 @@ graph
     		dataAttr : $dataAttr;
     		explain : $explain;
     		globalDelimiter : ",";
-    		globalAttrNameAsPrefix : true;
+    		globalTupleScheme : openAttrNamePaired;
     		globalAttrNameDelimiter : ":";
     		globalAttrNameQuoted : $keyQuoted;
-    		quotedStrings : true;
+    		quotedOptStrings : true;
     		listPrefix : "[";
     		listSuffix : "]";
     		mapPrefix : "{";
