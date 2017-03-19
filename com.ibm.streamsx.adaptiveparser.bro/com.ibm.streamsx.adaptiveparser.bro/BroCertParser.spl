@@ -15,7 +15,7 @@ public composite BroCertParser(input RawData; output BroEvent) {
 				undefined : "-", "(empty)";
 
 			output BroEvent:
-				san = Param({globalDelimiter = ""}, {
+				san = Param( _, {
 					dns =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
 					uri =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
 					email = ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
