@@ -22,7 +22,7 @@
 <div class="body refbody">
 <div class="section">
 <p class="p">
-<a class="xref" href="../toolkits/toolkits.html">SPL Documentation for AdaptiveParser, CEFParser and LEEFParser toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.cef.html">com.ibm.streamsx.adaptiveparser.cef 1.0.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.cef.html">com.ibm.streamsx.adaptiveparser.cef</a> &gt; CEFParser.spl</p>
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.cef.html">com.ibm.streamsx.adaptiveparser.cef 2.1</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.cef.html">com.ibm.streamsx.adaptiveparser.cef</a> &gt; CEFParser.spl</p>
 
 </div>
 
@@ -74,6 +74,10 @@
 
 <div class="section" id="spldoc_compilationunit__composite_operator__CEFParser"><h2 class="title sectiontitle splpart">composite CEFParser(output CEFEvent; input RawData)</h2>
   
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser.cef/op$com.ibm.streamsx.adaptiveparser.cef$CEFParser.svg" width="142" height="109"/>
 </div>
 
 <div class="section"><h2 class="title sectiontitle">Parameters</h2>
@@ -140,7 +144,7 @@
    <div class="section" id="spldoc_compilationunit__composite_type__CEFParser.CEFSeverity_e">
      <dl class="dl">
        
-         <dt class="dt dlterm">CEFParser.CEFSeverity_e = enum { Low, Medium, High };</dt>
+         <dt class="dt dlterm">CEFParser.CEFSeverity_e = enum { Low, Medium, High, VeryHigh, Unknown };</dt>
 
          <dd class="dd"/>
 
@@ -148,6 +152,53 @@
      </dl>
 
    </div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ public composite CEFParser(input RawData; output CEFEvent) {
+ param
+ 	attribute $dataAttr;
+ 	expression&lt;boolean&gt; $batch : false;
+ 
+ type
+ 	static CEFSeverity_e	=	enum {Low, Medium, High, VeryHigh, Unknown};
+ 	
+ 	static CEFHeader_t		= 	uint16 version,
+ 								rstring deviceVendor,
+ 								rstring deviceProduct,
+ 								rstring deviceVersion, 
+ 								rstring signatureID, 
+ 								rstring name, 
+ 								CEFParser.CEFSeverity_e severity;
+ 
+ 	static CEFExtension_t	=	map&lt;rstring,rstring&gt; properties;
+ 	
+ graph
+     
+     stream&lt;CEFParser.CEFHeader_t, CEFParser.CEFExtension_t&gt; CEFEvent = AdaptiveParser(RawData) {
+     	param
+     		batch : $batch;
+     		dataAttr : $dataAttr;
+     		globalDelimiter : "|";
+     		globalEscapeChar : "\\";
+ 		output
+ 			CEFEvent :
+ 				version = Param({prefix = "CEF:"}),
+ 				severity = Param({enumAliasesMap = {"Very-High" : "VeryHigh"}}),
+ 				properties = Param( {cutStringDelim = "CEF:", delimiter = "", globalDelimiter = "", globalEscapeChar = ""},
+ 					  				{key = ParamN({delimiter = "="}), value = ParamN({cutCharsetDelim = "a-zA-Z0-9_.)(-"})});
+     }
+ }
+
+   </pre>
+
+</div>
 
 </div>
 

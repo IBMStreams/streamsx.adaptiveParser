@@ -22,7 +22,7 @@
 <div class="body refbody">
 <div class="section">
 <p class="p">
-<a class="xref" href="../toolkits/toolkits.html">SPL Documentation for AdaptiveParser, CEFParser and LEEFParser toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef 1.0.0</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef</a> &gt; LEEFParser.spl</p>
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef 2.1</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.leef.html">com.ibm.streamsx.adaptiveparser.leef</a> &gt; LEEFParser.spl</p>
 
 </div>
 
@@ -77,6 +77,10 @@
 
 <div class="section" id="spldoc_compilationunit__composite_operator__LEEFParser"><h2 class="title sectiontitle splpart">composite LEEFParser(output LEEFEvent; input RawData)</h2>
   
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser.leef/op$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.svg" width="142" height="109"/>
 </div>
 
 <div class="section"><h2 class="title sectiontitle">Parameters</h2>
@@ -166,6 +170,63 @@
      </dl>
 
    </div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ public composite LEEFParser(input RawData; output LEEFEvent) {
+ param
+ 	attribute $dataAttr;
+ 	expression&lt;boolean&gt; $batch : false;
+ 	type $customAttributesType : LEEFAttributes_t;
+ 
+ type
+ 	static SyslogHeader_t	= 	timestamp date, rstring ipAddress;
+ 
+ 	static LEEFHeader_t		= 	float32 version,
+ 								rstring productVendor,
+ 								rstring productName,
+ 								rstring productVersion, 
+ 								rstring eventID;
+ 
+ 	static LEEFAttributes_t	=	rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev,
+ 								rstring src, rstring dst, uint16 srcPort, uint16 dstPort,
+ 								rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort,
+ 								rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort,
+ 								rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC,
+ 								rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName,
+ 								uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, 
+ 								rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm,
+ 								rstring policy, rstring resource, rstring url, rstring groupid, rstring domain,
+ 								boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp,
+ 								rstring calLanguage, rstring calCountryOrRegion;
+ 								
+ 	static LEEFMetaData_t	=	SyslogHeader_t syslog, LEEFHeader_t eventHeader;
+ 	
+ graph
+     
+     stream&lt;LEEFMetaData_t, tuple&lt;$customAttributesType eventAttributes&gt;&gt; LEEFEvent = AdaptiveParser(RawData) {
+     	param
+     		batch : $batch;
+     		dataAttr : $dataAttr;
+     		globalSkipper : tab;
+     		tsFormat : "%b %d %Y %H:%M:%S";
+ 		output
+ 			LEEFEvent :
+ 				syslog = Param({ globalSkipper = Skipper.whitespace}),
+ 				eventHeader = Param({ globalDelimiter = "|", tuplePrefix = "LEEF:"}),
+ 				eventAttributes = Param({ globalAttrNameAsPrefix = true, globalAttrNameDelimiter = "="});
+     }
+ }
+
+   </pre>
+
+</div>
 
 </div>
 

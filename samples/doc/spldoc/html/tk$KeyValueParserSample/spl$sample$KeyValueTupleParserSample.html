@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File KeyValueTupleParserSample.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File KeyValueTupleParserSample.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">KeyValueTupleParserSample.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$KeyValueParserSample.html">KeyValueParserSample 2.1</a> &gt; <a class="xref" href="ns$sample.html">sample</a> &gt; KeyValueTupleParserSample.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$sample$KeyValueTupleParserSample.html#spldoc_compilationunit__composite_operator__KeyValueTupleParserSample">KeyValueTupleParserSample</a></strong>
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__KeyValueTupleParserSample"><h2 class="title sectiontitle splpart">public composite KeyValueTupleParserSample</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$KeyValueParserSample/op$sample$KeyValueTupleParserSample.svg" width="337" height="109"/>
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite KeyValueTupleParserSample {
+ type
+ 	/*
+ 	 * A tuple can hold heterogeneous types - each field can be defined as desired.
+ 	 */
+ 	TupleProperties_t = boolean boolean_1, rstring rstring_2, float32 float32_3, int16 int16_4, int32 int32_5, uint32 uint32_6, uint16 uint16_7, float64 float64_8, rstring rstring_9, boolean boolean_10;
+ 
+ graph
+ 	stream&lt;rstring data&gt; CSVStream = Custom(){
+ 		logic
+ 			onProcess : {
+ 				/*
+ 				 *	For a tuple the order of input fields is critical, but KeyValue parser allows random order.
+ 				 *	Here the fields are in inverse order
+ 				 */
+ 				submit({ data = "boolean_10 = false, rstring_9 = nine, float64_8 = 8.0008, uint16_7 = 7, uint32_6 = 6, int32_5 = 5, int16_4 = 4, float32_3 = 3.3, rstring_2 = two, boolean_1 = true" }, CSVStream);
+ 			}
+ 
+ 	}
+ 
+ 	/*
+ 	 *  AdaptiveParser expects a single input attribute or dataAttr param attribute to be of type blob or rstring		
+ 	 *  Output SPL type generates the KeyValue parser and maps it to SPL tuple.		
+ 	 *  Parameters:  key (attribute) delimiter is "=", while value delimiter is ',', whitespaces are skipped by default		
+ 	 *  Parameters:
+ 	 *  	'tupleScheme = openAttrNamePaired' - enables unordered KeyValue parser for the current tuple
+ 	 *  	'attrNameDelimiter' - key (attribute) delimiter
+ 	 *  	'globalDelimiter' - value delimiter
+ 	 *  	('globalSkipper' - whitespace skipper is applied implicitly)
+ 	 */
+ 	stream&lt;TupleProperties_t&gt; ParsedTupleStream = AdaptiveParser(CSVStream){
+ 		param
+ 			tupleScheme : openAttrNamePaired;
+ 			globalAttrNameDelimiter : "=" ;
+ 			globalDelimiter : "," ;
+ 	}
+ 
+     /*
+      * The implementation of SPL tuple is a sequence, so printing it shows fields in order as they stored in the tuple, not as they came from the input.
+      */
+ 	()as TupleFSink = FileSink(ParsedTupleStream){
+ 		param
+ 			file : "/dev/stdout" ;
+ 			flush : 1u ;
+ 			format : txt;
+ 		}
+ 
+ }
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>

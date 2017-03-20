@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+  PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xml:lang="en-us" lang="en-us">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta name="copyright" content="(C) Copyright 2005"/>
+<meta name="DC.rights.owner" content="(C) Copyright 2005"/>
+<meta name="DC.Type" content="reference"/>
+<meta name="DC.Title" content="SPL File RandomOrderSample.spl"/>
+<meta name="DC.Format" content="XHTML"/>
+<meta name="DC.Identifier" content="spldoc_compilationunit"/>
+<link rel="stylesheet" type="text/css" href="../../html/commonltr.css"/>
+<link rel="stylesheet" type="text/css" href="../../html/spldoc.css"/>
+<title>SPL File RandomOrderSample.spl</title>
+</head>
+<body id="spldoc_compilationunit">
+
+
+<h1 class="title topictitle1">SPL File <tt class="ph tt">RandomOrderSample.spl</tt></h1>
+
+<div class="body refbody">
+<div class="section">
+<p class="p">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$RandomOrderParserSample.html">RandomOrderParserSample 1.0.0</a> &gt; <a class="xref" href="ns$sample.html">sample</a> &gt; RandomOrderSample.spl</p>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Content</h2>
+  
+  <dl class="dl">
+    <dt class="dt dlterm"/>
+<dd class="dd"/>
+
+    
+      <dt class="dt dlterm splhead-2">Operators</dt>
+
+      <dd class="dd">
+<ul class="sl simple">
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$sample$RandomOrderSample.html#spldoc_compilationunit__composite_operator__RandomOrderSample">RandomOrderSample</a></strong>
+</li>
+
+</ul>
+
+      </dd>
+
+    
+  </dl>
+
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-1">Composites</h2>
+  
+</div>
+
+<div class="section" id="spldoc_compilationunit__composite_operator__RandomOrderSample"><h2 class="title sectiontitle splpart">public composite RandomOrderSample</h2>
+  
+</div>
+
+<div class="section splgraph">
+  <embed class="image" src="../../image/tk$RandomOrderParserSample/op$sample$RandomOrderSample.svg" width="337" height="109"/>
+</div>
+
+<div class="section"><h2 class="title sectiontitle">Parameters</h2>
+
+<ul class="sl simple">
+<li class="sli"><strong class="ph b">data</strong>
+</li>
+
+</ul>
+
+</div>
+
+<div class="section">
+</div>
+
+<div class="section">
+</div>
+
+<div class="section"><h2 class="title sectiontitle splhead-2">SPL Source Code</h2>
+  
+</div>
+
+
+<div class="section">
+   <pre class="pre codeblock">
+
+ composite RandomOrderSample {
+ param
+ 	expression&lt;rstring&gt; $data : getSubmissionTimeValue("data", 'true, 42, "text", (1427889600,657267,0)');
+ //	expression&lt;rstring&gt; $data : getSubmissionTimeValue("data", '(1427889600,657267,0), "text", 42, true');
+ graph
+ 	stream&lt;rstring data&gt; RandomCSVStream = Custom() {
+         logic
+             onProcess : {
+ 				submit({data = $data}, RandomCSVStream);
+             }
+     }
+     
+ 	/*
+ 	 *  AdaptiveParser expects the input attribute to be of type blob or rstring
+ 	 *  The data arrives as a string
+ 	 *  Output SPL type generates the random CSV parser
+ 	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
+ 	 *  Custom formats can be handled by custom output functions: Param and ParamN
+ 	 */
+     stream&lt;boolean bl, int32 it, rstring str, timestamp ts&gt; ParsedStream = AdaptiveParser(RandomCSVStream) {
+     	param
+     		globalDelimiter : ",";
+     		globalSkipper : whitespace;
+     		quotedStrings : true;
+     		tupleScheme : openTypeUnordered;
+     		tsFormat : "SPL";
+ 		output ParsedStream:
+ 			bl = Param({defaultValue = true});
+     }
+     
+     () as FSink = FileSink(ParsedStream) {
+         param
+             file : "/dev/stdout";
+             flush : 1u;
+     }
+ }
+
+   </pre>
+
+</div>
+
+</div>
+
+
+</body>
+</html>
