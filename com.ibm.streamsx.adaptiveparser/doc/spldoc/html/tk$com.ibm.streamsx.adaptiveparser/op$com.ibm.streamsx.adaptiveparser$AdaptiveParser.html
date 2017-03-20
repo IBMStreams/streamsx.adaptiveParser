@@ -22,16 +22,26 @@
 <div class="body refbody">
 <div class="section">
 <p class="p">
-<a class="xref" href="../toolkits/toolkits.html">SPL Documentation for AdaptiveParser, CEFParser and LEEFParser toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.html">com.ibm.streamsx.adaptiveparser 1.4.1</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.html">com.ibm.streamsx.adaptiveparser</a> &gt; AdaptiveParser</p>
-
-</div>
-
-<div class="section">
+<a class="xref" href="../toolkits/toolkits.html">Toolkits</a> &gt; <a class="xref" href="tk$com.ibm.streamsx.adaptiveparser.html">com.ibm.streamsx.adaptiveparser 2.1</a> &gt; <a class="xref" href="ns$com.ibm.streamsx.adaptiveparser.html">com.ibm.streamsx.adaptiveparser</a> &gt; AdaptiveParser</p>
 
 </div>
 
 <div class="section splprimop">
   <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser/op$com.ibm.streamsx.adaptiveparser$AdaptiveParser.svg" width="672" height="112"/>
+</div>
+
+<div class="section">
+
+<div class="p">AdaptiveParser operator has two custom output functions: 
+<ul class="ul">
+<li class="li"> Param applies parsing options for top level attributes.</li>
+
+<li class="li"> ParamN applies parsing options for nested level attributes.</li>
+
+</ul>
+
+</div>
+
 </div>
 
 <div class="section"><h2 class="title sectiontitle splhead-1">Summary</h2>
@@ -40,7 +50,7 @@
  
   <dt class="dt dlterm">Ports</dt>
 
-  <dd class="dd">This operator has 1 input port and 1 output port.</dd>
+  <dd class="dd">This operator has 2 input ports and 1 or more output ports.</dd>
 
  
  
@@ -52,9 +62,9 @@
  
   <dt class="dt dlterm">Parameters</dt>
 
-  <dd class="dd">This operator supports 13 parameters.
+  <dd class="dd">This operator supports 31 parameters.
 <p class="p"> Optional: 
-<a class="xref" href="#spldoc_operator__parameter__attrNameAsPrefix">attrNameAsPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__batch">batch</a>, <a class="xref" href="#spldoc_operator__parameter__binaryMode">binaryMode</a>, <a class="xref" href="#spldoc_operator__parameter__parsingMode">parsingMode</a>, <a class="xref" href="#spldoc_operator__parameter__dataAttr">dataAttr</a>, <a class="xref" href="#spldoc_operator__parameter__comment">comment</a>, <a class="xref" href="#spldoc_operator__parameter__attrNameDelimiter">attrNameDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalDelimiter">globalDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalSkipper">globalSkipper</a>, <a class="xref" href="#spldoc_operator__parameter__prefix">prefix</a>, <a class="xref" href="#spldoc_operator__parameter__suffix">suffix</a>, <a class="xref" href="#spldoc_operator__parameter__quotedStrings">quotedStrings</a>, <a class="xref" href="#spldoc_operator__parameter__undefined">undefined</a>
+<a class="xref" href="#spldoc_operator__parameter__allowEmpty">allowEmpty</a>, <a class="xref" href="#spldoc_operator__parameter__batch">batch</a>, <a class="xref" href="#spldoc_operator__parameter__binaryMode">binaryMode</a>, <a class="xref" href="#spldoc_operator__parameter__comment">comment</a>, <a class="xref" href="#spldoc_operator__parameter__dataAttr">dataAttr</a>, <a class="xref" href="#spldoc_operator__parameter__explain">explain</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameDelimiter">globalAttrNameDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameQuoted">globalAttrNameQuoted</a>, <a class="xref" href="#spldoc_operator__parameter__globalDelimiter">globalDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalEscapeChar">globalEscapeChar</a>, <a class="xref" href="#spldoc_operator__parameter__globalSkipper">globalSkipper</a>, <a class="xref" href="#spldoc_operator__parameter__globalTupleScheme">globalTupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__listPrefix">listPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__listSuffix">listSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__mapPrefix">mapPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__mapSuffix">mapSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__parsingMode">parsingMode</a>, <a class="xref" href="#spldoc_operator__parameter__passAttrs">passAttrs</a>, <a class="xref" href="#spldoc_operator__parameter__prefix">prefix</a>, <a class="xref" href="#spldoc_operator__parameter__quotedOptStrings">quotedOptStrings</a>, <a class="xref" href="#spldoc_operator__parameter__quotedStrings">quotedStrings</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountAfter">skipCountAfter</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountBefore">skipCountBefore</a>, <a class="xref" href="#spldoc_operator__parameter__startFrom">startFrom</a>, <a class="xref" href="#spldoc_operator__parameter__suffix">suffix</a>, <a class="xref" href="#spldoc_operator__parameter__tsFormat">tsFormat</a>, <a class="xref" href="#spldoc_operator__parameter__tsToken">tsToken</a>, <a class="xref" href="#spldoc_operator__parameter__tuplePrefix">tuplePrefix</a>, <a class="xref" href="#spldoc_operator__parameter__tupleScheme">tupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__tupleSuffix">tupleSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__undefined">undefined</a>
 
 </p>
 </dd>
@@ -128,6 +138,43 @@
    </dd>
 
   
+  
+   <dt class="dt dlterm">Ports (1)</dt>
+
+   <dd class="dd">
+   <dl class="dl">
+    
+      <dt class="dt dlterm">Properties</dt>
+
+      <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__optional">Optional</a>: true
+     </li>
+
+   </ul>
+
+   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__controlport">ControlPort</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__tuplemutationallowed">TupleMutationAllowed</a>: false
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__windowingmode">WindowingMode</a>: NonWindowed
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__windowpunctuationinputmode">WindowPunctuationInputMode</a>: Oblivious
+     </li>
+
+   </ul>
+
+      </dd>
+    
+   </dl>
+
+   <p class="p"/>
+   </dd>
+
+  
 </dl>
 
 </div>
@@ -176,6 +223,15 @@
 
                         
               <dt class="dt dlterm">
+                <tt class="ph tt">   &lt;any A, tuple T&gt; A Param(enum{_} options, T deepOptions)</tt>              </dt>
+
+            <dd class="dd">
+              <p class="p"/>
+
+            </dd>
+
+                        
+              <dt class="dt dlterm">
                 <tt class="ph tt">   &lt;any A, tuple T1, tuple T2&gt; A Param(T1 options, T2 deepOptions)</tt>              </dt>
 
             <dd class="dd">
@@ -186,6 +242,15 @@
                         
               <dt class="dt dlterm">
                 <tt class="ph tt">   &lt;tuple T&gt; boolean ParamN(T options)</tt>              </dt>
+
+            <dd class="dd">
+              <p class="p"/>
+
+            </dd>
+
+                        
+              <dt class="dt dlterm">
+                <tt class="ph tt">   &lt;tuple T&gt; boolean ParamN(enum{_} options, T deepOptions)</tt>              </dt>
 
             <dd class="dd">
               <p class="p"/>
@@ -211,25 +276,21 @@
 
   </dl>
 
- <dl class="dl">
+<dl class="dl">
   
-   <dt class="dt dlterm">Ports (0)</dt>
+   <dt class="dt dlterm">Ports (0...)</dt>
 
    <dd class="dd">
 
+   <p class="p"/>
+
     <p class="p"/>
 
-    <dl class="dl">
-     
+   <dl class="dl">
+    
       <dt class="dt dlterm">Properties</dt>
 
       <dd class="dd">   <ul class="sl simple">
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__output_port_set__optional">Optional</a>: false
-     </li>
-
-   </ul>
-
-   <ul class="sl simple">
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__output_port_set__tuplemutationallowed">TupleMutationAllowed</a>: false
      </li>
 
@@ -239,10 +300,10 @@
    </ul>
 
 </dd>
-     
-    </dl>
+    
+   </dl>
 
-    <p class="p"/>
+   <p class="p"/>
 
    </dd>
 
@@ -254,9 +315,14 @@
 <div class="section">
 <p class="p splhead-1"><strong class="ph b"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters">Parameters</a></strong></p>
 
+
+<p class="p"> Optional: 
+<a class="xref" href="#spldoc_operator__parameter__allowEmpty">allowEmpty</a>, <a class="xref" href="#spldoc_operator__parameter__batch">batch</a>, <a class="xref" href="#spldoc_operator__parameter__binaryMode">binaryMode</a>, <a class="xref" href="#spldoc_operator__parameter__comment">comment</a>, <a class="xref" href="#spldoc_operator__parameter__dataAttr">dataAttr</a>, <a class="xref" href="#spldoc_operator__parameter__explain">explain</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameDelimiter">globalAttrNameDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameQuoted">globalAttrNameQuoted</a>, <a class="xref" href="#spldoc_operator__parameter__globalDelimiter">globalDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalEscapeChar">globalEscapeChar</a>, <a class="xref" href="#spldoc_operator__parameter__globalSkipper">globalSkipper</a>, <a class="xref" href="#spldoc_operator__parameter__globalTupleScheme">globalTupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__listPrefix">listPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__listSuffix">listSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__mapPrefix">mapPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__mapSuffix">mapSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__parsingMode">parsingMode</a>, <a class="xref" href="#spldoc_operator__parameter__passAttrs">passAttrs</a>, <a class="xref" href="#spldoc_operator__parameter__prefix">prefix</a>, <a class="xref" href="#spldoc_operator__parameter__quotedOptStrings">quotedOptStrings</a>, <a class="xref" href="#spldoc_operator__parameter__quotedStrings">quotedStrings</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountAfter">skipCountAfter</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountBefore">skipCountBefore</a>, <a class="xref" href="#spldoc_operator__parameter__startFrom">startFrom</a>, <a class="xref" href="#spldoc_operator__parameter__suffix">suffix</a>, <a class="xref" href="#spldoc_operator__parameter__tsFormat">tsFormat</a>, <a class="xref" href="#spldoc_operator__parameter__tsToken">tsToken</a>, <a class="xref" href="#spldoc_operator__parameter__tuplePrefix">tuplePrefix</a>, <a class="xref" href="#spldoc_operator__parameter__tupleScheme">tupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__tupleSuffix">tupleSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__undefined">undefined</a>
+
+</p>
 <dl class="dl">
   
-     <dt class="dt dlterm"><a name="spldoc_operator__parameter__attrNameAsPrefix"><!-- --></a><tt class="ph tt">attrNameAsPrefix</tt></dt>
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__allowEmpty"><!-- --></a><tt class="ph tt">allowEmpty</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -352,7 +418,7 @@
 
   
   
-     <dt class="dt dlterm"><a name="spldoc_operator__parameter__parsingMode"><!-- --></a><tt class="ph tt">parsingMode</tt></dt>
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__comment"><!-- --></a><tt class="ph tt">comment</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -360,8 +426,8 @@
      <dt class="dt dlterm">Properties</dt>
 
      <dd class="dd">   <ul class="sl simple">
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: Parsing
- (<tt class="ph tt">full, partial</tt>)     </li>
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
 
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
      </li>
@@ -369,7 +435,7 @@
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
      </li>
 
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: CustomLiteral
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
      </li>
 
    </ul>
@@ -416,7 +482,36 @@
 
   
   
-     <dt class="dt dlterm"><a name="spldoc_operator__parameter__comment"><!-- --></a><tt class="ph tt">comment</tt></dt>
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__explain"><!-- --></a><tt class="ph tt">explain</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Expression
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalAttrNameDelimiter"><!-- --></a><tt class="ph tt">globalAttrNameDelimiter</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -448,7 +543,7 @@
 
   
   
-     <dt class="dt dlterm"><a name="spldoc_operator__parameter__attrNameDelimiter"><!-- --></a><tt class="ph tt">attrNameDelimiter</tt></dt>
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalAttrNameQuoted"><!-- --></a><tt class="ph tt">globalAttrNameQuoted</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -456,7 +551,7 @@
      <dt class="dt dlterm">Properties</dt>
 
      <dd class="dd">   <ul class="sl simple">
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: boolean
      </li>
 
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
@@ -481,6 +576,38 @@
   
   
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalDelimiter"><!-- --></a><tt class="ph tt">globalDelimiter</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalEscapeChar"><!-- --></a><tt class="ph tt">globalEscapeChar</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -544,7 +671,388 @@
 
   
   
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalTupleScheme"><!-- --></a><tt class="ph tt">globalTupleScheme</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: Schemes
+ (<tt class="ph tt">firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered</tt>)     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: CustomLiteral
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__listPrefix"><!-- --></a><tt class="ph tt">listPrefix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__listSuffix"><!-- --></a><tt class="ph tt">listSuffix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__mapPrefix"><!-- --></a><tt class="ph tt">mapPrefix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__mapSuffix"><!-- --></a><tt class="ph tt">mapSuffix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__parsingMode"><!-- --></a><tt class="ph tt">parsingMode</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: Parsing
+ (<tt class="ph tt">full, partial</tt>)     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: CustomLiteral
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__passAttrs"><!-- --></a><tt class="ph tt">passAttrs</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Attribute
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__prefix"><!-- --></a><tt class="ph tt">prefix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__quotedOptStrings"><!-- --></a><tt class="ph tt">quotedOptStrings</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: boolean
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__quotedStrings"><!-- --></a><tt class="ph tt">quotedStrings</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: boolean
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__skipCountAfter"><!-- --></a><tt class="ph tt">skipCountAfter</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: uint32
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__skipCountBefore"><!-- --></a><tt class="ph tt">skipCountBefore</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: uint32
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__startFrom"><!-- --></a><tt class="ph tt">startFrom</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -608,7 +1116,7 @@
 
   
   
-     <dt class="dt dlterm"><a name="spldoc_operator__parameter__quotedStrings"><!-- --></a><tt class="ph tt">quotedStrings</tt></dt>
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__tsFormat"><!-- --></a><tt class="ph tt">tsFormat</tt></dt>
 
      <dd class="dd">
   <dl class="dl">
@@ -616,7 +1124,135 @@
      <dt class="dt dlterm">Properties</dt>
 
      <dd class="dd">   <ul class="sl simple">
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: boolean
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__tsToken"><!-- --></a><tt class="ph tt">tsToken</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__tuplePrefix"><!-- --></a><tt class="ph tt">tuplePrefix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: Constant
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__tupleScheme"><!-- --></a><tt class="ph tt">tupleScheme</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: Schemes
+ (<tt class="ph tt">firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered</tt>)     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__optional">Optional</a>: true
+     </li>
+
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__expressionmode">ExpressionMode</a>: CustomLiteral
+     </li>
+
+   </ul>
+
+     <p class="p"/>
+     </dd>
+
+    
+  </dl>
+
+     </dd>
+
+  
+  
+     <dt class="dt dlterm"><a name="spldoc_operator__parameter__tupleSuffix"><!-- --></a><tt class="ph tt">tupleSuffix</tt></dt>
+
+     <dd class="dd">
+  <dl class="dl">
+    
+     <dt class="dt dlterm">Properties</dt>
+
+     <dd class="dd">   <ul class="sl simple">
+     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__type">Type</a>: rstring
      </li>
 
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters__parameter__cardinality">Cardinality</a>: 1
