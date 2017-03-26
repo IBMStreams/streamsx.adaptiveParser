@@ -358,7 +358,10 @@ Param(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
 
             <dd class="dd">
 
-<div class="p">            Apply custom options to the top and the next nested level attributes.             The function has two tuple arguments:
+<p class="p">            Apply custom options to the top and the next nested level attributes.
+</p>
+
+<div class="p">            The function has two tuple arguments:
 <pre class="pre codeblock">
 Param({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
 </pre>
@@ -375,7 +378,10 @@ Param({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimite
 
             <dd class="dd">
 
-<div class="p">            Apply custom options to the current (non top level) attribute.             The function has one tuple argument:
+<p class="p">            Apply custom options to the current (non top level) attribute.
+</p>
+
+<div class="p">            The function has one tuple argument:
 <pre class="pre codeblock">
 ParamN({delimiter="|", skipper=Skipper.none, ...})
 </pre>
@@ -392,7 +398,10 @@ ParamN({delimiter="|", skipper=Skipper.none, ...})
 
             <dd class="dd">
 
-<div class="p">            Skip current (non top level) attribute and apply custom options to the next nested level attribute.             The function has one anonymous '_' agrument (no options for the current level) and one tuple argument:
+<p class="p">            Skip current (non top level) attribute and apply custom options to the next nested level attribute.
+</p>
+
+<div class="p">            The function has one anonymous '_' agrument (no options for the current level) and one tuple argument:
 <pre class="pre codeblock">
 ParamN(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
 </pre>
@@ -409,8 +418,16 @@ ParamN(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
 
             <dd class="dd">
 
-<p class="p">            Apply custom options to the current (non top level) and the next nested attribute levels.             The function has two tuple arguments:             ParamN({file:delimiter="|", skipper=Skipper.none, ...}, {file:attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+<p class="p">            Apply custom options to the current (non top level) and the next nested attribute levels.
 </p>
+
+<div class="p">            The function has two tuple arguments:
+<pre class="pre codeblock">
+ParamN({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+</pre>
+
+
+</div>
               <p class="p"/>
 
             </dd>
