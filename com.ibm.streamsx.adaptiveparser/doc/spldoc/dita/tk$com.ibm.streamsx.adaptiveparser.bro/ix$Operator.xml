@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_index">
+<title>Operators: com.ibm.streamsx.adaptiveparser.bro 2.1</title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro 2.1</xref> &gt; Operators</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Operators</title>
+<dl>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCertParser.xml#spldoc_compilationunit/composite_operator__BroCertParser">BroCertParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCommParser.xml#spldoc_compilationunit/composite_operator__BroCommParser">BroCommParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroConnParser.xml#spldoc_compilationunit/composite_operator__BroConnParser">BroConnParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroDHCPParser.xml#spldoc_compilationunit/composite_operator__BroDHCPParser">BroDHCPParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroDNSParser.xml#spldoc_compilationunit/composite_operator__BroDNSParser">BroDNSParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroFilesParser.xml#spldoc_compilationunit/composite_operator__BroFilesParser">BroFilesParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroHTTPParser.xml#spldoc_compilationunit/composite_operator__BroHTTPParser">BroHTTPParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroNoticeParser.xml#spldoc_compilationunit/composite_operator__BroNoticeParser">BroNoticeParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroSSLParser.xml#spldoc_compilationunit/composite_operator__BroSSLParser">BroSSLParser</xref></dt>
+  <dd></dd>
+</dlentry>
+<dlentry>
+  <dt><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroSimpleParser.xml#spldoc_compilationunit/composite_operator__BroSimpleParser">BroSimpleParser</xref></dt>
+  <dd></dd>
+</dlentry>
+</dl>
+</section>
+</refbody>
+</reference>
+

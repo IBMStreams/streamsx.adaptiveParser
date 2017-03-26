@@ -1,0 +1,1037 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_operator">
+<title>Operator <tt>AdaptiveParser</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.xml">com.ibm.streamsx.adaptiveparser 2.1</xref> &gt; <xref href="ns$com.ibm.streamsx.adaptiveparser.xml">com.ibm.streamsx.adaptiveparser</xref> &gt; AdaptiveParser</p>
+</section>
+<section outputclass="splprimop">
+  <image href="../../image/tk$com.ibm.streamsx.adaptiveparser/op$com.ibm.streamsx.adaptiveparser$AdaptiveParser.svg" width="672" height="112">
+    <alt>Primitive operator image not displayed. Problem loading file: ../../image/tk$com.ibm.streamsx.adaptiveparser/op$com.ibm.streamsx.adaptiveparser$AdaptiveParser.svg
+</alt>
+  </image>
+</section>
+<section>
+
+<p>AdaptiveParser allows to parse any structured, semi-structured and unstructured input format accordingly to an output tuple schema. Each primitive type attribute generates a mini parser, when grouped together they create a complex tuple parser. Tuple parsers can be nested. Each collection type generates a collection parser that wraps a mini parser based on collection (key)/value type(s).
+</p>
+<p>AdaptiveParser provides an ability to apply settings on any level: globally, partially or locally for a single attribute.
+</p>
+<p>AdaptiveParser operator has two custom output functions: 
+<ul>
+<li> Param applies parsing options only for top level attributes.</li>
+<li> ParamN applies parsing options for any nested level attributes.</li>
+</ul>
+</p>
+<p>One input port is allowed. If there is only one blob/rstring attribute exists, it is taken as a data to be parsed. Otherwise dataAttr parameter should be applied.
+</p>
+<p>Multiple output ports are allowed where each port defines an alternate parser. If the last output port schema is identical to the input port schema then it is treated as an error port.	
+</p>
+</section>
+<section>
+<title outputclass="splhead-1">Summary</title>
+<dl compact="yes">
+ <dlentry>
+  <dt>Ports</dt>
+  <dd>This operator has 2 or more input ports and 1 or more output ports.</dd>
+ </dlentry>
+ <dlentry>
+  <dt>Windowing</dt>
+  <dd>This operator does not accept any windowing configurations.</dd>
+ </dlentry>
+ <dlentry>
+  <dt>Parameters</dt>
+  <dd>This operator supports 31 parameters.
+<p> Optional: 
+<xref href="#spldoc_operator/parameter__allowEmpty">allowEmpty</xref>, <xref href="#spldoc_operator/parameter__batch">batch</xref>, <xref href="#spldoc_operator/parameter__binaryMode">binaryMode</xref>, <xref href="#spldoc_operator/parameter__comment">comment</xref>, <xref href="#spldoc_operator/parameter__dataAttr">dataAttr</xref>, <xref href="#spldoc_operator/parameter__explain">explain</xref>, <xref href="#spldoc_operator/parameter__globalAttrNameDelimiter">globalAttrNameDelimiter</xref>, <xref href="#spldoc_operator/parameter__globalAttrNameQuoted">globalAttrNameQuoted</xref>, <xref href="#spldoc_operator/parameter__globalDelimiter">globalDelimiter</xref>, <xref href="#spldoc_operator/parameter__globalEscapeChar">globalEscapeChar</xref>, <xref href="#spldoc_operator/parameter__globalSkipper">globalSkipper</xref>, <xref href="#spldoc_operator/parameter__globalTupleScheme">globalTupleScheme</xref>, <xref href="#spldoc_operator/parameter__listPrefix">listPrefix</xref>, <xref href="#spldoc_operator/parameter__listSuffix">listSuffix</xref>, <xref href="#spldoc_operator/parameter__mapPrefix">mapPrefix</xref>, <xref href="#spldoc_operator/parameter__mapSuffix">mapSuffix</xref>, <xref href="#spldoc_operator/parameter__parsingMode">parsingMode</xref>, <xref href="#spldoc_operator/parameter__passAttrs">passAttrs</xref>, <xref href="#spldoc_operator/parameter__prefix">prefix</xref>, <xref href="#spldoc_operator/parameter__quotedOptStrings">quotedOptStrings</xref>, <xref href="#spldoc_operator/parameter__quotedStrings">quotedStrings</xref>, <xref href="#spldoc_operator/parameter__skipCountAfter">skipCountAfter</xref>, <xref href="#spldoc_operator/parameter__skipCountBefore">skipCountBefore</xref>, <xref href="#spldoc_operator/parameter__startFrom">startFrom</xref>, <xref href="#spldoc_operator/parameter__suffix">suffix</xref>, <xref href="#spldoc_operator/parameter__tsFormat">tsFormat</xref>, <xref href="#spldoc_operator/parameter__tsToken">tsToken</xref>, <xref href="#spldoc_operator/parameter__tuplePrefix">tuplePrefix</xref>, <xref href="#spldoc_operator/parameter__tupleScheme">tupleScheme</xref>, <xref href="#spldoc_operator/parameter__tupleSuffix">tupleSuffix</xref>, <xref href="#spldoc_operator/parameter__undefined">undefined</xref>
+
+</p></dd>
+ </dlentry>
+ <dlentry>
+  <dt>Metrics</dt>
+  <dd>This operator does not report any metrics.</dd>
+ </dlentry>
+</dl></section>
+<section>
+<title outputclass="splhead-1">Properties</title>
+<dl compact="yes">
+ <dlentry>
+  <dt>Implementation</dt>
+  <dd>C++</dd>
+ </dlentry>
+ <dlentry>
+  <dt><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/context__providessinglethreadedexecutioncontext">Threading</xref></dt>
+  <dd><tt>Always</tt> - Operator always provides a single threaded execution context.</dd>
+ </dlentry>
+</dl>
+</section>
+<section>
+<p outputclass="splhead-1"><b><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set">Input Ports</xref></b></p><dl>
+  <dlentry>
+   <dt>Ports (0)</dt>
+   <dd>
+<p>The input data port. Logic can be applied, e.g. to update state.
+</p>
+   <dl>
+    <dlentry>
+      <dt>Properties</dt>
+      <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__optional">Optional</xref>: false
+     </sli>
+   </sl>
+   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__controlport">ControlPort</xref>: false
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__tuplemutationallowed">TupleMutationAllowed</xref>: false
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__windowingmode">WindowingMode</xref>: NonWindowed
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__windowpunctuationinputmode">WindowPunctuationInputMode</xref>: Oblivious
+     </sli>
+   </sl>
+      </dd>    </dlentry>
+   </dl>
+   <p></p>   </dd>
+  </dlentry>
+  <dlentry>
+   <dt>Ports (1...)</dt>
+   <dd>
+
+<p>The control input port(s) is only for logic section, e.g. to update state.
+</p>
+   <dl>
+    <dlentry>
+      <dt>Properties</dt>
+      <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__controlport">ControlPort</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__tuplemutationallowed">TupleMutationAllowed</xref>: false
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__windowingmode">WindowingMode</xref>: NonWindowed
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/input_port_set__windowpunctuationinputmode">WindowPunctuationInputMode</xref>: Oblivious
+     </sli>
+   </sl>
+      </dd>    </dlentry>
+   </dl>
+   <p></p>
+   </dd>
+  </dlentry>
+</dl>
+</section>
+<section>
+<p outputclass="splhead-1"><b><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/output_port_set">Output Ports</xref></b></p><dl>
+  <dlentry>
+     <dt>Assignments</dt>
+     <dd>This operator requires that assignments made to output attributes cannot reference input stream attributes.</dd>
+  </dlentry>
+</dl>
+<dl>
+  <dlentry>    <dt><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/context__customoutputfunctions">Output Functions</xref></dt>
+    <dd>
+      <dl>
+      <dlentry>
+        <dt>AdaptiveParserFS</dt>
+        <dd>
+          <dl>
+            <dlentry><dt></dt><dd></dd></dlentry>
+            <dlentry>
+              <dt>
+                <tt><![CDATA[   <any T> T AsIs(T v)]]></tt>              </dt>
+            <dd>
+
+<p>Assign custom value to the output attribute.
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <any A, tuple T> A Param(T options)]]></tt>              </dt>
+            <dd>
+
+<p>                Apply custom options to the top level attribute.
+</p>
+<p>                The function has one tuple argument:
+<codeblock>
+<![CDATA[Param({delimiter="|", skipper=Skipper.blank, ...})
+]]></codeblock>
+                The following parameters may be used:
+<ul>
+<li> attrFieldName: set alias for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')</li>
+<li> attrNameDelimiter: set delimiter for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')</li>
+<li> attrNameQuoted: expect an attribute name with quotes (applicable when tupleScheme is 'openAttrNamePaired')</li>
+<li> base64Mode: set base64 decoding for the current string attribute</li>
+<li> binaryMode: set binary encoding for the numeric attribute</li>
+<li> cutCharsetDelim: set multiple delimiters the input will be searched first then parsed</li>
+<li> cutStringDelim: set delimiter the input will be searched first then parsed</li>
+<li> cutSkipper: set skipper the input will be searched first then parsed</li>
+<li> defaultValue: apply default value for an optional attribute</li>
+<li> delimiter: set delimiter for an attribute</li>
+<li> escapeChar: set escaping character(s) for an attribute,</li>
+<li> hexCharPrefix: set escaping character(s) for an attribute</li>
+<li> globalAttrNameDelimiter: like attrNameDelimiter, apply to all nested levels (the current level is left unchanged)</li>
+<li> globalAttrNameQuoted: like attrNameQuoted, apply to all nested levels (the current level is left unchaged)</li>
+<li> globalDelimiter: like delimiter, apply to all nested levels (the current level is left unchanged)</li>
+<li> globalEscapeChar: like escapeChar, apply to all nested levels (the current level is left unchanged)</li>
+<li> globalSkipper: like skipper, apply to all nested levels (the current level is left unchanged)</li>
+<li> globalTupleScheme: like tupleScheme, apply to all nested levels (the current level is left unchanged)</li>
+<li> optional: an attribute can be skipped (taking a default value)</li>
+<li> parseToState: an input field can be parsed to a state (maybe be used for skipCounter or just to drop a part of the input)</li>
+<li> regexFilter: an attribute is filtered by regex expression and if fails the entire tuple parsing will be failed (use with an error port) </li>
+<li> quotedOptStrings: an attribute may have quotes (applicable only for strings)</li>
+<li> quotedStrings: expect an attribute with quotes (applicable only for strings)</li>
+<li> prefix: expect a prefix before the attribute (applicable only for primitive types)</li>
+<li> suffix: expect a suffix after the attribute (applicable only for primitive types)</li>
+<li> listPrefix: expect a prefix before the attribute (applicable only for lists/sets and inherited)</li>
+<li> listSuffix: expect a suffix after the attribute (applicable only for lists/sets and inherited)</li>
+<li> mapPrefix: expect a prefix before the attribute (applicable only for maps and inherited)</li>
+<li> mapSuffix: expect a suffix after the attribute (applicable only for maps and inherited)</li>
+<li> tuplePrefix: expect a prefix before the attribute (applicable only for tuples and inherited)</li>
+<li> tupleSuffix: expect a suffix after the attribute (applicable only for tuples and inherited)</li>
+<li> tsFormat: defines a string representation of timestamp (see the system man page for strptime)</li>
+<li> tsToken: defines a character separator for epoch timestamp</li>
+<li> bound: defines a bounded length type (not the value - e.g. 0uh) that parsed before the attribute (applicable only for strings)</li>
+<li> skipCountAfter: sets a count of bytes to skip after the attribute</li>
+<li> skipCountBefore: sets a count of bytes to skip before the attribute</li>
+<li> skipChars: set character(s) to be skipped (applicable only for strings)</li>
+<li> enumAliasesMap: defines alternate names for enum values (applicable only for enums)</li>
+<li> skipper: set a skipper for all or subset of whitespaces to be skipped.</li>
+<li> tupleScheme: an attribute data scheme (applicable only for tuples)</li>
+</ul>
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <any A, tuple T> A Param(enum{_} options, T deepOptions)]]></tt>              </dt>
+            <dd>
+
+<p>            Skip top level attribute and apply custom options to the next nested level attribute.
+</p>
+<p>            The function has one anonymous '_' agrument (no options for the top level) and one tuple argument:
+<codeblock>
+<![CDATA[Param(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+]]></codeblock>
+
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <any A, tuple T1, tuple T2> A Param(T1 options, T2 deepOptions)]]></tt>              </dt>
+            <dd>
+
+<p>            Apply custom options to the top and the next nested level attributes.             The function has two tuple arguments:
+<codeblock>
+<![CDATA[Param({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+]]></codeblock>
+
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <tuple T> boolean ParamN(T options)]]></tt>              </dt>
+            <dd>
+
+<p>            Apply custom options to the current (non top level) attribute.             The function has one tuple argument:
+<codeblock>
+<![CDATA[ParamN({delimiter="|", skipper=Skipper.none, ...})
+]]></codeblock>
+
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <tuple T> boolean ParamN(enum{_} options, T deepOptions)]]></tt>              </dt>
+            <dd>
+
+<p>            Skip current (non top level) attribute and apply custom options to the next nested level attribute.             The function has one anonymous '_' agrument (no options for the current level) and one tuple argument:
+<codeblock>
+<![CDATA[ParamN(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+]]></codeblock>
+
+</p>              <p></p>
+            </dd>
+            </dlentry>            <dlentry>
+              <dt>
+                <tt><![CDATA[   <tuple T1, tuple T2> boolean ParamN(T1 options, T2 deepOptions)]]></tt>              </dt>
+            <dd>
+
+<p>            Apply custom options to the current (non top level) and the next nested attribute levels.             The function has two tuple arguments:             ParamN({file:delimiter="|", skipper=Skipper.none, ...}, {file:attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+</p>              <p></p>
+            </dd>
+            </dlentry>          </dl>        </dd>
+      </dlentry>
+      </dl>
+    </dd>
+  </dlentry></dl>
+<dl>
+  <dlentry>
+   <dt>Ports (0...)</dt>
+   <dd>
+
+   <p></p>
+    <p></p>
+   <dl>
+    <dlentry>
+      <dt>Properties</dt>
+      <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/output_port_set__tuplemutationallowed">TupleMutationAllowed</xref>: false
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/output_port_set__windowpunctuationoutputmode">WindowPunctuationOutputMode</xref>: Preserving
+     </sli>
+   </sl>
+</dd>    </dlentry>
+   </dl>
+   <p></p>
+   </dd>
+  </dlentry>
+</dl>
+</section>
+<section>
+<p outputclass="splhead-1"><b><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters">Parameters</xref></b></p>
+<p>Parameters allow to customize the global behavior of the operator. Most of the parameters can be applied also inside Param/ParamM functions.
+</p>
+
+<p> Optional: 
+<xref href="#spldoc_operator/parameter__allowEmpty">allowEmpty</xref>, <xref href="#spldoc_operator/parameter__batch">batch</xref>, <xref href="#spldoc_operator/parameter__binaryMode">binaryMode</xref>, <xref href="#spldoc_operator/parameter__comment">comment</xref>, <xref href="#spldoc_operator/parameter__dataAttr">dataAttr</xref>, <xref href="#spldoc_operator/parameter__explain">explain</xref>, <xref href="#spldoc_operator/parameter__globalAttrNameDelimiter">globalAttrNameDelimiter</xref>, <xref href="#spldoc_operator/parameter__globalAttrNameQuoted">globalAttrNameQuoted</xref>, <xref href="#spldoc_operator/parameter__globalDelimiter">globalDelimiter</xref>, <xref href="#spldoc_operator/parameter__globalEscapeChar">globalEscapeChar</xref>, <xref href="#spldoc_operator/parameter__globalSkipper">globalSkipper</xref>, <xref href="#spldoc_operator/parameter__globalTupleScheme">globalTupleScheme</xref>, <xref href="#spldoc_operator/parameter__listPrefix">listPrefix</xref>, <xref href="#spldoc_operator/parameter__listSuffix">listSuffix</xref>, <xref href="#spldoc_operator/parameter__mapPrefix">mapPrefix</xref>, <xref href="#spldoc_operator/parameter__mapSuffix">mapSuffix</xref>, <xref href="#spldoc_operator/parameter__parsingMode">parsingMode</xref>, <xref href="#spldoc_operator/parameter__passAttrs">passAttrs</xref>, <xref href="#spldoc_operator/parameter__prefix">prefix</xref>, <xref href="#spldoc_operator/parameter__quotedOptStrings">quotedOptStrings</xref>, <xref href="#spldoc_operator/parameter__quotedStrings">quotedStrings</xref>, <xref href="#spldoc_operator/parameter__skipCountAfter">skipCountAfter</xref>, <xref href="#spldoc_operator/parameter__skipCountBefore">skipCountBefore</xref>, <xref href="#spldoc_operator/parameter__startFrom">startFrom</xref>, <xref href="#spldoc_operator/parameter__suffix">suffix</xref>, <xref href="#spldoc_operator/parameter__tsFormat">tsFormat</xref>, <xref href="#spldoc_operator/parameter__tsToken">tsToken</xref>, <xref href="#spldoc_operator/parameter__tuplePrefix">tuplePrefix</xref>, <xref href="#spldoc_operator/parameter__tupleScheme">tupleScheme</xref>, <xref href="#spldoc_operator/parameter__tupleSuffix">tupleSuffix</xref>, <xref href="#spldoc_operator/parameter__undefined">undefined</xref>
+
+</p><dl>
+  <dlentry id="parameter__allowEmpty">
+     <dt><tt>allowEmpty</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: yes, non-global version: no.         Allows empty value applying a default value instead.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__batch">
+     <dt><tt>batch</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Parse an input tuple as a bulk of data. Can submit multiple output tuples.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__binaryMode">
+     <dt><tt>binaryMode</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: binaryMode.         All numeric parsers will parse the input as binary words.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__comment">
+     <dt><tt>comment</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets the comment characters in the beginning of an input data. the input will be skipped.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__dataAttr">
+     <dt><tt>dataAttr</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets the input attribute holding the data to parse.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Attribute
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__explain">
+     <dt><tt>explain</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Prints to the output console additional information about the parsing.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Expression
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalAttrNameDelimiter">
+     <dt><tt>globalAttrNameDelimiter</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: attrNameDelimiter.         When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be delimited.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalAttrNameQuoted">
+     <dt><tt>globalAttrNameQuoted</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: attrNameQuoted.         When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be quoted.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalDelimiter">
+     <dt><tt>globalDelimiter</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: delimiter.         A field delimiter - usually 1 or more characters.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalEscapeChar">
+     <dt><tt>globalEscapeChar</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: escapeChar.         A field escape character.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalSkipper">
+     <dt><tt>globalSkipper</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: skipper.         Set a skipper for all or subset of whitespaces to be skipped. Can be set to values:
+<codeblock>
+<![CDATA[none: whitespaces are not skipped and parsed as part of the input data.
+blank: all whitespaces are skipped except new lines.
+endl: only new lines are skipped.
+control: all control characters are skipped.
+punct: all punct characters are skipped.
+tab: only tabs are skipped.
+whitespace (default): all whitespaces are skipped.
+]]></codeblock>
+
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: Skippers
+ (<tt>none, blank, control, endl, punct, tab, whitespace</tt>)     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: CustomLiteral
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__globalTupleScheme">
+     <dt><tt>globalTupleScheme</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: tupleScheme.         An input data scheme. Can be set to values:
+<codeblock>
+<![CDATA[firstTypePaired: alternate parser - each tuple attribute tries to parse the input until one succeeds.
+openAttrNamePaired: tuple attributes parse the input as key/value pairs in any order, missing fields are allowed.
+openTypeOrdered: tuple attributes parse the input in a sequence, missing fields are allowed.
+openTypeUnordered: tuple attributes parse the input in any order, missing fields are allowed.
+strictTypeOrdered (default): tuple attributes parse the input in a sequence, all of them must be present. 
+]]></codeblock>
+
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: Schemes
+ (<tt>firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered</tt>)     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: CustomLiteral
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__listPrefix">
+     <dt><tt>listPrefix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: listPrefix.         Defines a preceding list/set character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__listSuffix">
+     <dt><tt>listSuffix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: listSuffix.         Defines a succeeding list/set character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__mapPrefix">
+     <dt><tt>mapPrefix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: mapPrefix.         Defines a preceding map character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__mapSuffix">
+     <dt><tt>mapSuffix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: mapSuffix.         Defines a succeeding map character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__parsingMode">
+     <dt><tt>parsingMode</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Can be full or partial. In a partial mode the parsing succeeds when the whole output tuple is filled without checking if the input end is reached.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: Parsing
+ (<tt>full, partial</tt>)     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: CustomLiteral
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__passAttrs">
+     <dt><tt>passAttrs</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets input attributes that should be copied to the output attributes. Those output attributes will not parse the input.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Attribute
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__prefix">
+     <dt><tt>prefix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: prefix.         Defines a preceding attribute character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__quotedOptStrings">
+     <dt><tt>quotedOptStrings</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: quotedOptStrings.         Allows string attributes to be optionally quoted.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__quotedStrings">
+     <dt><tt>quotedStrings</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: quotedStrings.         Expects string attributes to be quoted.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: boolean
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__skipCountAfter">
+     <dt><tt>skipCountAfter</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: no, non-global version: skipCountAfter.         Sets number of characters to skip after the current attribute.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: uint32
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__skipCountBefore">
+     <dt><tt>skipCountBefore</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: no, non-global version: skipCountBefore.         Sets number of characters to skip before the current attribute.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: uint32
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__startFrom">
+     <dt><tt>startFrom</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Start parsing from the given character(s) skipping all the previous data from the beginning. 
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__suffix">
+     <dt><tt>suffix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: suffix.         Defines a succeeding attribute character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__tsFormat">
+     <dt><tt>tsFormat</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: tsFormat.         Defines a string representation of timestamp (see the system man page for strptime)
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__tsToken">
+     <dt><tt>tsToken</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: tsToken.         Defines a character separator for epoch timestamp.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__tuplePrefix">
+     <dt><tt>tuplePrefix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: tuplePrefix.         Defines a preceding tuple character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__tupleScheme">
+     <dt><tt>tupleScheme</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: no, global version: globalTupleScheme.         An input data scheme. Can be set to values: the same as globalTupleScheme.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: Schemes
+ (<tt>firstTypePaired, openAttrNamePaired, openTypeOrdered, openTypeUnordered, strictTypeOrdered</tt>)     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: CustomLiteral
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__tupleSuffix">
+     <dt><tt>tupleSuffix</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: yes, inherited: yes, non-global version: tupleSuffix.         Defines a succeeding tuple character(s).
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__cardinality">Cardinality</xref>: 1
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+  <dlentry id="parameter__undefined">
+     <dt><tt>undefined</tt></dt>
+     <dd>
+<p>        Valid in Param/ParamN: no, inherited: yes, non-global version: no.         Sets undefined value(s) for input fields.
+</p>
+  <dl>
+    <dlentry>
+     <dt>Properties</dt>
+     <dd>   <sl>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__type">Type</xref>: rstring
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__optional">Optional</xref>: true
+     </sli>
+     <sli><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/parameters__parameter__expressionmode">ExpressionMode</xref>: Constant
+     </sli>
+   </sl>
+     <p></p>     </dd>
+    </dlentry>
+  </dl>
+     </dd>
+  </dlentry>
+</dl>
+</section>
+<section>
+<p outputclass="splhead-1"><b><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/context__dependencies">Libraries</xref></b></p><dl>
+ <dlentry>
+  <dt>No description for library.
+  </dt>
+<dd/>  <dd><xref href="../references/OperatorModel.xml#spldoc_reference_operator_model/context__dependencies__managedlibrary__includepath">Include Path</xref>: <tt>../../impl/include</tt></dd>
+ </dlentry>
+</dl>
+</section>
+</refbody>
+</reference>
+

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_compilationunit">
+<title>SPL File <tt>BroCertParser.spl</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro 2.1</xref> &gt; <xref href="ns$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro</xref> &gt; BroCertParser.spl</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Content</title>
+  <dl>
+    <dlentry><dt></dt><dd></dd></dlentry>
+    <dlentry>
+      <dt outputclass="splhead-2">Operators</dt>
+      <dd>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCertParser.xml#spldoc_compilationunit/composite_operator__BroCertParser">BroCertParser</xref></b>
+</sli>
+</sl>
+      </dd>
+    </dlentry>
+  </dl>
+</section>
+<section>
+  <title outputclass="splhead-1">Composites</title>
+</section>
+<section id="composite_operator__BroCertParser">
+  <title outputclass="splpart">composite BroCertParser(output BroEvent; input RawData)</title>
+</section>
+<section outputclass="splgraph">
+  <image href="../../image/tk$com.ibm.streamsx.adaptiveparser.bro/op$com.ibm.streamsx.adaptiveparser.bro$BroCertParser.svg" width="142" height="109">
+    <alt>SPL composite operator image not displayed. Problem loading file: ../../image/tk$com.ibm.streamsx.adaptiveparser.bro/op$com.ibm.streamsx.adaptiveparser.bro$BroCertParser.svg
+</alt>
+  </image>
+</section>
+<section>
+<title>Parameters</title>
+<sl>
+<sli><b>dataAttr</b>
+</sli>
+<sli><b>batch</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Input Ports</title>
+<sl>
+<sli><b>RawData</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Output Ports</title>
+<sl>
+<sli><b>BroEvent</b>
+</sli>
+</sl>
+</section>
+<section>
+  <title outputclass="splhead-2">SPL Source Code</title>
+</section>
+
+<section>
+   <codeblock>
+<![CDATA[
+ public composite BroCertParser(input RawData; output BroEvent) {
+ 	param
+ 		attribute $dataAttr ;
+ 		expression<boolean> $batch : false ;
+ 	graph
+ 		stream<BroCert_t> BroEvent = AdaptiveParser(RawData) {
+ 			param
+ 				comment : "#" ;
+ 				globalSkipper : tab ;
+ 				tsToken : ".";
+ 				undefined : "-", "(empty)";
+ 
+ 			output BroEvent:
+ 				san = Param( _, {
+ 					dns =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+ 					uri =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+ 					email = ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab}),
+ 					ip =	ParamN({globalDelimiter = ",", globalSkipper = Skipper.none, cutSkipper = Skipper.tab})
+ 				});
+ 		}
+ }
+]]>
+   </codeblock>
+</section>
+</refbody>
+</reference>
+

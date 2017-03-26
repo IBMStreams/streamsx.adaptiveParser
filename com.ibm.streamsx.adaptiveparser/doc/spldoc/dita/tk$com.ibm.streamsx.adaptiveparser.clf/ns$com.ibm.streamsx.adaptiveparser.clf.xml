@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_namespace">
+<title>Namespace <tt>com.ibm.streamsx.adaptiveparser.clf</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.clf.xml">com.ibm.streamsx.adaptiveparser.clf 2.1</xref> &gt; com.ibm.streamsx.adaptiveparser.clf</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Operators</title>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.clf$CLFParser.xml#spldoc_compilationunit/composite_operator__CLFParser">CLFParser</xref></b>
+</sli>
+</sl>
+</section>
+<section>
+  <title outputclass="splhead-1">Types</title>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.clf$Types.xml#spldoc_compilationunit/type__CLFEvent_t">CLFEvent_t</xref></b>
+</sli>
+</sl>
+</section>
+</refbody>
+</reference>
+

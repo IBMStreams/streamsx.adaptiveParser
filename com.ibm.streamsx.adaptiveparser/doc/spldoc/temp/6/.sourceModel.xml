@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<srcCode:sourceModel xmlns:srcCode="http://www.ibm.com/xmlns/prod/streams/spl/sourceCode" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.json/JSONParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.json"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="44" startColumn="1" startLine="13">
+          <srcCode:compositeHead column="1" line="13" name="JSONParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="35" index="0" line="13" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="52" index="0" line="13" name="JSONEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="12" line="15" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="22" defaultValue="false;" line="16" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="22" defaultValue="false;" line="17" name="$explain">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="25" defaultValue="true;" line="18" name="$keyQuoted">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="25" defaultValue="&quot;&quot;;" line="19" name="$tsFormat">
+                <srcCode:expressionMode mode="expression" type="rstring"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="25" defaultValue="&quot;&quot;;" line="20" name="$tsToken">
+                <srcCode:expressionMode mode="expression" type="rstring"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="7" line="21" name="$JSONType">
+                <srcCode:expressionMode mode="type"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="35" line="25" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="23" index="0" line="25" streamName="JSONEvent" type="$JSONType"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="50" index="0" line="25">
+                      <srcCode:istream column="50" line="25" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="7" line="27" name="batch">
+                      <srcCode:value expr="$batch"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="28" name="dataAttr">
+                      <srcCode:value expr="$dataAttr"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="29" name="explain">
+                      <srcCode:value expr="$explain"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="30" name="globalDelimiter">
+                      <srcCode:value expr="&quot;,&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="31" name="globalTupleScheme">
+                      <srcCode:value expr="openAttrNamePaired"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="32" name="globalAttrNameDelimiter">
+                      <srcCode:value expr="&quot;:&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="33" name="globalAttrNameQuoted">
+                      <srcCode:value expr="$keyQuoted"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="34" name="quotedOptStrings">
+                      <srcCode:value expr="true"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="35" name="listPrefix">
+                      <srcCode:value expr="&quot;[&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="36" name="listSuffix">
+                      <srcCode:value expr="&quot;]&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="37" name="mapPrefix">
+                      <srcCode:value expr="&quot;{&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="38" name="mapSuffix">
+                      <srcCode:value expr="&quot;}&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="39" name="tuplePrefix">
+                      <srcCode:value expr="&quot;{&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="40" name="tupleSuffix">
+                      <srcCode:value expr="&quot;}&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="41" name="tsFormat">
+                      <srcCode:value expr="$tsFormat"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="42" name="tsToken">
+                      <srcCode:value expr="$tsToken"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+</srcCode:sourceModel>

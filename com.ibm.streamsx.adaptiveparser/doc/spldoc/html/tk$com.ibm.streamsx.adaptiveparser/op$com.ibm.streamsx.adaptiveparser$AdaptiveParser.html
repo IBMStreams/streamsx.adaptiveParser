@@ -32,15 +32,27 @@
 
 <div class="section">
 
+<p class="p">AdaptiveParser allows to parse any structured, semi-structured and unstructured input format accordingly to an output tuple schema. Each primitive type attribute generates a mini parser, when grouped together they create a complex tuple parser. Tuple parsers can be nested. Each collection type generates a collection parser that wraps a mini parser based on collection (key)/value type(s).
+</p>
+
+<p class="p">AdaptiveParser provides an ability to apply settings on any level: globally, partially or locally for a single attribute.
+</p>
+
 <div class="p">AdaptiveParser operator has two custom output functions: 
 <ul class="ul">
-<li class="li"> Param applies parsing options for top level attributes.</li>
+<li class="li"> Param applies parsing options only for top level attributes.</li>
 
-<li class="li"> ParamN applies parsing options for nested level attributes.</li>
+<li class="li"> ParamN applies parsing options for any nested level attributes.</li>
 
 </ul>
 
 </div>
+
+<p class="p">One input port is allowed. If there is only one blob/rstring attribute exists, it is taken as a data to be parsed. Otherwise dataAttr parameter should be applied.
+</p>
+
+<p class="p">Multiple output ports are allowed where each port defines an alternate parser. If the last output port schema is identical to the input port schema then it is treated as an error port.	
+</p>
 
 </div>
 
@@ -50,7 +62,7 @@
  
   <dt class="dt dlterm">Ports</dt>
 
-  <dd class="dd">This operator has 2 input ports and 1 or more output ports.</dd>
+  <dd class="dd">This operator has 2 or more input ports and 1 or more output ports.</dd>
 
  
  
@@ -105,6 +117,9 @@
    <dt class="dt dlterm">Ports (0)</dt>
 
    <dd class="dd">
+<p class="p">The input data port. Logic can be applied, e.g. to update state.
+</p>
+
    <dl class="dl">
     
       <dt class="dt dlterm">Properties</dt>
@@ -139,20 +154,18 @@
 
   
   
-   <dt class="dt dlterm">Ports (1)</dt>
+   <dt class="dt dlterm">Ports (1...)</dt>
 
    <dd class="dd">
+
+<p class="p">The control input port(s) is only for logic section, e.g. to update state.
+</p>
+
    <dl class="dl">
     
       <dt class="dt dlterm">Properties</dt>
 
       <dd class="dd">   <ul class="sl simple">
-     <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__optional">Optional</a>: true
-     </li>
-
-   </ul>
-
-   <ul class="sl simple">
      <li class="sli"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__input_port_set__controlport">ControlPort</a>: true
      </li>
 
@@ -172,6 +185,7 @@
    </dl>
 
    <p class="p"/>
+
    </dd>
 
   
@@ -208,6 +222,9 @@
                 <tt class="ph tt">   &lt;any T&gt; T AsIs(T v)</tt>              </dt>
 
             <dd class="dd">
+
+<p class="p">Assign custom value to the output attribute.
+</p>
               <p class="p"/>
 
             </dd>
@@ -217,6 +234,100 @@
                 <tt class="ph tt">   &lt;any A, tuple T&gt; A Param(T options)</tt>              </dt>
 
             <dd class="dd">
+
+<p class="p">                Apply custom options to the top level attribute.
+</p>
+
+<div class="p">                The function has one tuple argument:
+<pre class="pre codeblock">
+Param({delimiter="|", skipper=Skipper.blank, ...})
+</pre>
+
+                The following parameters may be used:
+<ul class="ul">
+<li class="li"> attrFieldName: set alias for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')</li>
+
+<li class="li"> attrNameDelimiter: set delimiter for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')</li>
+
+<li class="li"> attrNameQuoted: expect an attribute name with quotes (applicable when tupleScheme is 'openAttrNamePaired')</li>
+
+<li class="li"> base64Mode: set base64 decoding for the current string attribute</li>
+
+<li class="li"> binaryMode: set binary encoding for the numeric attribute</li>
+
+<li class="li"> cutCharsetDelim: set multiple delimiters the input will be searched first then parsed</li>
+
+<li class="li"> cutStringDelim: set delimiter the input will be searched first then parsed</li>
+
+<li class="li"> cutSkipper: set skipper the input will be searched first then parsed</li>
+
+<li class="li"> defaultValue: apply default value for an optional attribute</li>
+
+<li class="li"> delimiter: set delimiter for an attribute</li>
+
+<li class="li"> escapeChar: set escaping character(s) for an attribute,</li>
+
+<li class="li"> hexCharPrefix: set escaping character(s) for an attribute</li>
+
+<li class="li"> globalAttrNameDelimiter: like attrNameDelimiter, apply to all nested levels (the current level is left unchanged)</li>
+
+<li class="li"> globalAttrNameQuoted: like attrNameQuoted, apply to all nested levels (the current level is left unchaged)</li>
+
+<li class="li"> globalDelimiter: like delimiter, apply to all nested levels (the current level is left unchanged)</li>
+
+<li class="li"> globalEscapeChar: like escapeChar, apply to all nested levels (the current level is left unchanged)</li>
+
+<li class="li"> globalSkipper: like skipper, apply to all nested levels (the current level is left unchanged)</li>
+
+<li class="li"> globalTupleScheme: like tupleScheme, apply to all nested levels (the current level is left unchanged)</li>
+
+<li class="li"> optional: an attribute can be skipped (taking a default value)</li>
+
+<li class="li"> parseToState: an input field can be parsed to a state (maybe be used for skipCounter or just to drop a part of the input)</li>
+
+<li class="li"> regexFilter: an attribute is filtered by regex expression and if fails the entire tuple parsing will be failed (use with an error port) </li>
+
+<li class="li"> quotedOptStrings: an attribute may have quotes (applicable only for strings)</li>
+
+<li class="li"> quotedStrings: expect an attribute with quotes (applicable only for strings)</li>
+
+<li class="li"> prefix: expect a prefix before the attribute (applicable only for primitive types)</li>
+
+<li class="li"> suffix: expect a suffix after the attribute (applicable only for primitive types)</li>
+
+<li class="li"> listPrefix: expect a prefix before the attribute (applicable only for lists/sets and inherited)</li>
+
+<li class="li"> listSuffix: expect a suffix after the attribute (applicable only for lists/sets and inherited)</li>
+
+<li class="li"> mapPrefix: expect a prefix before the attribute (applicable only for maps and inherited)</li>
+
+<li class="li"> mapSuffix: expect a suffix after the attribute (applicable only for maps and inherited)</li>
+
+<li class="li"> tuplePrefix: expect a prefix before the attribute (applicable only for tuples and inherited)</li>
+
+<li class="li"> tupleSuffix: expect a suffix after the attribute (applicable only for tuples and inherited)</li>
+
+<li class="li"> tsFormat: defines a string representation of timestamp (see the system man page for strptime)</li>
+
+<li class="li"> tsToken: defines a character separator for epoch timestamp</li>
+
+<li class="li"> bound: defines a bounded length type (not the value - e.g. 0uh) that parsed before the attribute (applicable only for strings)</li>
+
+<li class="li"> skipCountAfter: sets a count of bytes to skip after the attribute</li>
+
+<li class="li"> skipCountBefore: sets a count of bytes to skip before the attribute</li>
+
+<li class="li"> skipChars: set character(s) to be skipped (applicable only for strings)</li>
+
+<li class="li"> enumAliasesMap: defines alternate names for enum values (applicable only for enums)</li>
+
+<li class="li"> skipper: set a skipper for all or subset of whitespaces to be skipped.</li>
+
+<li class="li"> tupleScheme: an attribute data scheme (applicable only for tuples)</li>
+
+</ul>
+
+</div>
               <p class="p"/>
 
             </dd>
@@ -226,6 +337,17 @@
                 <tt class="ph tt">   &lt;any A, tuple T&gt; A Param(enum{_} options, T deepOptions)</tt>              </dt>
 
             <dd class="dd">
+
+<p class="p">            Skip top level attribute and apply custom options to the next nested level attribute.
+</p>
+
+<div class="p">            The function has one anonymous '_' agrument (no options for the top level) and one tuple argument:
+<pre class="pre codeblock">
+Param(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+</pre>
+
+
+</div>
               <p class="p"/>
 
             </dd>
@@ -235,6 +357,14 @@
                 <tt class="ph tt">   &lt;any A, tuple T1, tuple T2&gt; A Param(T1 options, T2 deepOptions)</tt>              </dt>
 
             <dd class="dd">
+
+<div class="p">            Apply custom options to the top and the next nested level attributes.             The function has two tuple arguments:
+<pre class="pre codeblock">
+Param({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+</pre>
+
+
+</div>
               <p class="p"/>
 
             </dd>
@@ -244,6 +374,14 @@
                 <tt class="ph tt">   &lt;tuple T&gt; boolean ParamN(T options)</tt>              </dt>
 
             <dd class="dd">
+
+<div class="p">            Apply custom options to the current (non top level) attribute.             The function has one tuple argument:
+<pre class="pre codeblock">
+ParamN({delimiter="|", skipper=Skipper.none, ...})
+</pre>
+
+
+</div>
               <p class="p"/>
 
             </dd>
@@ -253,6 +391,14 @@
                 <tt class="ph tt">   &lt;tuple T&gt; boolean ParamN(enum{_} options, T deepOptions)</tt>              </dt>
 
             <dd class="dd">
+
+<div class="p">            Skip current (non top level) attribute and apply custom options to the next nested level attribute.             The function has one anonymous '_' agrument (no options for the current level) and one tuple argument:
+<pre class="pre codeblock">
+ParamN(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+</pre>
+
+
+</div>
               <p class="p"/>
 
             </dd>
@@ -262,6 +408,9 @@
                 <tt class="ph tt">   &lt;tuple T1, tuple T2&gt; boolean ParamN(T1 options, T2 deepOptions)</tt>              </dt>
 
             <dd class="dd">
+
+<p class="p">            Apply custom options to the current (non top level) and the next nested attribute levels.             The function has two tuple arguments:             ParamN({file:delimiter="|", skipper=Skipper.none, ...}, {file:attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+</p>
               <p class="p"/>
 
             </dd>
@@ -315,6 +464,9 @@
 <div class="section">
 <p class="p splhead-1"><strong class="ph b"><a class="xref" href="../references/OperatorModel.html#spldoc_reference_operator_model__parameters">Parameters</a></strong></p>
 
+<p class="p">Parameters allow to customize the global behavior of the operator. Most of the parameters can be applied also inside Param/ParamM functions.
+</p>
+
 
 <p class="p"> Optional: 
 <a class="xref" href="#spldoc_operator__parameter__allowEmpty">allowEmpty</a>, <a class="xref" href="#spldoc_operator__parameter__batch">batch</a>, <a class="xref" href="#spldoc_operator__parameter__binaryMode">binaryMode</a>, <a class="xref" href="#spldoc_operator__parameter__comment">comment</a>, <a class="xref" href="#spldoc_operator__parameter__dataAttr">dataAttr</a>, <a class="xref" href="#spldoc_operator__parameter__explain">explain</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameDelimiter">globalAttrNameDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalAttrNameQuoted">globalAttrNameQuoted</a>, <a class="xref" href="#spldoc_operator__parameter__globalDelimiter">globalDelimiter</a>, <a class="xref" href="#spldoc_operator__parameter__globalEscapeChar">globalEscapeChar</a>, <a class="xref" href="#spldoc_operator__parameter__globalSkipper">globalSkipper</a>, <a class="xref" href="#spldoc_operator__parameter__globalTupleScheme">globalTupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__listPrefix">listPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__listSuffix">listSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__mapPrefix">mapPrefix</a>, <a class="xref" href="#spldoc_operator__parameter__mapSuffix">mapSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__parsingMode">parsingMode</a>, <a class="xref" href="#spldoc_operator__parameter__passAttrs">passAttrs</a>, <a class="xref" href="#spldoc_operator__parameter__prefix">prefix</a>, <a class="xref" href="#spldoc_operator__parameter__quotedOptStrings">quotedOptStrings</a>, <a class="xref" href="#spldoc_operator__parameter__quotedStrings">quotedStrings</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountAfter">skipCountAfter</a>, <a class="xref" href="#spldoc_operator__parameter__skipCountBefore">skipCountBefore</a>, <a class="xref" href="#spldoc_operator__parameter__startFrom">startFrom</a>, <a class="xref" href="#spldoc_operator__parameter__suffix">suffix</a>, <a class="xref" href="#spldoc_operator__parameter__tsFormat">tsFormat</a>, <a class="xref" href="#spldoc_operator__parameter__tsToken">tsToken</a>, <a class="xref" href="#spldoc_operator__parameter__tuplePrefix">tuplePrefix</a>, <a class="xref" href="#spldoc_operator__parameter__tupleScheme">tupleScheme</a>, <a class="xref" href="#spldoc_operator__parameter__tupleSuffix">tupleSuffix</a>, <a class="xref" href="#spldoc_operator__parameter__undefined">undefined</a>
@@ -325,6 +477,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__allowEmpty"><!-- --></a><tt class="ph tt">allowEmpty</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: yes, non-global version: no.         Allows empty value applying a default value instead.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -357,6 +512,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__batch"><!-- --></a><tt class="ph tt">batch</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Parse an input tuple as a bulk of data. Can submit multiple output tuples.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -389,6 +547,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__binaryMode"><!-- --></a><tt class="ph tt">binaryMode</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: binaryMode.         All numeric parsers will parse the input as binary words.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -421,6 +582,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__comment"><!-- --></a><tt class="ph tt">comment</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets the comment characters in the beginning of an input data. the input will be skipped.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -453,6 +617,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__dataAttr"><!-- --></a><tt class="ph tt">dataAttr</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets the input attribute holding the data to parse.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -485,6 +652,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__explain"><!-- --></a><tt class="ph tt">explain</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Prints to the output console additional information about the parsing.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -514,6 +684,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalAttrNameDelimiter"><!-- --></a><tt class="ph tt">globalAttrNameDelimiter</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: attrNameDelimiter.         When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be delimited.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -546,6 +719,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalAttrNameQuoted"><!-- --></a><tt class="ph tt">globalAttrNameQuoted</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: attrNameQuoted.         When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be quoted.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -578,6 +754,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalDelimiter"><!-- --></a><tt class="ph tt">globalDelimiter</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: delimiter.         A field delimiter - usually 1 or more characters.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -610,6 +789,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalEscapeChar"><!-- --></a><tt class="ph tt">globalEscapeChar</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: escapeChar.         A field escape character.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -642,6 +824,20 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalSkipper"><!-- --></a><tt class="ph tt">globalSkipper</tt></dt>
 
      <dd class="dd">
+<div class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: skipper.         Set a skipper for all or subset of whitespaces to be skipped. Can be set to values:
+<pre class="pre codeblock">
+none: whitespaces are not skipped and parsed as part of the input data.
+blank: all whitespaces are skipped except new lines.
+endl: only new lines are skipped.
+control: all control characters are skipped.
+punct: all punct characters are skipped.
+tab: only tabs are skipped.
+whitespace (default): all whitespaces are skipped.
+</pre>
+
+
+</div>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -674,6 +870,18 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__globalTupleScheme"><!-- --></a><tt class="ph tt">globalTupleScheme</tt></dt>
 
      <dd class="dd">
+<div class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: tupleScheme.         An input data scheme. Can be set to values:
+<pre class="pre codeblock">
+firstTypePaired: alternate parser - each tuple attribute tries to parse the input until one succeeds.
+openAttrNamePaired: tuple attributes parse the input as key/value pairs in any order, missing fields are allowed.
+openTypeOrdered: tuple attributes parse the input in a sequence, missing fields are allowed.
+openTypeUnordered: tuple attributes parse the input in any order, missing fields are allowed.
+strictTypeOrdered (default): tuple attributes parse the input in a sequence, all of them must be present. 
+</pre>
+
+
+</div>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -706,6 +914,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__listPrefix"><!-- --></a><tt class="ph tt">listPrefix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: listPrefix.         Defines a preceding list/set character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -738,6 +949,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__listSuffix"><!-- --></a><tt class="ph tt">listSuffix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: listSuffix.         Defines a succeeding list/set character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -770,6 +984,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__mapPrefix"><!-- --></a><tt class="ph tt">mapPrefix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: mapPrefix.         Defines a preceding map character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -802,6 +1019,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__mapSuffix"><!-- --></a><tt class="ph tt">mapSuffix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: mapSuffix.         Defines a succeeding map character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -834,6 +1054,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__parsingMode"><!-- --></a><tt class="ph tt">parsingMode</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Can be full or partial. In a partial mode the parsing succeeds when the whole output tuple is filled without checking if the input end is reached.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -866,6 +1089,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__passAttrs"><!-- --></a><tt class="ph tt">passAttrs</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Sets input attributes that should be copied to the output attributes. Those output attributes will not parse the input.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -895,6 +1121,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__prefix"><!-- --></a><tt class="ph tt">prefix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: prefix.         Defines a preceding attribute character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -927,6 +1156,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__quotedOptStrings"><!-- --></a><tt class="ph tt">quotedOptStrings</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: quotedOptStrings.         Allows string attributes to be optionally quoted.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -959,6 +1191,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__quotedStrings"><!-- --></a><tt class="ph tt">quotedStrings</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: quotedStrings.         Expects string attributes to be quoted.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -991,6 +1226,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__skipCountAfter"><!-- --></a><tt class="ph tt">skipCountAfter</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: no, non-global version: skipCountAfter.         Sets number of characters to skip after the current attribute.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1023,6 +1261,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__skipCountBefore"><!-- --></a><tt class="ph tt">skipCountBefore</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: no, non-global version: skipCountBefore.         Sets number of characters to skip before the current attribute.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1055,6 +1296,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__startFrom"><!-- --></a><tt class="ph tt">startFrom</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: no, non-global version: no.         Start parsing from the given character(s) skipping all the previous data from the beginning. 
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1087,6 +1331,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__suffix"><!-- --></a><tt class="ph tt">suffix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: suffix.         Defines a succeeding attribute character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1119,6 +1366,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__tsFormat"><!-- --></a><tt class="ph tt">tsFormat</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: tsFormat.         Defines a string representation of timestamp (see the system man page for strptime)
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1151,6 +1401,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__tsToken"><!-- --></a><tt class="ph tt">tsToken</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: tsToken.         Defines a character separator for epoch timestamp.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1183,6 +1436,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__tuplePrefix"><!-- --></a><tt class="ph tt">tuplePrefix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: tuplePrefix.         Defines a preceding tuple character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1215,6 +1471,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__tupleScheme"><!-- --></a><tt class="ph tt">tupleScheme</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: no, global version: globalTupleScheme.         An input data scheme. Can be set to values: the same as globalTupleScheme.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1247,6 +1506,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__tupleSuffix"><!-- --></a><tt class="ph tt">tupleSuffix</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: yes, inherited: yes, non-global version: tupleSuffix.         Defines a succeeding tuple character(s).
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>
@@ -1279,6 +1541,9 @@
      <dt class="dt dlterm"><a name="spldoc_operator__parameter__undefined"><!-- --></a><tt class="ph tt">undefined</tt></dt>
 
      <dd class="dd">
+<p class="p">        Valid in Param/ParamN: no, inherited: yes, non-global version: no.         Sets undefined value(s) for input fields.
+</p>
+
   <dl class="dl">
     
      <dt class="dt dlterm">Properties</dt>

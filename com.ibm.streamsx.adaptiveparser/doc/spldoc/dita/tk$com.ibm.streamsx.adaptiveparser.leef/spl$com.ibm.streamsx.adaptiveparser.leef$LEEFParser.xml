@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_compilationunit">
+<title>SPL File <tt>LEEFParser.spl</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.leef.xml">com.ibm.streamsx.adaptiveparser.leef 2.1</xref> &gt; <xref href="ns$com.ibm.streamsx.adaptiveparser.leef.xml">com.ibm.streamsx.adaptiveparser.leef</xref> &gt; LEEFParser.spl</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Content</title>
+  <dl>
+    <dlentry><dt></dt><dd></dd></dlentry>
+    <dlentry>
+      <dt outputclass="splhead-2">Operators</dt>
+      <dd>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_operator__LEEFParser">LEEFParser</xref></b>
+</sli>
+</sl>
+      </dd>
+    </dlentry>
+    <dlentry>
+      <dt outputclass="splhead-2">Types</dt>
+      <dd>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFAttributes_t">LEEFParser.LEEFAttributes_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFHeader_t">LEEFParser.LEEFHeader_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFMetaData_t">LEEFParser.LEEFMetaData_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.SyslogHeader_t">LEEFParser.SyslogHeader_t</xref></b>
+</sli>
+</sl>
+      </dd>
+    </dlentry>
+  </dl>
+</section>
+<section>
+  <title outputclass="splhead-1">Composites</title>
+</section>
+<section id="composite_operator__LEEFParser">
+  <title outputclass="splpart">composite LEEFParser(output LEEFEvent; input RawData)</title>
+</section>
+<section outputclass="splgraph">
+  <image href="../../image/tk$com.ibm.streamsx.adaptiveparser.leef/op$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.svg" width="142" height="109">
+    <alt>SPL composite operator image not displayed. Problem loading file: ../../image/tk$com.ibm.streamsx.adaptiveparser.leef/op$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.svg
+</alt>
+  </image>
+</section>
+<section>
+<title>Parameters</title>
+<sl>
+<sli><b>dataAttr</b>
+</sli>
+<sli><b>batch</b>
+</sli>
+<sli><b>customAttributesType</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Input Ports</title>
+<sl>
+<sli><b>RawData</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Output Ports</title>
+<sl>
+<sli><b>LEEFEvent</b>
+</sli>
+</sl>
+</section>
+<section>
+  <title>Static Types</title>
+</section>
+   <section id="composite_type__LEEFParser.LEEFAttributes_t">
+     <dl>
+       <dlentry>
+         <dt>LEEFParser.LEEFAttributes_t = rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev, rstring src, rstring dst, uint16 srcPort, uint16 dstPort, rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort, rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort, rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC, rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName, uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm, rstring policy, rstring resource, rstring url, rstring groupid, rstring domain, boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp, rstring calLanguage, rstring calCountryOrRegion;</dt>
+         <dd></dd>
+       </dlentry>
+     </dl>
+   </section>
+   <section id="composite_type__LEEFParser.LEEFHeader_t">
+     <dl>
+       <dlentry>
+         <dt>LEEFParser.LEEFHeader_t = float32 version, rstring productVendor, rstring productName, rstring productVersion, rstring eventID;</dt>
+         <dd></dd>
+       </dlentry>
+     </dl>
+   </section>
+   <section id="composite_type__LEEFParser.LEEFMetaData_t">
+     <dl>
+       <dlentry>
+         <dt>LEEFParser.LEEFMetaData_t = SyslogHeader_t syslog, LEEFHeader_t eventHeader;</dt>
+         <dd></dd>
+       </dlentry>
+     </dl>
+   </section>
+   <section id="composite_type__LEEFParser.SyslogHeader_t">
+     <dl>
+       <dlentry>
+         <dt>LEEFParser.SyslogHeader_t = timestamp date, rstring ipAddress;</dt>
+         <dd></dd>
+       </dlentry>
+     </dl>
+   </section>
+<section>
+  <title outputclass="splhead-2">SPL Source Code</title>
+</section>
+
+<section>
+   <codeblock>
+<![CDATA[
+ public composite LEEFParser(input RawData; output LEEFEvent) {
+ param
+ 	attribute $dataAttr;
+ 	expression<boolean> $batch : false;
+ 	type $customAttributesType : LEEFAttributes_t;
+ 
+ type
+ 	static SyslogHeader_t	= 	timestamp date, rstring ipAddress;
+ 
+ 	static LEEFHeader_t		= 	float32 version,
+ 								rstring productVendor,
+ 								rstring productName,
+ 								rstring productVersion, 
+ 								rstring eventID;
+ 
+ 	static LEEFAttributes_t	=	rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev,
+ 								rstring src, rstring dst, uint16 srcPort, uint16 dstPort,
+ 								rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort,
+ 								rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort,
+ 								rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC,
+ 								rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName,
+ 								uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, 
+ 								rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm,
+ 								rstring policy, rstring resource, rstring url, rstring groupid, rstring domain,
+ 								boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp,
+ 								rstring calLanguage, rstring calCountryOrRegion;
+ 								
+ 	static LEEFMetaData_t	=	SyslogHeader_t syslog, LEEFHeader_t eventHeader;
+ 	
+ graph
+     
+     stream<LEEFMetaData_t, tuple<$customAttributesType eventAttributes>> LEEFEvent = AdaptiveParser(RawData) {
+     	param
+     		batch : $batch;
+     		dataAttr : $dataAttr;
+     		globalSkipper : tab;
+     		tsFormat : "%b %d %Y %H:%M:%S";
+ 		output
+ 			LEEFEvent :
+ 				syslog = Param({ globalSkipper = Skipper.whitespace}),
+ 				eventHeader = Param({ globalDelimiter = "|", tuplePrefix = "LEEF:"}),
+ 				eventAttributes = Param({ globalAttrNameAsPrefix = true, globalAttrNameDelimiter = "="});
+     }
+ }
+]]>
+   </codeblock>
+</section>
+</refbody>
+</reference>
+

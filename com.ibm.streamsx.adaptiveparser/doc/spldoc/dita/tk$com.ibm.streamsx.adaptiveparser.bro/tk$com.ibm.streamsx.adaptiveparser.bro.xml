@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_toolkit">
+<title outputclass="spltoolkitname">Toolkit <tt>com.ibm.streamsx.adaptiveparser.bro 2.1</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; com.ibm.streamsx.adaptiveparser.bro 2.1</p>
+</section>
+<section>
+<title outputclass="splhead-1">General Information</title>
+
+<dl>
+  <dlentry>
+  <dt>Version</dt>
+  <dd>2.1</dd>
+  </dlentry>
+  <dlentry>
+  <dt>Required Product Version</dt>
+  <dd>4.0</dd>
+  </dlentry>
+  <dlentry>
+  <dt>Required Toolkits and Versions</dt>
+  <dd><sl>
+    <sli><xref href="../tk$com.ibm.streamsx.adaptiveparser/tk$com.ibm.streamsx.adaptiveparser.xml">com.ibm.streamsx.adaptiveparser</xref> (2.0.0)</sli>
+  </sl></dd>
+  </dlentry>
+</dl>
+</section>
+<section>
+  <title outputclass="splhead-1">Indexes</title>
+  <dl>
+    <dlentry><dt></dt><dd></dd></dlentry>
+    <dlentry><dt><xref href="ix$Namespace.xml">Namespaces</xref></dt><dd></dd></dlentry>
+    <dlentry><dt><xref href="ix$Operator.xml">Operators</xref></dt><dd></dd></dlentry>
+    <dlentry><dt><xref href="ix$Type.xml">Types</xref></dt><dd></dd></dlentry>
+  </dl>
+</section>
+<section>
+  <title outputclass="splhead-1">Namespaces</title>
+  <dl>
+    <dlentry>
+      <dt outputclass="splpart"><xref href="ns$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro</xref></dt>
+      <dd></dd>
+      <dd><dl><dlentry>
+        <dt>Operators</dt>
+        <dd>
+<sl>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCertParser.xml#spldoc_compilationunit/composite_operator__BroCertParser">BroCertParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCommParser.xml#spldoc_compilationunit/composite_operator__BroCommParser">BroCommParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroConnParser.xml#spldoc_compilationunit/composite_operator__BroConnParser">BroConnParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroDHCPParser.xml#spldoc_compilationunit/composite_operator__BroDHCPParser">BroDHCPParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroDNSParser.xml#spldoc_compilationunit/composite_operator__BroDNSParser">BroDNSParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroFilesParser.xml#spldoc_compilationunit/composite_operator__BroFilesParser">BroFilesParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroHTTPParser.xml#spldoc_compilationunit/composite_operator__BroHTTPParser">BroHTTPParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroNoticeParser.xml#spldoc_compilationunit/composite_operator__BroNoticeParser">BroNoticeParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroSSLParser.xml#spldoc_compilationunit/composite_operator__BroSSLParser">BroSSLParser</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroSimpleParser.xml#spldoc_compilationunit/composite_operator__BroSimpleParser">BroSimpleParser</xref></sli>
+</sl>
+        </dd>
+      </dlentry></dl></dd>
+      <dd><dl><dlentry>
+        <dt>Types</dt>
+        <dd>
+<sl>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroCert_t">BroCert_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroComm_t">BroComm_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroConn_t">BroConn_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroDHCP_t">BroDHCP_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroDNS_t">BroDNS_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroFiles_t">BroFiles_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroHTTP_t">BroHTTP_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroNotice_t">BroNotice_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__BroSSL_t">BroSSL_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__Certificate_t">Certificate_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__ID_t">ID_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__Level_e">Level_e</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__Proto_e">Proto_e</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__RemoteLocation_t">RemoteLocation_t</xref></sli>
+<sli><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$Types.xml#spldoc_compilationunit/type__San_t">San_t</xref></sli>
+</sl>
+        </dd>
+      </dlentry></dl></dd>
+     </dlentry>  </dl>
+</section>
+</refbody>
+</reference>
+

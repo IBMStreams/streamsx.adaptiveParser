@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<srcCode:sourceModel xmlns:srcCode="http://www.ibm.com/xmlns/prod/streams/spl/sourceCode" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.cef/CEFParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.cef"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="50" startColumn="1" startLine="17">
+          <srcCode:compositeHead column="1" line="17" name="CEFParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="34" index="0" line="17" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="50" index="0" line="17" name="CEFEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:types column="1" line="22">
+              <srcCode:type endColumn="68" endLine="23" name="CEFSeverity_e" startColumn="2" startLine="23" value="enum { Low, Medium, High, VeryHigh, Unknown }">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+              <srcCode:type endColumn="41" endLine="31" name="CEFHeader_t" startColumn="2" startLine="25" value="uint16 version, rstring deviceVendor, rstring deviceProduct, rstring deviceVersion, rstring signatureID, rstring name, CEFParser.CEFSeverity_e severity">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+              <srcCode:type endColumn="57" endLine="33" name="CEFExtension_t" startColumn="2" startLine="33" value="map&lt;rstring, rstring> properties">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+            </srcCode:types>
+            <srcCode:parameters>
+              <srcCode:parameter column="12" line="19" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="22" defaultValue="false;" line="20" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="72" line="37" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="61" index="0" line="37" streamName="CEFEvent" type="CEFParser.CEFHeader_t, CEFParser.CEFExtension_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="87" index="0" line="37">
+                      <srcCode:istream column="87" line="37" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="7" line="39" name="batch">
+                      <srcCode:value expr="$batch"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="40" name="dataAttr">
+                      <srcCode:value expr="$dataAttr"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="41" name="globalDelimiter">
+                      <srcCode:value expr="&quot;|&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="42" name="globalEscapeChar">
+                      <srcCode:value expr="&quot;\\&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="4" line="44" portName="CEFEvent">
+                      <srcCode:attributeAssignment column="5" line="45" name="version" outputFunction="Param">
+                        <srcCode:value expr="{prefix = &quot;CEF:&quot;}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="46" name="severity" outputFunction="Param">
+                        <srcCode:value expr="{enumAliasesMap = {&quot;Very-High&quot;: &quot;VeryHigh&quot;}}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="47" name="properties" outputFunction="Param">
+                        <srcCode:value expr="{cutStringDelim = &quot;CEF:&quot;, delimiter = &quot;&quot;, globalDelimiter = &quot;&quot;, globalEscapeChar = &quot;&quot;}"/>
+                        <srcCode:value expr="{key = ParamN({delimiter = &quot;=&quot;}), value = ParamN({cutCharsetDelim = &quot;a-zA-Z0-9_.)(-&quot;})}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+</srcCode:sourceModel>

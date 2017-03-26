@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<srcCode:sourceModel xmlns:srcCode="http://www.ibm.com/xmlns/prod/streams/spl/sourceCode" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.leef/LEEFParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.leef"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="65" startColumn="1" startLine="22">
+          <srcCode:compositeHead column="1" line="22" name="LEEFParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="35" index="0" line="22" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="51" index="0" line="22" name="LEEFEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:types column="1" line="28">
+              <srcCode:type endColumn="60" endLine="29" name="SyslogHeader_t" startColumn="2" startLine="29" value="timestamp date, rstring ipAddress">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+              <srcCode:type endColumn="24" endLine="35" name="LEEFHeader_t" startColumn="2" startLine="31" value="float32 version, rstring productVendor, rstring productName, rstring productVersion, rstring eventID">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+              <srcCode:type endColumn="56" endLine="47" name="LEEFAttributes_t" startColumn="2" startLine="37" value="rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev, rstring src, rstring dst, uint16 srcPort, uint16 dstPort, rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort, rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort, rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC, rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName, uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm, rstring policy, rstring resource, rstring url, rstring groupid, rstring domain, boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp, rstring calLanguage, rstring calCountryOrRegion">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+              <srcCode:type endColumn="73" endLine="49" name="LEEFMetaData_t" startColumn="2" startLine="49" value="SyslogHeader_t syslog, LEEFHeader_t eventHeader">
+                <srcCode:modifiers>
+                  <srcCode:modifier name="static"/>
+                </srcCode:modifiers>
+              </srcCode:type>
+            </srcCode:types>
+            <srcCode:parameters>
+              <srcCode:parameter column="12" line="24" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="22" defaultValue="false;" line="25" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="7" defaultValue="LEEFAttributes_t;" line="26" name="$customAttributesType">
+                <srcCode:expressionMode mode="type"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="86" line="53" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="74" index="0" line="53" streamName="LEEFEvent" type="LEEFMetaData_t, tuple&lt;$customAttributesType eventAttributes>"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="101" index="0" line="53">
+                      <srcCode:istream column="101" line="53" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="7" line="55" name="batch">
+                      <srcCode:value expr="$batch"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="56" name="dataAttr">
+                      <srcCode:value expr="$dataAttr"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="57" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="58" name="tsFormat">
+                      <srcCode:value expr="&quot;%b %d %Y %H:%M:%S&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="4" line="60" portName="LEEFEvent">
+                      <srcCode:attributeAssignment column="5" line="61" name="syslog" outputFunction="Param">
+                        <srcCode:value expr="{globalSkipper = Skipper.whitespace}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="62" name="eventHeader" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;|&quot;, tuplePrefix = &quot;LEEF:&quot;}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="63" name="eventAttributes" outputFunction="Param">
+                        <srcCode:value expr="{globalAttrNameAsPrefix = true, globalAttrNameDelimiter = &quot;=&quot;}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+</srcCode:sourceModel>

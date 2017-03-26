@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_compilationunit">
+<title>SPL File <tt>BroCommParser.spl</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro 2.1</xref> &gt; <xref href="ns$com.ibm.streamsx.adaptiveparser.bro.xml">com.ibm.streamsx.adaptiveparser.bro</xref> &gt; BroCommParser.spl</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Content</title>
+  <dl>
+    <dlentry><dt></dt><dd></dd></dlentry>
+    <dlentry>
+      <dt outputclass="splhead-2">Operators</dt>
+      <dd>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.bro$BroCommParser.xml#spldoc_compilationunit/composite_operator__BroCommParser">BroCommParser</xref></b>
+</sli>
+</sl>
+      </dd>
+    </dlentry>
+  </dl>
+</section>
+<section>
+  <title outputclass="splhead-1">Composites</title>
+</section>
+<section id="composite_operator__BroCommParser">
+  <title outputclass="splpart">composite BroCommParser(output BroEvent; input RawData)</title>
+</section>
+<section outputclass="splgraph">
+  <image href="../../image/tk$com.ibm.streamsx.adaptiveparser.bro/op$com.ibm.streamsx.adaptiveparser.bro$BroCommParser.svg" width="142" height="109">
+    <alt>SPL composite operator image not displayed. Problem loading file: ../../image/tk$com.ibm.streamsx.adaptiveparser.bro/op$com.ibm.streamsx.adaptiveparser.bro$BroCommParser.svg
+</alt>
+  </image>
+</section>
+<section>
+<title>Parameters</title>
+<sl>
+<sli><b>dataAttr</b>
+</sli>
+<sli><b>batch</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Input Ports</title>
+<sl>
+<sli><b>RawData</b>
+</sli>
+</sl>
+</section>
+<section>
+<title>Output Ports</title>
+<sl>
+<sli><b>BroEvent</b>
+</sli>
+</sl>
+</section>
+<section>
+  <title outputclass="splhead-2">SPL Source Code</title>
+</section>
+
+<section>
+   <codeblock>
+<![CDATA[
+ public composite BroCommParser(input RawData ; output BroEvent) {
+ 	param
+ 		attribute $dataAttr ;
+ 		expression<boolean> $batch : false ;
+ 
+ 	graph
+ 		stream<BroComm_t> BroEvent = AdaptiveParser(RawData) {
+ 			param
+ 				comment : "#" ;
+ 				globalSkipper : tab ;
+ 				tsToken : ".";
+ 				undefined : "-", "(empty)" ;
+ 		}
+ }
+]]>
+   </codeblock>
+</section>
+</refbody>
+</reference>
+

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE reference PUBLIC "-//OASIS//DTD DITA Reference//EN" "reference.dtd">
+<reference id="spldoc_namespace">
+<title>Namespace <tt>com.ibm.streamsx.adaptiveparser.leef</tt></title>
+<refbody>
+<section>
+<p>
+<xref href="../toolkits/toolkits.xml">Toolkits</xref> &gt; <xref href="tk$com.ibm.streamsx.adaptiveparser.leef.xml">com.ibm.streamsx.adaptiveparser.leef 2.1</xref> &gt; com.ibm.streamsx.adaptiveparser.leef</p>
+</section>
+<section>
+  <title outputclass="splhead-1">Operators</title>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_operator__LEEFParser">LEEFParser</xref></b>
+</sli>
+</sl>
+</section>
+<section>
+  <title outputclass="splhead-1">Types</title>
+<sl>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFAttributes_t">LEEFParser.LEEFAttributes_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFHeader_t">LEEFParser.LEEFHeader_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.LEEFMetaData_t">LEEFParser.LEEFMetaData_t</xref></b>
+</sli>
+<sli><b><xref href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.xml#spldoc_compilationunit/composite_type__LEEFParser.SyslogHeader_t">LEEFParser.SyslogHeader_t</xref></b>
+</sli>
+</sl>
+</section>
+</refbody>
+</reference>
+

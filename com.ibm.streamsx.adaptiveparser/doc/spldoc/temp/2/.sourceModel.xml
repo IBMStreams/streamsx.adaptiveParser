@@ -1,0 +1,761 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<srcCode:sourceModel xmlns:srcCode="http://www.ibm.com/xmlns/prod/streams/spl/sourceCode" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroCommParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="18" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroCommParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="38" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="55" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="32" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="21" index="0" line="11" streamName="BroEvent" type="BroComm_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="47" index="0" line="11">
+                      <srcCode:istream column="47" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroHTTPParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="26" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroHTTPParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="38" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="55" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="32" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="21" index="0" line="11" streamName="BroEvent" type="BroHTTP_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="47" index="0" line="11">
+                      <srcCode:istream column="47" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="18" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="19" name="tags" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="20" name="proxied" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="21" name="orig_fuids" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="22" name="orig_mime_types" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="23" name="resp_fuids" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="24" name="resp_mime_types" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroCertParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="25" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroCertParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="38" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="54" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="32" line="10" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="21" index="0" line="10" streamName="BroEvent" type="BroCert_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="47" index="0" line="10">
+                      <srcCode:istream column="47" line="10" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="12" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="13" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="17" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="18" name="san" outputFunction="Param">
+                        <srcCode:value expr="_"/>
+                        <srcCode:value expr="{dns = ParamN({globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}), uri = ParamN({globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}), email = ParamN({globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}), ip = ParamN({globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab})}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/Types.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:definitions>
+        <srcCode:typeDefinition endColumn="27" endLine="3" name="Level_e" startColumn="1" startLine="3" value="enum { info }"/>
+        <srcCode:typeDefinition endColumn="30" endLine="5" name="Proto_e" startColumn="1" startLine="5" value="enum { tcp, udp }"/>
+        <srcCode:typeDefinition endColumn="17" endLine="10" name="ID_t" startColumn="1" startLine="7" value="rstring orig_h, uint32 orig_p, rstring resp_h, uint32 resp_p"/>
+        <srcCode:typeDefinition endColumn="24" endLine="16" name="RemoteLocation_t" startColumn="1" startLine="12" value="rstring country_code, rstring region, rstring city, float64 latitude, float64 longitude"/>
+        <srcCode:typeDefinition endColumn="19" endLine="29" name="Certificate_t" startColumn="1" startLine="18" value="uint32 version, rstring serial, rstring subject, rstring issuer, timestamp not_valid_before, timestamp not_valid_after, rstring key_alg, rstring sig_alg, rstring key_type, uint32 key_length, rstring exponent, rstring curve"/>
+        <srcCode:typeDefinition endColumn="20" endLine="34" name="San_t" startColumn="1" startLine="31" value="list&lt;rstring> dns, list&lt;rstring> uri, list&lt;rstring> email, list&lt;rstring> ip"/>
+        <srcCode:typeDefinition endColumn="21" endLine="43" name="BroComm_t" startColumn="1" startLine="36" value="timestamp ts, rstring peer, rstring src_name, rstring connected_peer_desc, rstring connected_peer_addr, uint32 connected_peer_port, Level_e level, rstring message"/>
+        <srcCode:typeDefinition endColumn="24" endLine="64" name="BroConn_t" startColumn="1" startLine="45" value="timestamp ts, rstring uid, ID_t id, Proto_e proto, rstring service, float64 duration, uint32 orig_bytes, uint32 resp_bytes, rstring conn_state, boolean local_orig, uint32 missed_bytes, rstring history, uint32 orig_pkts, uint32 orig_ip_bytes, uint32 resp_pkts, uint32 resp_ip_bytes, set&lt;rstring> tunnel_parents, rstring orig_cc, rstring resp_cc, rstring sensorname"/>
+        <srcCode:typeDefinition endColumn="20" endLine="72" name="BroDHCP_t" startColumn="1" startLine="66" value="timestamp ts, rstring uid, ID_t id, rstring mac, rstring assigned_ip, float64 lease_time, uint32 trans_id"/>
+        <srcCode:typeDefinition endColumn="21" endLine="93" name="BroDNS_t" startColumn="1" startLine="74" value="timestamp ts, rstring uid, ID_t id, Proto_e proto, uint32 trans_id, rstring query, uint32 qclass, rstring qclass_name, uint32 qtype, rstring qtype_name, uint32 rcode, rstring rcode_name, boolean AA, boolean TC, boolean RD, boolean RA, uint32 Z, list&lt;rstring> answers, list&lt;float64> TTLs, boolean rejected"/>
+        <srcCode:typeDefinition endColumn="23" endLine="117" name="BroFiles_t" startColumn="1" startLine="95" value="timestamp ts, rstring fuid, set&lt;rstring> tx_hosts, set&lt;rstring> rx_hosts, set&lt;rstring> conn_uids, rstring source, uint32 depth, set&lt;rstring> analyzers, rstring mime_type, rstring filename, float64 duration, boolean local_orig, boolean is_orig, uint32 seen_bytes, uint32 total_bytes, uint32 missing_bytes, uint32 overflow_bytes, boolean timedout, rstring parent_fuid, rstring md5, rstring sha1, rstring sha256, rstring extracted"/>
+        <srcCode:typeDefinition endColumn="35" endLine="142" name="BroHTTP_t" startColumn="1" startLine="119" value="timestamp ts, rstring uid, ID_t id, uint32 trans_depth, rstring method, rstring host, rstring uri, rstring referrer, rstring user_agent, uint32 request_body_len, uint32 response_body_len, uint32 status_code, rstring status_msg, uint32 info_code, rstring info_msg, rstring filename, set&lt;rstring> tags, rstring username, rstring password, set&lt;rstring> proxied, list&lt;rstring> orig_fuids, list&lt;rstring> orig_mime_types, list&lt;rstring> resp_fuids, list&lt;rstring> resp_mime_types"/>
+        <srcCode:typeDefinition endColumn="38" endLine="162" name="BroNotice_t" startColumn="1" startLine="144" value="timestamp ts, rstring uid, ID_t id, rstring fuid, rstring file_mime_type, rstring file_desc, Proto_e proto, rstring note, rstring msg, rstring sub, rstring src, rstring dst, uint32 p, uint32 n, rstring peer_descr, set&lt;rstring> actions, float64 suppress_for, boolean dropped, RemoteLocation_t remote_location"/>
+        <srcCode:typeDefinition endColumn="30" endLine="180" name="BroSSL_t" startColumn="1" startLine="164" value="timestamp ts, rstring uid, ID_t id, rstring version, rstring cipher, rstring curve, rstring server_name, rstring session_id, rstring last_alert, boolean established, list&lt;rstring> cert_chain_fuids, list&lt;rstring> client_cert_chain_fuids, rstring subject, rstring issuer, rstring client_subject, rstring client_issuer, rstring validation_status"/>
+        <srcCode:typeDefinition endColumn="21" endLine="187" name="BroCert_t" startColumn="1" startLine="182" value="timestamp ts, rstring uid, Certificate_t certificate, San_t san, boolean ca, uint32 path_len"/>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroConnParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="21" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroConnParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="38" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="55" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="32" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="21" index="0" line="11" streamName="BroEvent" type="BroConn_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="47" index="0" line="11">
+                      <srcCode:istream column="47" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="18" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="19" name="tunnel_parents" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroDNSParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="22" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroDNSParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="37" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="54" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="31" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="20" index="0" line="11" streamName="BroEvent" type="BroDNS_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="46" index="0" line="11">
+                      <srcCode:istream column="46" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="17" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="18" name="answers" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="19" name="TTLs" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroSSLParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="22" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroSSLParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="37" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="54" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="31" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="20" index="0" line="11" streamName="BroEvent" type="BroSSL_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="46" index="0" line="11">
+                      <srcCode:istream column="46" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="18" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="19" name="cert_chain_fuids" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="20" name="client_cert_chain_fuids" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroNoticeParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="20" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroNoticeParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="40" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="57" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="34" line="10" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="23" index="0" line="10" streamName="BroEvent" type="BroNotice_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="49" index="0" line="10">
+                      <srcCode:istream column="49" line="10" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="12" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="13" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="17" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="18" name="actions" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroDHCPParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="19" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroDHCPParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="38" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="55" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="32" line="11" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="21" index="0" line="11" streamName="BroEvent" type="BroDHCP_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="47" index="0" line="11">
+                      <srcCode:istream column="47" line="11" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="13" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="16" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroFilesParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="23" startColumn="1" startLine="5">
+          <srcCode:compositeHead column="1" line="5" name="BroFilesParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="39" index="0" line="5" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="56" index="0" line="5" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="13" line="7" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="23" defaultValue="false;" line="8" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="33" line="10" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="22" index="0" line="10" streamName="BroEvent" type="BroFiles_t"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="48" index="0" line="10">
+                      <srcCode:istream column="48" line="10" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="5" line="12" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="13" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="14" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="5" line="15" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                  <srcCode:outputAssignments>
+                    <srcCode:outputAssignment column="11" line="17" portName="BroEvent">
+                      <srcCode:attributeAssignment column="5" line="18" name="tx_hosts" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="19" name="rx_hosts" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="20" name="analyzers" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                      <srcCode:attributeAssignment column="5" line="21" name="conn_uids" outputFunction="Param">
+                        <srcCode:value expr="{globalDelimiter = &quot;,&quot;, globalSkipper = Skipper.none, cutSkipper = Skipper.tab}"/>
+                      </srcCode:attributeAssignment>
+                    </srcCode:outputAssignment>
+                  </srcCode:outputAssignments>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+  <srcCode:sourceFile uri="com.ibm.streamsx.adaptiveparser.bro/BroSimpleParser.spl">
+    <srcCode:compilationUnit>
+      <srcCode:splNamespace column="10" line="1" name="com.ibm.streamsx.adaptiveparser.bro"/>
+      <srcCode:useDirectives>
+        <srcCode:useDirective column="5" line="3" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+        <srcCode:useDirective column="5" line="5" namespaceName="com.ibm.streamsx.adaptiveparser" tail="::*"/>
+      </srcCode:useDirectives>
+      <srcCode:definitions>
+        <srcCode:compositeDefinition endColumn="1" endLine="22" startColumn="1" startLine="7">
+          <srcCode:compositeHead column="1" line="7" name="BroSimpleParser">
+            <srcCode:modifiers>
+              <srcCode:modifier name="public"/>
+            </srcCode:modifiers>
+            <srcCode:inputs>
+              <srcCode:iport column="40" index="0" line="7" name="RawData"/>
+            </srcCode:inputs>
+            <srcCode:outputs>
+              <srcCode:oport column="56" index="0" line="7" name="BroEvent"/>
+            </srcCode:outputs>
+          </srcCode:compositeHead>
+          <srcCode:compositeBody>
+            <srcCode:parameters>
+              <srcCode:parameter column="12" line="9" name="$dataAttr">
+                <srcCode:expressionMode mode="attribute"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="22" defaultValue="false;" line="10" name="$batch">
+                <srcCode:expressionMode mode="expression" type="boolean"/>
+              </srcCode:parameter>
+              <srcCode:parameter column="7" line="11" name="$broType">
+                <srcCode:expressionMode mode="type"/>
+              </srcCode:parameter>
+            </srcCode:parameters>
+            <srcCode:graph>
+              <srcCode:operatorInvocation>
+                <srcCode:operatorInvocationHead column="33" line="15" operatorName="AdaptiveParser">
+                  <srcCode:outputs>
+                    <srcCode:output column="22" index="0" line="15" streamName="BroEvent" type="$broType"/>
+                  </srcCode:outputs>
+                  <srcCode:inputs>
+                    <srcCode:input column="48" index="0" line="15">
+                      <srcCode:istream column="48" line="15" name="RawData"/>
+                    </srcCode:input>
+                  </srcCode:inputs>
+                </srcCode:operatorInvocationHead>
+                <srcCode:operatorInvocationBody>
+                  <srcCode:parameters>
+                    <srcCode:parameter column="7" line="17" name="comment">
+                      <srcCode:value expr="&quot;#&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="18" name="globalSkipper">
+                      <srcCode:value expr="tab"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="19" name="tsToken">
+                      <srcCode:value expr="&quot;.&quot;"/>
+                    </srcCode:parameter>
+                    <srcCode:parameter column="7" line="20" name="undefined">
+                      <srcCode:value expr="&quot;-&quot;"/>
+                      <srcCode:value expr="&quot;(empty)&quot;"/>
+                    </srcCode:parameter>
+                  </srcCode:parameters>
+                </srcCode:operatorInvocationBody>
+              </srcCode:operatorInvocation>
+            </srcCode:graph>
+          </srcCode:compositeBody>
+        </srcCode:compositeDefinition>
+      </srcCode:definitions>
+    </srcCode:compilationUnit>
+  </srcCode:sourceFile>
+
+</srcCode:sourceModel>

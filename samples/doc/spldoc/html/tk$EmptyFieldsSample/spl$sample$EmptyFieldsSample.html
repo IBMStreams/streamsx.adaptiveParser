@@ -97,6 +97,8 @@
      		globalDelimiter : ",";
      		allowEmpty : true;
      		undefined : "UNDEF";
+     	output ParsedStream:
+     		number2 = Param({defaultValue = 42u});
      }
  
  	() as PSink = Custom(ParsedStream)  {

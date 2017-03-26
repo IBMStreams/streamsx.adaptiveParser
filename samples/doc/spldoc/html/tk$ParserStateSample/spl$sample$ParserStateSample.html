@@ -87,13 +87,14 @@
 
  composite ParserStateSample {
  param
- 	expression&lt;rstring&gt; $data : getSubmissionTimeValue("data", '11## Start ## true, 42, "text", (1427889600,657267,0) ## End ##');
+ 	expression&lt;rstring&gt; $data : getSubmissionTimeValue("data", '0123456789');
  graph
- 	stream&lt;rstring data&gt; CSVFieldsStream = Custom() {
-         logic
-             onProcess : {
- 				submit({data = $data}, CSVFieldsStream);
-             }
+ 	stream&lt;rstring data, uint64 skipCount&gt; CSVFieldsStream = Beacon() {
+ 		param
+ 			iterations : 9u;
+         output CSVFieldsStream:
+ 			data = $data,
+         	skipCount = IterationCount() + 1ul;
      }
      
  	/*
@@ -102,17 +103,17 @@
  	 *  Parameters define general behavior: delimiter is ',' and any whitespaces should be skipped (also the default)
  	 *  Custom formats can be handled by custom output functions: Param and ParamN
  	 */
-     stream&lt;boolean bl, int32 it, rstring str, timestamp ts&gt; ParsedStream = AdaptiveParser(CSVFieldsStream) {
+     stream&lt;rstring str&gt; ParsedStream = AdaptiveParser(CSVFieldsStream) {
      	logic
-     		state : { mutable uint32 count = 1u; mutable rstring str = "0123456789"; }
+     		state : {
+     			mutable uint64 count = 0u;
+ 			}
+ 			onTuple CSVFieldsStream: count = skipCount;
      	param
-     		globalDelimiter : ",";
-     		globalSkipper : whitespace;
-     		quotedStrings : true;
-     		tsFormat : "SPL";
+     		dataAttr : data;
      	output ParsedStream:
-     		bl = Param({parseToState = "count", skipCountBefore = count}),
-     		ts = Param({skipCountAfter = 9u});
+ //    		bl = Param({parseToState = "count", skipCountBefore = count}),
+     		str = Param({skipCountBefore = count});
      }
      
      () as FSink = FileSink(ParsedStream) {
