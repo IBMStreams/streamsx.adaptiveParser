@@ -96,6 +96,8 @@ inline bool MY_OPERATOR::parse(OTuple & otuple, TupleParser const& tupleParser, 
 
 void MY_OPERATOR::process(Tuple const & tuple, uint32_t port) {
 
+	if (port) return;
+	
 	IPort0Type const & iport$0 = static_cast<IPort0Type const&>(tuple);
 
 	charPtr iter_start;

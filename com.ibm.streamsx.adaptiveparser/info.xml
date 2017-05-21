@@ -2,7 +2,18 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser</info:name>
-    <info:description></info:description>
+    <info:description>
+Support for multilevel hierarchical parsing based on [https://theboostcpplibraries.com/boost.spirit|Boost.Spirit] library.
+
+Boost.Spirit is an object-oriented recursive-descent parser generator framework implemented using template meta-programming techniques.
+
+Expression templates allow to approximate the syntax of Extended Backus-Normal Form (EBNF) completely in C++.
+
+This toolkit provides automatic spirit parsing rules generation based on provided output tuple schema.
+
+**Third-party libraries**
+* This toolkit uses spirit, xpressive and other boost libraries>.
+    </info:description>
     <info:version>2.1</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>

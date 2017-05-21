@@ -3,9 +3,21 @@
   <cppOperatorModel>
     <context verificationModule="">
       <description>
+AdaptiveParser allows to parse any structured, semi-structured and unstructured input format accordingly to an output tuple schema.
+Each primitive type attribute generates a mini parser, when grouped together they create a complex tuple parser. Tuple parsers can be nested.
+Each collection type generates a collection parser that wraps a mini parser based on collection (key)/value type(s).
+
+AdaptiveParser provides an ability to apply settings on any level: globally, partially or locally for a single attribute.
+
 AdaptiveParser operator has two custom output functions: 
-* Param applies parsing options for top level attributes.
-* ParamN applies parsing options for nested level attributes.
+* Param applies parsing options only for top level attributes.
+* ParamN applies parsing options for any nested level attributes.
+
+One input port is allowed.
+If there is only one blob/rstring attribute exists, it is taken as a data to be parsed. Otherwise dataAttr parameter should be applied.
+
+Multiple output ports are allowed where each port defines an alternate parser.
+If the last output port schema is identical to the input port schema then it is treated as an error port.	
       </description>
       <customLiterals>
         <enumeration>
@@ -36,31 +48,102 @@ AdaptiveParser operator has two custom output functions:
         <customOutputFunction>
           <name>AdaptiveParserFS</name>
           <function pseudoFunction="true">
-            <description></description>
+            <description>Assign custom value to the output attribute.</description>
             <prototype>&lt;any T> T AsIs(T v)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+                Apply custom options to the top level attribute.
+
+                The function has one tuple argument:
+                	Param({delimiter="|", skipper=Skipper.blank, ...})
+                The following parameters may be used:
+				* attrFieldName: set alias for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')
+				* attrNameDelimiter: set delimiter for an attribute name (applicable when tupleScheme is 'openAttrNamePaired')
+				* attrNameQuoted: expect an attribute name with quotes (applicable when tupleScheme is 'openAttrNamePaired')
+				* base64Mode: set base64 decoding for the current string attribute
+				* binaryMode: set binary encoding for the numeric attribute
+				* cutCharsetDelim: set multiple delimiters the input will be searched first then parsed
+				* cutStringDelim: set delimiter the input will be searched first then parsed
+				* cutSkipper: set skipper the input will be searched first then parsed
+				* defaultValue: apply default value for an optional attribute
+				* delimiter: set delimiter for an attribute
+				* escapeChar: set escaping character(s) for an attribute,
+				* hexCharPrefix: set escaping character(s) for an attribute
+				* globalAttrNameDelimiter: like attrNameDelimiter, apply to all nested levels (the current level is left unchanged)
+				* globalAttrNameQuoted: like attrNameQuoted, apply to all nested levels (the current level is left unchaged)
+				* globalDelimiter: like delimiter, apply to all nested levels (the current level is left unchanged)
+				* globalEscapeChar: like escapeChar, apply to all nested levels (the current level is left unchanged)
+				* globalSkipper: like skipper, apply to all nested levels (the current level is left unchanged)
+				* globalTupleScheme: like tupleScheme, apply to all nested levels (the current level is left unchanged)
+				* optional: an attribute can be skipped (taking a default value)
+				* parseToState: an input field can be parsed to a state (maybe be used for skipCounter or just to drop a part of the input)
+				* regexFilter: an attribute is filtered by regex expression and if fails the entire tuple parsing will be failed (use with an error port) 
+				* quotedOptStrings: an attribute may have quotes (applicable only for strings)
+				* quotedStrings: expect an attribute with quotes (applicable only for strings)
+				* prefix: expect a prefix before the attribute (applicable only for primitive types)
+				* suffix: expect a suffix after the attribute (applicable only for primitive types)
+				* listPrefix: expect a prefix before the attribute (applicable only for lists/sets and inherited)
+				* listSuffix: expect a suffix after the attribute (applicable only for lists/sets and inherited)
+				* mapPrefix: expect a prefix before the attribute (applicable only for maps and inherited)
+				* mapSuffix: expect a suffix after the attribute (applicable only for maps and inherited)
+				* tuplePrefix: expect a prefix before the attribute (applicable only for tuples and inherited)
+				* tupleSuffix: expect a suffix after the attribute (applicable only for tuples and inherited)
+				* tsFormat: defines a string representation of timestamp (see the system man page for strptime)
+				* tsToken: defines a character separator for epoch timestamp
+				* bound: defines a bounded length type (not the value - e.g. 0uh) that parsed before the attribute (applicable only for strings)
+				* skipCountAfter: sets a count of bytes to skip after the attribute
+				* skipCountBefore: sets a count of bytes to skip before the attribute
+				* skipChars: set character(s) to be skipped (applicable only for strings)
+				* enumAliasesMap: defines alternate names for enum values (applicable only for enums)
+				* skipper: set a skipper for all or subset of whitespaces to be skipped.
+				* tupleScheme: an attribute data scheme (applicable only for tuples)
+            </description>
             <prototype>&lt;any A, tuple T> A Param(T options)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+            Skip top level attribute and apply custom options to the next nested level attribute.
+
+            The function has one anonymous '_' agrument (no options for the top level) and one tuple argument:
+            	Param(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+            </description>
             <prototype>&lt;any A, tuple T> A Param(enum{_} options, T deepOptions)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+            Apply custom options to the top and the next nested level attributes.
+
+            The function has two tuple arguments:
+            	Param({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+            </description>
             <prototype>&lt;any A, tuple T1, tuple T2> A Param(T1 options, T2 deepOptions)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+            Apply custom options to the current (non top level) attribute.
+
+            The function has one tuple argument:
+            	ParamN({delimiter="|", skipper=Skipper.none, ...})
+            </description>
             <prototype>&lt;tuple T> boolean ParamN(T options)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+            Skip current (non top level) attribute and apply custom options to the next nested level attribute.
+
+            The function has one anonymous '_' agrument (no options for the current level) and one tuple argument:
+            	ParamN(_, {attr2level = ParamN({delimiter="|", skipper=Skipper.blank, ...})})
+            </description>
             <prototype>&lt;tuple T> boolean ParamN(enum{_} options, T deepOptions)</prototype>
           </function>
           <function pseudoFunction="true">
-            <description></description>
+            <description>
+            Apply custom options to the current (non top level) and the next nested attribute levels.
+
+            The function has two tuple arguments:
+            	ParamN({delimiter="|", skipper=Skipper.none, ...}, {attr2level = ParamN({delimiter=",", skipper=Skipper.blank, ...})})
+            </description>
             <prototype>&lt;tuple T1, tuple T2> boolean ParamN(T1 options, T2 deepOptions)</prototype>
           </function>
         </customOutputFunction>
@@ -78,11 +161,16 @@ AdaptiveParser operator has two custom output functions:
       <splExpressionTree cppCode="true" output="true"/>
     </context>
     <parameters>
-      <description></description>
+      <description>Parameters allow to customize the global behavior of the operator. Most of the parameters can be applied also inside Param/ParamN functions.</description>
       <allowAny>false</allowAny>
       <parameter>
         <name>allowEmpty</name>
-        <description></description>
+        <description>
+        Allows empty value applying a default value instead.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -91,7 +179,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>batch</name>
-        <description></description>
+        <description>
+        Parse an input tuple as a bulk of data. Can submit multiple output tuples.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -100,7 +193,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>binaryMode</name>
-        <description></description>
+        <description>
+        All numeric parsers will parse the input as binary words.
+        	valid in Param/ParamN: yes
+        	non-global version: binaryMode
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -109,7 +207,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>parsingMode</name>
-        <description></description>
+        <description>
+        Can be full or partial. In a partial mode the parsing succeeds when the whole output tuple is filled without checking if the input end is reached.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>CustomLiteral</expressionMode>
@@ -118,7 +221,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>dataAttr</name>
-        <description></description>
+        <description>
+        Sets the input attribute holding the data to parse.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Attribute</expressionMode>
@@ -127,7 +235,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>passAttrs</name>
-        <description></description>
+        <description>
+        Sets input attributes that should be copied to the output attributes. Those output attributes will not parse the input.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Attribute</expressionMode>
@@ -136,7 +249,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>comment</name>
-        <description></description>
+        <description>
+        Sets the comment characters in the beginning of an input data. the input will be skipped.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -145,7 +263,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>explain</name>
-        <description></description>
+        <description>
+        Prints to the output console additional information about the parsing.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Expression</expressionMode>
@@ -153,7 +276,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalAttrNameQuoted</name>
-        <description></description>
+        <description>
+        When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be quoted.
+        	valid in Param/ParamN: yes
+        	non-global version: attrNameQuoted
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -162,7 +290,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalAttrNameDelimiter</name>
-        <description></description>
+        <description>
+        When tupleScheme is set to 'openAttrNamePaired' (key/value) expects keys to be delimited.
+	        valid in Param/ParamN: yes
+	        non-global version: attrNameDelimiter
+	        inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -171,7 +304,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalDelimiter</name>
-        <description></description>
+        <description>
+        A field delimiter - usually 1 or more characters.
+        	valid in Param/ParamN: yes
+        	non-global version: delimiter
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -180,7 +318,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalEscapeChar</name>
-        <description></description>
+        <description>
+        A field escape character.
+        	valid in Param/ParamN: yes
+        	non-global version: escapeChar
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -189,7 +332,20 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalSkipper</name>
-        <description></description>
+        <description>
+        Set a skipper for all or subset of whitespaces to be skipped. Can be set to values:
+        	none: whitespaces are not skipped and parsed as part of the input data
+        	blank: all whitespaces are skipped except new lines
+        	endl: only new lines are skipped
+        	control: all control characters are skipped
+        	punct: all punct characters are skipped
+        	tab: only tabs are skipped
+        	whitespace (default): all whitespaces are skipped
+
+        	valid in Param/ParamN: yes
+        	non-global version: skipper
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>CustomLiteral</expressionMode>
@@ -198,7 +354,18 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>globalTupleScheme</name>
-        <description></description>
+        <description>
+        An input data scheme. Can be set to values:
+        	firstTypePaired: alternate parser - each tuple attribute tries to parse the input until one succeeds
+        	openAttrNamePaired: tuple attributes parse the input as key/value pairs in any order, missing fields are allowed
+        	openTypeOrdered: tuple attributes parse the input in a sequence, missing fields are allowed
+        	openTypeUnordered: tuple attributes parse the input in any order, missing fields are allowed
+        	strictTypeOrdered (default): tuple attributes parse the input in a sequence, all of them must be present 
+
+        	valid in Param/ParamN: yes
+        	non-global version: tupleScheme
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>CustomLiteral</expressionMode>
@@ -207,7 +374,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>tupleScheme</name>
-        <description></description>
+        <description>
+        An input data scheme. Can be set to values: the same as globalTupleScheme.
+        	valid in Param/ParamN: yes
+        	global version: globalTupleScheme
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>CustomLiteral</expressionMode>
@@ -216,7 +388,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>startFrom</name>
-        <description></description>
+        <description>
+        Start parsing from the given character(s) skipping all the previous data from the beginning. 
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -225,7 +402,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>listPrefix</name>
-        <description></description>
+        <description>
+        Defines a preceding list/set character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: listPrefix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -234,7 +416,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>listSuffix</name>
-        <description></description>
+        <description>
+        Defines a succeeding list/set character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: listSuffix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -243,7 +430,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>mapPrefix</name>
-        <description></description>
+        <description>
+        Defines a preceding map character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: mapPrefix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -252,7 +444,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>mapSuffix</name>
-        <description></description>
+        <description>
+        Defines a succeeding map character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: mapSuffix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -261,7 +458,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>tuplePrefix</name>
-        <description></description>
+        <description>
+        Defines a preceding tuple character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: tuplePrefix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -270,7 +472,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>tupleSuffix</name>
-        <description></description>
+        <description>
+        Defines a succeeding tuple character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: tupleSuffix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -279,7 +486,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>prefix</name>
-        <description></description>
+        <description>
+        Defines a preceding attribute character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: prefix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -288,7 +500,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>suffix</name>
-        <description></description>
+        <description>
+        Defines a succeeding attribute character(s).
+        	valid in Param/ParamN: yes
+        	non-global version: suffix
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -297,7 +514,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>tsFormat</name>
-        <description></description>
+        <description>
+        Defines a string representation of timestamp (see the system man page for strptime)
+        	valid in Param/ParamN: yes
+        	non-global version: tsFormat
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -306,7 +528,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>tsToken</name>
-        <description></description>
+        <description>
+        Defines a character separator for epoch timestamp.
+        	valid in Param/ParamN: yes
+        	non-global version: tsToken
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -315,7 +542,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>quotedOptStrings</name>
-        <description></description>
+        <description>
+        Allows string attributes to be optionally quoted.
+        	valid in Param/ParamN: yes
+        	non-global version: quotedOptStrings
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -324,7 +556,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>quotedStrings</name>
-        <description></description>
+        <description>
+        Expects string attributes to be quoted.
+        	valid in Param/ParamN: yes
+        	non-global version: quotedStrings
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -333,7 +570,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>undefined</name>
-        <description></description>
+        <description>
+        Sets undefined value(s) for input fields.
+        	valid in Param/ParamN: no
+        	non-global version: no
+        	inherited: yes
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -342,7 +584,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>skipCountAfter</name>
-        <description></description>
+        <description>
+        Sets number of characters to skip after the current attribute.
+        	valid in Param/ParamN: yes
+        	non-global version: skipCountAfter
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -351,7 +598,12 @@ AdaptiveParser operator has two custom output functions:
       </parameter>
       <parameter>
         <name>skipCountBefore</name>
-        <description></description>
+        <description>
+        Sets number of characters to skip before the current attribute.
+        	valid in Param/ParamN: yes
+        	non-global version: skipCountBefore
+        	inherited: no
+        </description>
         <optional>true</optional>
         <rewriteAllowed>false</rewriteAllowed>
         <expressionMode>Constant</expressionMode>
@@ -361,7 +613,7 @@ AdaptiveParser operator has two custom output functions:
     </parameters>
     <inputPorts>
       <inputPortSet>
-        <description></description>
+        <description>The input data port. Logic can be applied, e.g. to update state.</description>
         <windowingDescription></windowingDescription>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <windowingMode>NonWindowed</windowingMode>
@@ -370,16 +622,14 @@ AdaptiveParser operator has two custom output functions:
         <cardinality>1</cardinality>
         <optional>false</optional>
       </inputPortSet>
-      <inputPortSet>
-        <description></description>
-        <windowingDescription></windowingDescription>
+      <inputPortOpenSet>
+        <description>The control input port(s) is only for logic section, e.g. to update state.</description>
+        <windowingDescription/>
         <tupleMutationAllowed>false</tupleMutationAllowed>
         <windowingMode>NonWindowed</windowingMode>
         <windowPunctuationInputMode>Oblivious</windowPunctuationInputMode>
         <controlPort>true</controlPort>
-        <cardinality>1</cardinality>
-        <optional>true</optional>
-      </inputPortSet>
+      </inputPortOpenSet>
     </inputPorts>
     <outputPorts>
       <outputPortOpenSet>
