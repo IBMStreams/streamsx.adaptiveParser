@@ -37,7 +37,7 @@
 
       <dd class="dd">
 <ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.json$JSONParser.html#spldoc_compilationunit__composite_operator__JSONParser">JSONParser</a></strong>
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.json$JSONParser.html#spldoc_compilationunit__composite_operator__JSONParser">JSONParser</a></strong>: JSONParser composite uses pre-configured AdaptiveParser operator, parameterized for JSON format parsing.
 </li>
 
 </ul>
@@ -61,28 +61,35 @@
   <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser.json/op$com.ibm.streamsx.adaptiveparser.json$JSONParser.svg" width="142" height="109"/>
 </div>
 
+<div class="section">
+
+<p class="p">JSONParser composite uses pre-configured AdaptiveParser operator, parameterized for JSON format parsing.
+</p>
+
+</div>
+
 <div class="section"><h2 class="title sectiontitle">Parameters</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">dataAttr</strong>
+<li class="sli"><strong class="ph b">dataAttr</strong>: an input attribute name which holds data to parse
 </li>
 
-<li class="sli"><strong class="ph b">batch</strong>
+<li class="sli"><strong class="ph b">batch</strong>: expect multiple events when parsing the data
 </li>
 
-<li class="sli"><strong class="ph b">explain</strong>
+<li class="sli"><strong class="ph b">explain</strong>: run in explain mode - prints to console data beeing parsed  
 </li>
 
-<li class="sli"><strong class="ph b">keyQuoted</strong>
+<li class="sli"><strong class="ph b">keyQuoted</strong>: expect JSON keys to be double quoted (default)
 </li>
 
-<li class="sli"><strong class="ph b">tsFormat</strong>
+<li class="sli"><strong class="ph b">tsFormat</strong>: format for timestamp conversion
 </li>
 
-<li class="sli"><strong class="ph b">tsToken</strong>
+<li class="sli"><strong class="ph b">tsToken</strong>: timestamp token for epoch format
 </li>
 
-<li class="sli"><strong class="ph b">JSONType</strong>
+<li class="sli"><strong class="ph b">JSONType</strong>: tuple schema to parse JSON
 </li>
 
 </ul>
@@ -92,7 +99,7 @@
 <div class="section"><h2 class="title sectiontitle">Input Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">RawData</strong>
+<li class="sli"><strong class="ph b">RawData</strong>: blob or rstring data to be parsed
 </li>
 
 </ul>
@@ -102,7 +109,7 @@
 <div class="section"><h2 class="title sectiontitle">Output Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">JSONEvent</strong>
+<li class="sli"><strong class="ph b">JSONEvent</strong>: should match JSONType parameter
 </li>
 
 </ul>

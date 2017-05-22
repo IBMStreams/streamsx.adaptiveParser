@@ -37,7 +37,7 @@
 
       <dd class="dd">
 <ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_operator__LEEFParser">LEEFParser</a></strong>
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.html#spldoc_compilationunit__composite_operator__LEEFParser">LEEFParser</a></strong>: LEEFParser composite uses pre-configured AdaptiveParser operator, parameterized for LEEF format parsing.
 </li>
 
 </ul>
@@ -83,16 +83,23 @@
   <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser.leef/op$com.ibm.streamsx.adaptiveparser.leef$LEEFParser.svg" width="142" height="109"/>
 </div>
 
+<div class="section">
+
+<p class="p">LEEFParser composite uses pre-configured AdaptiveParser operator, parameterized for LEEF format parsing.
+</p>
+
+</div>
+
 <div class="section"><h2 class="title sectiontitle">Parameters</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">dataAttr</strong>
+<li class="sli"><strong class="ph b">dataAttr</strong>: an input attribute name which holds data to parse
 </li>
 
-<li class="sli"><strong class="ph b">batch</strong>
+<li class="sli"><strong class="ph b">batch</strong>: expect multiple events when parsing the data
 </li>
 
-<li class="sli"><strong class="ph b">customAttributesType</strong>
+<li class="sli"><strong class="ph b">customAttributesType</strong>: LEEFAttributes_t by default - can be extended
 </li>
 
 </ul>
@@ -102,7 +109,7 @@
 <div class="section"><h2 class="title sectiontitle">Input Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">RawData</strong>
+<li class="sli"><strong class="ph b">RawData</strong>: blob or rstring data to be parsed
 </li>
 
 </ul>
@@ -112,7 +119,7 @@
 <div class="section"><h2 class="title sectiontitle">Output Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">LEEFEvent</strong>
+<li class="sli"><strong class="ph b">LEEFEvent</strong>: LEEFMetaData_t, tuple&lt;$customAttributesType eventAttributes&gt; (refer to parameter $customAttributesType)
 </li>
 
 </ul>

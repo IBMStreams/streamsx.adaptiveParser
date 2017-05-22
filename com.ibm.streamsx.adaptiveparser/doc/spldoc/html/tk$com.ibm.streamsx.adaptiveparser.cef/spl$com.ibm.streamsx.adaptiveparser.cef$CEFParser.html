@@ -37,7 +37,7 @@
 
       <dd class="dd">
 <ul class="sl simple">
-<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.cef$CEFParser.html#spldoc_compilationunit__composite_operator__CEFParser">CEFParser</a></strong>
+<li class="sli"><strong class="ph b"><a class="xref" href="spl$com.ibm.streamsx.adaptiveparser.cef$CEFParser.html#spldoc_compilationunit__composite_operator__CEFParser">CEFParser</a></strong>: CEFParser composite uses pre-configured AdaptiveParser operator, parameterized for CEF format parsing.
 </li>
 
 </ul>
@@ -80,13 +80,20 @@
   <embed class="image" src="../../image/tk$com.ibm.streamsx.adaptiveparser.cef/op$com.ibm.streamsx.adaptiveparser.cef$CEFParser.svg" width="142" height="109"/>
 </div>
 
+<div class="section">
+
+<p class="p">CEFParser composite uses pre-configured AdaptiveParser operator, parameterized for CEF format parsing. As an option, CEF header can be represented as list&lt;rstring&gt;[7] instead of tuple
+</p>
+
+</div>
+
 <div class="section"><h2 class="title sectiontitle">Parameters</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">dataAttr</strong>
+<li class="sli"><strong class="ph b">dataAttr</strong>: an input attribute name which holds data to parse
 </li>
 
-<li class="sli"><strong class="ph b">batch</strong>
+<li class="sli"><strong class="ph b">batch</strong>: expect multiple events when parsing the data
 </li>
 
 </ul>
@@ -96,7 +103,7 @@
 <div class="section"><h2 class="title sectiontitle">Input Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">RawData</strong>
+<li class="sli"><strong class="ph b">RawData</strong>: blob or rstring data to be parsed
 </li>
 
 </ul>
@@ -106,7 +113,7 @@
 <div class="section"><h2 class="title sectiontitle">Output Ports</h2>
 
 <ul class="sl simple">
-<li class="sli"><strong class="ph b">CEFEvent</strong>
+<li class="sli"><strong class="ph b">CEFEvent</strong>: CEFParser.CEFHeader_t , CEFParser.CEFExtension_t
 </li>
 
 </ul>
