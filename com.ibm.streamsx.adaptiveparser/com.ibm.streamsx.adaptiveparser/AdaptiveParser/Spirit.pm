@@ -17,7 +17,7 @@ sub defaults_setValue(@) {
 
 	(my $setExpr = $cppType) =~ s/^.*?::/otuple::/;
 	$setExpr =~ s/::(.*?)_type/.get_${1}()/g;
-	push $adapt->{'defaults'}, "$setExpr = $value;\n\t\t";
+	push @{$adapt->{'defaults'}}, "$setExpr = $value;\n\t\t";
 }
 
 sub locals_define(@) {
@@ -25,7 +25,7 @@ sub locals_define(@) {
 
 	my $local = "local_$cppType";
 	$local =~ s/::/_/g;
-	push $adapt->{'locals'}, "SPL::$splType $local; \n\t\t";
+	push @{$adapt->{'locals'}}, "SPL::$splType $local; \n\t\t";
 	return $local;
 }
 
