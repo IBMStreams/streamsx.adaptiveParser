@@ -2,6 +2,14 @@ namespace com.ibm.streamsx.adaptiveparser.bro ;
 
 use com.ibm.streamsx.adaptiveparser::* ;
 
+/**
+ * BroCommParser composite uses pre-configured AdaptiveParser operator, parameterized for Bro communication format parsing.
+ * 
+ * @input RawData blob or rstring data to be parsed
+ * @output BroEvent BroComm_t
+ * @param dataAttr an input attribute name which holds data to parse
+ * @param batch expect multiple events when parsing the data
+ */
 public composite BroCommParser(input RawData ; output BroEvent) {
 	param
 		attribute $dataAttr ;

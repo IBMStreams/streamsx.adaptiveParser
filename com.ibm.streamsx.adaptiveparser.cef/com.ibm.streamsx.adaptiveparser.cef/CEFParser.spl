@@ -2,17 +2,14 @@ namespace com.ibm.streamsx.adaptiveparser.cef;
 
 use com.ibm.streamsx.adaptiveparser::*;
 
-/*
- *  AdaptiveParser input port type expects dataAttr parameter holding an input attribute to parse
- *  AdaptiveParser output port type generates the CEF parser
- *  As an option, CEF header can be represented as list<rstring>[7] instead of tuple<...>
- *  Parameters define general behavior: global delimiter is '|' and no skipping (otherwise enabled by default)
- *  Custom formats can be handled by custom output functions:
- *  'version' parses string like 'CEF:<ver>', so prefix 'CEF:' needed
- *  'properties' map does not need delimiter and disables it for key/values by propogating new empty 'globalDelimiter'
- *  'key' delimited by '='
- *  'value' delimited by whitespace followed by any of chars 'a-zA-Z0-9_.)(-' and 'key' delimiter
- *  here two subsequent key/values sample: 'requestClientApplication=Mozilla/5.0 (Windows NT 6.1) ahost=mytest.com'
+/**
+ * CEFParser composite uses pre-configured AdaptiveParser operator, parameterized for CEF format parsing.
+ * As an option, CEF header can be represented as list<rstring>\[7] instead of tuple
+ * 
+ * @input RawData blob or rstring data to be parsed
+ * @output CEFEvent CEFParser.CEFHeader_t , CEFParser.CEFExtension_t
+ * @param dataAttr an input attribute name which holds data to parse
+ * @param batch expect multiple events when parsing the data
  */
 public composite CEFParser(input RawData; output CEFEvent) {
 param

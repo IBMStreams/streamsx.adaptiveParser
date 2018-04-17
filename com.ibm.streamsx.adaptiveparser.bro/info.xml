@@ -2,8 +2,27 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.bro</info:name>
-    <info:description></info:description>
-    <info:version>2.1</info:version>
+    <info:description>
+Support for [https://www.bro.org/sphinx-git/logs/index.html|Bro logging] library.
+
+Bro, a powerful network security monitor, which by default churns out ASCII logs in a easily parseable whitespace separated (column) format from network traffic, live or PCAP.
+
+This toolkit provides multiple BroParser composites with a ready to use pre-configured AdaptiveParser operator, parameterized for Bro format parsing.
+
+Below the list of BroParser operators:
+
+	BroCertParser
+	BroCommParser
+	BroConnParser
+	BroDHCPParser
+	BroDNSParser
+	BroFilesParser
+	BroHTTPParser
+	BroNoticeParser
+	BroSimpleParser
+	BroSSLParser
+    </info:description>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>

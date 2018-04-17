@@ -4,6 +4,15 @@ use com.ibm.streamsx.adaptiveparser::*;
 
 use com.ibm.streamsx.adaptiveparser::*;
 
+/**
+ * BroSimpleParser composite uses pre-configured AdaptiveParser operator, parameterized for Bro simple format parsing.
+ * 
+ * @input RawData blob or rstring data to be parsed
+ * @output BroEvent should match broType parameter
+ * @param dataAttr an input attribute name which holds data to parse
+ * @param batch expect multiple events when parsing the data
+ * @param broType tuple schema to parse Bro
+ */
 public composite BroSimpleParser(input RawData; output BroEvent) {
 param
 	attribute $dataAttr;

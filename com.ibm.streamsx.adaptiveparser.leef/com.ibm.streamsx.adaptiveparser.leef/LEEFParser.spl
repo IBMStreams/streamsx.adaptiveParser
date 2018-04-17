@@ -2,22 +2,14 @@ namespace com.ibm.streamsx.adaptiveparser.leef;
 
 use com.ibm.streamsx.adaptiveparser::*;
 
-/*
- *  AdaptiveParser output port type generates the LEEF parser
- *  As an option, LEEF header can be represented as list<rstring>[5] instead of tuple<LEEFHeader_t>
- *  LEEFParser parameters:
- *  	'dataAttr' - is needed to set input attribute to parse
- *  	'batch' - if bulk of tuples is expected i the input
- *  	'customAttributesType' - optionally LEEFAttributes_t can be extended
- *  AdaptiveParser parameters:
- *  	global skipper is '\t' (which overridden by syslog that needs whitespace)
- *  Custom formats can be handled by custom output functions:
- *  	'date' parses string based on timestamp string format defined by 'tsFormat = "%b %d %Y %H:%M:%S"'
- *  	'eventHeader' needs globalDelimiter to be '|' (other headers need only skipper)
- *  	'version' parses string like 'LEEF:<ver>', so prefix 'LEEF:' needed
- *  	'eventAttributes' uses keyValue parser (enabled by 'attrNameAsPrefix = true') to map data directly to the tuple
- *  	'key' delimited by '=', 'value' delimited by '\t'
- *  here two subsequent key/values sample: 'devTimeFormat=MMM dd yyyy HH:mm:ss	src=RZS.RWY.SQU.SR'
+/**
+ * LEEFParser composite uses pre-configured AdaptiveParser operator, parameterized for LEEF format parsing.
+ * 
+ * @input RawData blob or rstring data to be parsed
+ * @output LEEFEvent LEEFMetaData_t, tuple<$customAttributesType eventAttributes> (refer to parameter $customAttributesType)
+ * @param dataAttr an input attribute name which holds data to parse
+ * @param batch expect multiple events when parsing the data
+ * @param customAttributesType LEEFAttributes_t by default - can be extended
  */
 public composite LEEFParser(input RawData; output LEEFEvent) {
 param

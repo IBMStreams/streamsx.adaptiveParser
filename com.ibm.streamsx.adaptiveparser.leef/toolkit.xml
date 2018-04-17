@@ -1,22 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.0.2" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.1.3" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.adaptiveparser.leef" requiredProductVersion="4.0" version="2.1">
-    <description/>
+  <toolkit name="com.ibm.streamsx.adaptiveparser.leef" requiredProductVersion="4.0" version="2.2">
+    <description>
+Support for [https://www.ibm.com/support/knowledgecenter/SSKMKU/com.ibm.dsm.doc/c_LEEF_Format_Guide_intro.html|Log Event Extended Format (LEEF)] library.
+
+The Log Event Extended Format is a customized event format for IBM Security QRadar.
+
+This toolkit provides LEEFParser composite with a ready to use pre-configured AdaptiveParser operator, parameterized for LEEF format parsing.
+    </description>
     <uriTable>
       <uri index="1" value="com.ibm.streamsx.adaptiveparser.leef/LEEFParser.spl"/>
     </uriTable>
     <namespace name="com.ibm.streamsx.adaptiveparser.leef">
-      <compositeOp column="18" line="22" name="LEEFParser" potentialMain="false" public="true" uriIndex="1">
+      <compositeOp column="18" line="14" name="LEEFParser" potentialMain="false" public="true" uriIndex="1">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <parameter defaultValue="LEEFAttributes_t" metaType="Type" name="customAttributesType" optional="true"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="LEEFEvent" portIndex="0"/>
-        <type column="9" line="29" name="SyslogHeader_t" static="true" type="timestamp date, rstring ipAddress" uriIndex="1"/>
-        <type column="9" line="31" name="LEEFHeader_t" static="true" type="float32 version, rstring productVendor, rstring productName, rstring productVersion, rstring eventID" uriIndex="1"/>
-        <type column="9" line="37" name="LEEFAttributes_t" static="true" type="rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev, rstring src, rstring dst, uint16 srcPort, uint16 dstPort, rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort, rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort, rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC, rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName, uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm, rstring policy, rstring resource, rstring url, rstring groupid, rstring domain, boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp, rstring calLanguage, rstring calCountryOrRegion" uriIndex="1"/>
-        <type column="9" line="49" name="LEEFMetaData_t" static="true" type="SyslogHeader_t syslog, LEEFHeader_t eventHeader" uriIndex="1"/>
+        <type column="9" line="21" name="SyslogHeader_t" static="true" type="timestamp date, rstring ipAddress" uriIndex="1"/>
+        <type column="9" line="23" name="LEEFHeader_t" static="true" type="float32 version, rstring productVendor, rstring productName, rstring productVersion, rstring eventID" uriIndex="1"/>
+        <type column="9" line="29" name="LEEFAttributes_t" static="true" type="rstring cat, rstring devTime, rstring devTimeFormat, uint16 proto, uint8 sev, rstring src, rstring dst, uint16 srcPort, uint16 dstPort, rstring srcPreNAT, rstring dstPreNAT, uint16 srcPreNATPort, uint16 dstPreNATPort, rstring srcPostNAT, rstring dstPostNAT, uint16 srcPoatNATPort, uint16 dstPoatNATPort, rstring usrName, rstring srcMAC, rstring dstMAC, rstring identMAC, rstring identSrc, rstring identHostName, rstring identNetBios, rstring identGrpName, uint32 srcBytes, uint32 dstBytes, uint32 srcPackets, uint32 dstPackets, uint32 totalBytes, rstring vSrc, rstring vSrcName, rstring accountName, rstring role, rstring realm, rstring policy, rstring resource, rstring url, rstring groupid, rstring domain, boolean isLoginEvent, boolean isLogoutEvent, rstring identSecondlp, rstring calLanguage, rstring calCountryOrRegion" uriIndex="1"/>
+        <type column="9" line="41" name="LEEFMetaData_t" static="true" type="SyslogHeader_t syslog, LEEFHeader_t eventHeader" uriIndex="1"/>
       </compositeOp>
     </namespace>
     <dependency>

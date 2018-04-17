@@ -2,8 +2,14 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.json</info:name>
-    <info:description></info:description>
-    <info:version>2.1</info:version>
+    <info:description>
+Support for [http://www.json.org|JSON] library.
+
+JavaScript Object Notation is an open-standard format that uses human-readable text to transmit data objects consisting of attribute–value pairs and array data types.
+
+This toolkit provides JSONParser composite with a ready to use pre-configured AdaptiveParser operator, parameterized for JSON format parsing.
+	</info:description>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>

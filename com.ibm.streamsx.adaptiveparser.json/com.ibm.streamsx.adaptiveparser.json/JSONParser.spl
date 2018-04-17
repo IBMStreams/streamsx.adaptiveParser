@@ -2,13 +2,18 @@ namespace com.ibm.streamsx.adaptiveparser.json ;
 
 use com.ibm.streamsx.adaptiveparser::* ;
 
-/*
- *  AdaptiveParser output port type generates the JSON parser
- *  JSONParser parameters:
- *  	'dataAttr' - is needed to set input attribute to parse
- *  	'batch' - if bulk of tuples is expected in the input
- *  	'keyQuoted' - are the JSON keys quoted - true by default
- *  	'JSONType' - the SPL output type
+/**
+ * JSONParser composite uses pre-configured AdaptiveParser operator, parameterized for JSON format parsing.
+ * 
+ * @input RawData blob or rstring data to be parsed
+ * @output JSONEvent should match JSONType parameter
+ * @param dataAttr an input attribute name which holds data to parse
+ * @param batch expect multiple events when parsing the data
+ * @param explain run in explain mode - prints to console data beeing parsed  
+ * @param keyQuoted expect JSON keys to be double quoted (default)
+ * @param tsFormat format for timestamp conversion
+ * @param tsToken timestamp token for epoch format
+ * @param JSONType tuple schema to parse JSON
  */
 public composite JSONParser(input RawData ; output JSONEvent) {
 param

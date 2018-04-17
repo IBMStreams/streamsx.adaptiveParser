@@ -2,8 +2,14 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.cef</info:name>
-    <info:description></info:description>
-    <info:version>2.1</info:version>
+    <info:description>
+Support for [https://www.protect724.hpe.com/docs/DOC-1072?cm_mc_uid=83211061759314949458715&amp;cm_mc_sid_50200000=1495362960|Common Event Format (CEF)] library.
+
+The ArcSight Common Event Format defines a syslog based event format that addresses the need to define core fields for event correlation for all vendors integrating with ArcSight.
+
+This toolkit provides CEFParser composite with a ready to use pre-configured AdaptiveParser operator, parameterized for CEF format parsing.
+    </info:description>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>

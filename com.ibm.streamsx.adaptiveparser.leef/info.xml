@@ -2,8 +2,14 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.leef</info:name>
-    <info:description></info:description>
-    <info:version>2.1</info:version>
+    <info:description>
+Support for [https://www.ibm.com/support/knowledgecenter/SSKMKU/com.ibm.dsm.doc/c_LEEF_Format_Guide_intro.html|Log Event Extended Format (LEEF)] library.
+
+The Log Event Extended Format is a customized event format for IBM Security QRadar.
+
+This toolkit provides LEEFParser composite with a ready to use pre-configured AdaptiveParser operator, parameterized for LEEF format parsing.
+    </info:description>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>

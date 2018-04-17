@@ -1,8 +1,27 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no" ?>
-<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.0.2" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+<toolkitModel xmlns="http://www.ibm.com/xmlns/prod/streams/spl/toolkit" productVersion="4.2.1.3" xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:ti="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-  <toolkit name="com.ibm.streamsx.adaptiveparser.bro" requiredProductVersion="4.0" version="2.1">
-    <description/>
+  <toolkit name="com.ibm.streamsx.adaptiveparser.bro" requiredProductVersion="4.0" version="2.2">
+    <description>
+Support for [https://www.bro.org/sphinx-git/logs/index.html|Bro logging] library.
+
+Bro, a powerful network security monitor, which by default churns out ASCII logs in a easily parseable whitespace separated (column) format from network traffic, live or PCAP.
+
+This toolkit provides multiple BroParser composites with a ready to use pre-configured AdaptiveParser operator, parameterized for Bro format parsing.
+
+Below the list of BroParser operators:
+
+	BroCertParser
+	BroCommParser
+	BroConnParser
+	BroDHCPParser
+	BroDNSParser
+	BroFilesParser
+	BroHTTPParser
+	BroNoticeParser
+	BroSimpleParser
+	BroSSLParser
+    </description>
     <uriTable>
       <uri index="7" value="com.ibm.streamsx.adaptiveparser.bro/BroSSLParser.spl"/>
       <uri index="9" value="com.ibm.streamsx.adaptiveparser.bro/BroDHCPParser.spl"/>
@@ -17,61 +36,61 @@
       <uri index="2" value="com.ibm.streamsx.adaptiveparser.bro/BroHTTPParser.spl"/>
     </uriTable>
     <namespace name="com.ibm.streamsx.adaptiveparser.bro">
-      <compositeOp column="18" line="5" name="BroCommParser" potentialMain="false" public="true" uriIndex="1">
+      <compositeOp column="18" line="13" name="BroCommParser" potentialMain="false" public="true" uriIndex="1">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroHTTPParser" potentialMain="false" public="true" uriIndex="2">
+      <compositeOp column="18" line="13" name="BroHTTPParser" potentialMain="false" public="true" uriIndex="2">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroCertParser" potentialMain="false" public="true" uriIndex="3">
+      <compositeOp column="18" line="13" name="BroCertParser" potentialMain="false" public="true" uriIndex="3">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroConnParser" potentialMain="false" public="true" uriIndex="5">
+      <compositeOp column="18" line="13" name="BroConnParser" potentialMain="false" public="true" uriIndex="5">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroDNSParser" potentialMain="false" public="true" uriIndex="6">
+      <compositeOp column="18" line="13" name="BroDNSParser" potentialMain="false" public="true" uriIndex="6">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroSSLParser" potentialMain="false" public="true" uriIndex="7">
+      <compositeOp column="18" line="13" name="BroSSLParser" potentialMain="false" public="true" uriIndex="7">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroNoticeParser" potentialMain="false" public="true" uriIndex="8">
+      <compositeOp column="18" line="13" name="BroNoticeParser" potentialMain="false" public="true" uriIndex="8">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroDHCPParser" potentialMain="false" public="true" uriIndex="9">
+      <compositeOp column="18" line="13" name="BroDHCPParser" potentialMain="false" public="true" uriIndex="9">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="5" name="BroFilesParser" potentialMain="false" public="true" uriIndex="10">
+      <compositeOp column="18" line="13" name="BroFilesParser" potentialMain="false" public="true" uriIndex="10">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <inputPort name="RawData" portIndex="0"/>
         <outputPort name="BroEvent" portIndex="0"/>
       </compositeOp>
-      <compositeOp column="18" line="7" name="BroSimpleParser" potentialMain="false" public="true" uriIndex="11">
+      <compositeOp column="18" line="16" name="BroSimpleParser" potentialMain="false" public="true" uriIndex="11">
         <parameter metaType="Attribute" name="dataAttr" optional="false"/>
         <parameter defaultValue="false" metaType="Expression" name="batch" optional="true" type="&lt;boolean>"/>
         <parameter metaType="Type" name="broType" optional="false"/>

@@ -2,8 +2,14 @@
 <info:toolkitInfoModel xmlns:common="http://www.ibm.com/xmlns/prod/streams/spl/common" xmlns:info="http://www.ibm.com/xmlns/prod/streams/spl/toolkitInfo">
   <info:identity>
     <info:name>com.ibm.streamsx.adaptiveparser.clf</info:name>
-    <info:description></info:description>
-    <info:version>2.1</info:version>
+    <info:description>
+Support for [https://httpd.apache.org/docs/1.3/logs.html#common|Common Log Format (CLF)] library.
+
+The Common Log Format is a standard format that can be produced by many different web servers and read by many log analysis programs.
+
+This toolkit provides CLFParser composite with a ready to use pre-configured AdaptiveParser operator, parameterized for CLF format parsing.
+    </info:description>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies>
