@@ -14,7 +14,7 @@ This toolkit provides automatic spirit parsing rules generation based on provide
 **Third-party libraries**
 * This toolkit uses spirit, xpressive and other boost libraries>.
     </info:description>
-    <info:version>2.1</info:version>
+    <info:version>2.2</info:version>
     <info:requiredProductVersion>4.0</info:requiredProductVersion>
   </info:identity>
   <info:dependencies/>
