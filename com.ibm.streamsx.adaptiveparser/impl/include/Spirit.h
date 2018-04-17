@@ -14,13 +14,10 @@
 #define STR_DSW(OP,VALUE,DELIM,SKIPPER) (skip(SKIPPER)[OP[*(VALUE - skip(SKIPPER)[DELIM|eoi])] >> eps])
 
 #include <streams_boost/preprocessor/cat.hpp>
-#include <streams_boost/algorithm/string/trim.hpp>
-#include <streams_boost/archive/iterators/binary_from_base64.hpp>
-#include <streams_boost/archive/iterators/transform_width.hpp>
 #include <streams_boost/config/warning_disable.hpp>
-#include <streams_boost/spirit/include/phoenix.hpp>
 #include <streams_boost/fusion/include/adapt_struct.hpp>
 #include <streams_boost/fusion/include/std_pair.hpp>
+#include <streams_boost/spirit/include/phoenix.hpp>
 #include <streams_boost/spirit/include/qi.hpp>
 #include <streams_boost/spirit/home/support/container.hpp>
 #include <streams_boost/spirit/repository/include/qi_advance.hpp>
@@ -28,6 +25,9 @@
 #include <streams_boost/spirit/repository/include/qi_keywords.hpp>
 #include <streams_boost/type_traits/is_same.hpp>
 #include <streams_boost/xpressive/xpressive_dynamic.hpp>
+#include <streams_boost/algorithm/string/trim.hpp>
+#include <streams_boost/archive/iterators/binary_from_base64.hpp>
+#include <streams_boost/archive/iterators/transform_width.hpp>
 #include "SPL/Runtime/Function/SPLFunctions.h"
 #include "time.h"
 
@@ -328,11 +328,6 @@ namespace ext {
 
         const char* value_;
 	};
-
-    qi::rule<charPtr,  ts(std::string)> timestamp =
-    		skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
-    qi::rule<charPtr,  ts()> timestampS =
-    		skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
 }
 
 
