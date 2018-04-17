@@ -157,6 +157,9 @@ struct TupleParserGrammar<%=$i%> : qi::grammar<Iterator, oport<%=$i%>(bool&)> {
 
     TupleParserGrammar<%=$i%>(MY_OP & _op) : TupleParserGrammar<%=$i%>::base_type(<%=$baseRule%>), op(_op) {
 
+		timestamp = skip(blank)[eps] >> long_[bind(&ts::setSeconds,_val,_1)] >> lit(_r1) >> uint_[bind(&ts::setNanoSeconds,_val,_1*1000)];
+		timestampS = skip(blank)[eps] >> "(" >> long_[bind(&ts::setSeconds,_val,_1)] >> "," >> uint_[bind(&ts::setNanoSeconds,_val,_1)] >> "," >> int_[bind(&ts::setMachineId,_val,_1)] >> ")";
+
 <%# [----- perl code -----]
 
 for my $symbols (values %{$structs->[-1]->{'symbols'}}) {
@@ -181,10 +184,10 @@ if (scalar %{$struct}) {
 	my $operator = $struct->{'tupleScheme'};
 	my $eq =  $operator eq '|' ? '=' : '%=';
 	my $skipper = $struct->{'skipper'} ? "skip($struct->{'skipper'})" : 'lexeme';
-
+	
 	my $rule = join(" $operator ", @{$struct->{'ruleBody'}});
 	$rule = "lit($parserOpt->{'tuplePrefix'}) >> $rule" if ($struct->{'cppType'} eq "oport$i" && $parserOpt->{'tuplePrefix'});
-	$rule = "eps >> $rule" if ($struct->{'size'} == 1); # patch for single element tuple
+	$rule = "eps >> $rule" if ($struct->{'size'} == 1); # patch for a single element tuple
 	$rule = $skipper."[$rule]";
 	if ($struct->{'cppType'} eq "oport$i") {
 		if ($parserOpt->{'tupleSuffix'}) {
@@ -232,6 +235,9 @@ private:
 
 	boolean_ boolean;
 	dummy_ dummy;
+
+	qi::rule<charPtr,  ts(std::string)> timestamp;
+	qi::rule<charPtr,  ts()> timestampS;
 	qi::symbols<char, qi::unused_type> undefined;
 
 	<%=@{$structs->[-1]->{'locals'}}%>
