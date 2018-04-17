@@ -165,7 +165,7 @@ sub getStringMacro(@) {
 		
 		$value = "(lit($parserOpt->{'hexCharPrefix'}) >> hex2 | $value)" if (defined($parserOpt->{'hexCharPrefix'}));
 		$value = "(omit[char_($parserOpt->{'skipChars'})] | $value)" if (defined($parserOpt->{'skipChars'}));
-		$macro = "dq >> no_skip[$macro($operator,$value,$params)] >> dq";
+		$macro = "(dq >> no_skip[$macro($operator,$value,$params)] >> dq)";
 	}
 	
 	unless ($quotedStrings) {
@@ -195,11 +195,7 @@ sub getStringMacro(@) {
 		$macro .= ')' if ($quotedOptStrings);
 	}
 	
-	if ($parserOpt->{'base64Mode'}) {
-		#$macro = "attr_cast<SPL::blob,iterator_range<charPtr> >($macro)" if ($op eq 'as_blob');
-		#$macro = "attr_cast<std::string,iterator_range<charPtr> >($macro)" if ($op eq 'as_string');
-		$macro = "base64[$macro]";
-	}
+	$macro = "base64[$macro]" if ($parserOpt->{'base64Mode'});
 	
 	return $macro;
 }
@@ -241,14 +237,16 @@ sub getPrimitiveValue(@) {
 	
 		my $unskip = $parserOpt->{'skipper'} ? 'lexeme' : 'no_skip';
 		$value .= "$unskip\[raw[repeat($bound)[byte_]]]";
-		$value = "dq >> $value >> skip(byte_ - dq)[dq]" if ($parserOpt->{'quotedStrings'});
+		$value = "(dq >> $value >> skip(byte_ - dq)[dq])" if ($parserOpt->{'quotedStrings'});
 		
 	}
 	elsif (Type::isRString($splType) || Type::isUString($splType)) {
 		$value = getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
+		#$value = getStringMacro($parserOpt, "(as<$cppType>())", $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
 	}
 	elsif (Type::isXml($splType)) {
 		$value = getStringMacro($parserOpt, 'as_string', $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
+		#$value = getStringMacro($parserOpt, "(as<$cppType>())", $parserOpt->{'quotedStrings'}, $parserOpt->{'quotedOptStrings'});
 		Spirit::traits_defXml($structs->[-1], $cppType);
 	}
 	elsif (Type::isTimestamp($splType)) {
