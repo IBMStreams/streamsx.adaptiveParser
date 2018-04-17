@@ -60,13 +60,21 @@ sub buildStructFromTuple(@) {
 	my %attrParams;
 	my $topLevel = ref $oAttrParams eq 'SPL::Operator::Instance::OutputPort';
 
-	if (!$topLevel && $oAttrParams){
+	if (!$topLevel && $oAttrParams) {
 		my $attrParamNames = $oAttrParams->getAttributes();
 		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
 			Out::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
 				unless ($attrParamNames->[$i] ~~ @attrNames);
-			$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
-			
+
+			my $lit = $oAttrParams->getLiteralAt($i);
+			Out::errorln("Parameter attribute '%s' expects Param/ParamN functions assignment", $attrParamNames->[$i], $srcLocation)
+				unless ($lit->isExpressionLiteral());
+
+			my $expr = $lit->getExpression();
+			Out::errorln("Parameter attribute '%s' expects Param/ParamN functions assignment", $attrParamNames->[$i], $srcLocation)
+				unless ($expr->isCall());
+
+			$attrParams{$attrParamNames->[$i]} = $expr;
 		}
 	}
 
@@ -193,7 +201,15 @@ sub handleListOrSet(@) {
 	
 	{
 		if ($oAttrParams) {
-			my $attr = $oAttrParams->getLiteralAt(0)->getExpression();
+			my $lit = $oAttrParams->getLiteralAt(0);
+			Out::errorln("Parameter attribute 'value' expects Param/ParamN functions assignment", $srcLocation)
+				unless ($lit->isExpressionLiteral());
+
+			my $expr = $lit->getExpression();
+			Out::errorln("Parameter attribute 'value' expects Param/ParamN functions assignment", $srcLocation)
+				unless ($expr->isCall());
+
+			my $attr = $expr;
 			my $funcName = getFuncNameParams($srcLocation, $attr, \$param1, \$param2, 0);
 			
 			if ($funcName eq 'AsIs') {
@@ -260,6 +276,7 @@ sub handleMap(@) {
 	$adapt->{'ruleName'} = $ruleName;
 	$adapt->{'ruleBody'} = [];
 	$adapt->{'skipper'} = $parserOpt->{'skipper'};
+	$adapt->{'tupleScheme'} = $parserOpt->{'tupleScheme'};
 	$adapt->{'size'} = 2;
 
 	unshift @{$structs}, $adapt;
@@ -272,8 +289,16 @@ sub handleMap(@) {
 		for (my $i = 0; $i < @{$attrParamNames}; $i++) {
 			Out::errorln("Parameter attribute '%s' is not found in a output attribute type '%s'", $attrParamNames->[$i], $splType, $srcLocation)
 				unless ($attrParamNames->[$i] ~~ ['key','value']);
-			$attrParams{$attrParamNames->[$i]} = $oAttrParams->getLiteralAt($i)->getExpression();
 			
+			my $lit = $oAttrParams->getLiteralAt($i);
+			Out::errorln("Parameter attribute '%s' expects Param/ParamN functions assignment", $attrParamNames->[$i], $srcLocation)
+				unless ($lit->isExpressionLiteral());
+
+			my $expr = $lit->getExpression();
+			Out::errorln("Parameter attribute '%s' expects Param/ParamN functions assignment", $attrParamNames->[$i], $srcLocation)
+				unless ($expr->isCall());
+
+			$attrParams{$attrParamNames->[$i]} = $expr;
 		}
 	}
 	
@@ -368,18 +393,11 @@ sub handleMap(@) {
 }
 
 
-sub handlePrimitive(@) {
+sub handleValue(@) {
 	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
 	
-	$parserOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
-	$parserOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
-	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
-	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
-	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
-	$parserOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
-	
 	my $value = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
-	
+
 	$value = "($value)[_pass = ". Spirit::regex_defExpr($structs->[-1], $cppType, $parserOpt->{'regexFilter'}) .']' if ($parserOpt->{'regexFilter'});
 	$value = "(attr_cast<$cppType>(undefined) | $value)" if ($parserOpt->{'undefined'});
 	$value = "($value | as<$cppType>()[eps])" if ($parserOpt->{'allowEmpty'});
@@ -390,6 +408,21 @@ sub handlePrimitive(@) {
 
 	$value = 'advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountBefore', $parserOpt->{'skipCountBefore'}) .") >> $value" if ($parserOpt->{'skipCountBefore'});
 	$value .= ' >> advance( '. Spirit::cppExpr_wrap($structs->[-1], $cppType, 'skipCountAfter', $parserOpt->{'skipCountAfter'}) .')' if ($parserOpt->{'skipCountAfter'});
+	
+	return $value;
+}
+
+sub handlePrimitive(@) {
+	my ($srcLocation, $cppType, $splType, $structs, $parserOpt) = @_;
+	
+	$parserOpt->{'attrNameDelimiter'} //= $parserOpt->{'globalAttrNameDelimiter'};
+	$parserOpt->{'attrNameQuoted'} //= $parserOpt->{'globalAttrNameQuoted'};
+	$parserOpt->{'delimiter'} //= $parserOpt->{'globalDelimiter'};
+	$parserOpt->{'escapeChar'} //= $parserOpt->{'globalEscapeChar'};
+	$parserOpt->{'skipper'} //= $parserOpt->{'globalSkipper'};
+	$parserOpt->{'tupleScheme'} //= $parserOpt->{'globalTupleScheme'};
+	
+	my $value = handleValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
 
 	if ($parserOpt->{'parseToState'}) {
 		(my $state = $parserOpt->{'parseToState'}) =~ tr/\"//d;
@@ -400,8 +433,8 @@ sub handlePrimitive(@) {
 		my $splType = $AdaptiveParser_h::stateVars{$state}->[2];
 		Out::errorln("State '%s' must have a primitive type", $state, $srcLocation) unless (Type::isPrimitive($splType));
 		
-		my $parseToState = Types::getPrimitiveValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
-		$value = "omit[$parseToState\[ref(op.$cppCode) = _1]] >> $value";
+		my $parseToState = handleValue($srcLocation, $cppType, $splType, $structs, $parserOpt);
+		$value = "omit[($parseToState)\[ref(op.$cppCode) = _1]] >> $value";
 	}
 	
 	return $value;
