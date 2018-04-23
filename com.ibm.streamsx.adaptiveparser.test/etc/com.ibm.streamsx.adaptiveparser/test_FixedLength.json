@@ -1,0 +1,25 @@
+{
+	"name" : "FixedLength",
+	"description" : "Test for bounded string with length as a binary prefix",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'! StartStartStartStartStartStartEnd true, 42, (1427889600,657267,0)'",
+		"type" : "rstring",
+		"output" : "{str='StartStartStartStartStartStartEnd',bl=true,it=42,ts=(timestamp)'(1427889600,657267,0)'}",
+		"schema" : "rstring str, boolean bl, int32 it, timestamp ts"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"globalSkipper" : "whitespace",
+			"tsFormat" : "'SPL'"
+		},
+		"output" :
+		{
+			"str" : [{"bound" : ["0","b"], "binaryMode" : true}]
+		}
+	}
+}

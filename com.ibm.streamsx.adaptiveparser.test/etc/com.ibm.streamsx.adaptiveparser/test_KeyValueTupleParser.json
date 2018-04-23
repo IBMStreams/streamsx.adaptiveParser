@@ -1,0 +1,21 @@
+{
+	"name" : "KeyValueTupleParser",
+	"description" : "Test for key/value to tuple parsing",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'boolean_10 = false, rstring_9 = nine, float64_8 = 8.0008, uint16_7 = 7, uint32_6 = 6, int32_5 = 5, int16_4 = 4, float32_3 = 3.3, rstring_2 = two, boolean_1 = true'",
+		"type" : "rstring",
+		"output" : "{boolean_1=true,rstring_2='two',float32_3=3.3w,int16_4=4h,int32_5=5,uint32_6=6u,uint16_7=7uh,float64_8=8.0008,rstring_9='nine',boolean_10=false}",
+		"schema" : "boolean boolean_1, rstring rstring_2, float32 float32_3, int16 int16_4, int32 int32_5, uint32 uint32_6, uint16 uint16_7, float64 float64_8, rstring rstring_9, boolean boolean_10"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"tupleScheme" : "openAttrNamePaired",
+			"globalAttrNameDelimiter" : "'='",
+			"globalDelimiter" : "','"
+		}
+	}
+}

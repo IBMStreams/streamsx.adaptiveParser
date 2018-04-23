@@ -1,0 +1,26 @@
+{
+	"name" : "SkippingFields",
+	"description" : "Test for skipping number of characters before and after fields",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'## Start ## true, 42, \"text\", (1427889600,657267,0) ## End ##'",
+		"type" : "rstring",
+		"output" : "{bl=true,it=42,str='text',ts=(timestamp)'(1427889600,657267,0)'}",
+		"schema" : "boolean bl, int32 it, rstring str, timestamp ts"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"quotedStrings" : "true",
+			"tsFormat" : "'SPL'"
+		},
+		"output" :
+		{
+			"bl" : [{"skipCountBefore" : ["11","u"]}],
+			"ts" : [{"skipCountAfter" : ["9","u"]}]
+		}
+	}
+}

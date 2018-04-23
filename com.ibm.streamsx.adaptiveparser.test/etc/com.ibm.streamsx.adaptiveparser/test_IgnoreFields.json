@@ -1,0 +1,29 @@
+{
+	"name" : "IgnoreFields",
+	"description" : "Test for extra field - parse to state",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'false, true, 42, \"text\", (1427889600,657267,0)'",
+		"type" : "rstring",
+		"output" : "{bl=true,it=42,str='text',ts=(timestamp)'(1427889600,657267,0)'}",
+		"schema" : "boolean bl, int32 it, rstring str, timestamp ts"
+	},
+	"operator" :
+	{
+		"state" :
+		{
+			"ignoreBool" : [["mutable","boolean"], false]
+		},
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"quotedStrings" : true,
+    		"tsFormat" : "'SPL'"
+		},
+		"output" :
+		{
+			"bl" : [{"parseToState" : "'ignoreBool'"}]
+		}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name" : "CSVParser",
+	"description" : "Test for CSV data with different timestamp formats",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'1427889600, 1427889600.657267, 1427889611|657267, (1427889600,657267,0), Apr 1 14:33:10, text, 42, 3.14'",
+		"type" : "rstring",
+		"output" : "{ts1=(timestamp)'(1427889600,0,0)',ts2=(timestamp)'(1427889600,657267000,0)',ts21=(timestamp)'(1427889611,657267000,0)',ts3=(timestamp)'(1427889600,657267,0)',ts4=(timestamp)'(1491049990,0,0)',data='text',meaningOfLife=42u,pi=3.14}",
+		"schema" : "timestamp ts1, timestamp ts2, timestamp ts21, timestamp ts3, timestamp ts4, rstring data, uint32 meaningOfLife, float64 pi"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "','"
+		},
+		"output" :
+		{
+			"ts2" : [{"tsToken" : "'.'"}],
+			"ts21" : [{"tsToken" : "'|'"}],
+			"ts3" : [{"tsFormat" : "'SPL'"}],
+			"ts4" : [{"tsFormat" : "'%b %d %H:%M:%S'"}]
+		}
+	}
+}

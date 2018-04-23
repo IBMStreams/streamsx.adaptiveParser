@@ -1,0 +1,22 @@
+namespace test;
+
+composite ValidateOutput(input Parsed) {
+param
+	expression $data;
+	expression<rstring> $testName;
+graph
+	() as AssertOutput = Custom(Parsed) {
+        logic
+            onTuple Parsed: {
+
+                if(Parsed == $data) {
+	            	appLog(Log.info, $testName + "'s output: " + (rstring)Parsed);
+                }
+                else {
+                	appLog(Log.error, $testName + " is failed");
+	            	appLog(Log.error, $testName + "'s expected output: " + (rstring)$data);
+	            	appLog(Log.error, $testName + "'s actual output: " + (rstring)Parsed);
+                }
+            }
+    }
+}

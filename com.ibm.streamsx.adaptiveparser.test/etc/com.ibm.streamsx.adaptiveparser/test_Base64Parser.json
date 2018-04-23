@@ -1,0 +1,19 @@
+{
+	"name" : "Base64Parser",
+	"description" : "Test for base64 string decoding",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'SGVsbG8sIHdvcmxkIQ=='",
+		"type" : "rstring",
+		"output" : "{base64Decoded = 'Hello, world!'}",
+		"schema" : "rstring base64Decoded"
+	},
+	"operator" :
+	{
+		"output" :
+		{
+			"base64Decoded" : [{"base64Mode" : true}]
+		}
+	}
+}

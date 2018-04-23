@@ -1,0 +1,25 @@
+{
+	"name" : "EmptyFields",
+	"description" : "Test for empty fields, default and undefined values",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'UNDEF,,3'",
+		"type" : "rstring",
+		"output" : "{number1=0u,number2=42u,number3=3u}",
+		"schema" : "uint32 number1, uint32 number2, uint32 number3"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"allowEmpty" : true,
+			"undefined" : "'UNDEF'"
+		},
+		"output" :
+		{
+			"number2" : [{"defaultValue" : ["42","u"]}]
+		}
+	}
+}

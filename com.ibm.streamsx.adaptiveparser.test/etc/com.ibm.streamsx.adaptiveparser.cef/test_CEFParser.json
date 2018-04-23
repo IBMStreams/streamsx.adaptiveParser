@@ -1,0 +1,30 @@
+{
+	"name" : "CEFParser",
+	"description" : "Test for cef format",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'CEF:0|Microsoft|DNS Trace Log||Response:A|Response|Unknown| eventID=4 deviceDirection=0 proto=UDP cs3=Some Text src=1.1.1.1 requestClientApp=Mozilla/5.0 (Windows NT 6.1; rv:34.0) Gecko/20100101 Firefox/34.0'",
+		"type" : "rstring",
+		"output" : "{version=0uh,deviceVendor='Microsoft',deviceProduct='DNSTraceLog',deviceVersion='',signatureID='Response:A',name='Response',severity=(enum{Low, Medium, High, VeryHigh, Unknown})'Unknown',properties={'proto':'UDP','deviceDirection':'0','requestClientApp':'Mozilla/5.0 (Windows NT 6.1; rv:34.0) Gecko/20100101 Firefox/34.0','src':'1.1.1.1','cs3':'Some Text','eventID':'4'}}",
+		"schema" : "uint16 version, rstring deviceVendor, rstring deviceProduct, rstring deviceVersion, rstring signatureID, rstring name, enum{Low, Medium, High, VeryHigh, Unknown} severity, map<rstring,rstring> properties"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "'|'",
+			"globalEscapeChar" : "'\\\\'"
+		},
+		"output" :
+		{
+			"version" : [{"prefix" : "'CEF:'"}],
+			"severity" : [{"enumAliasesMap" : "{'Very-High' : 'VeryHigh'}"}],
+			"properties" : [{"cutStringDelim" : "'CEF:'", "delimiter" : "''", "globalDelimiter" : "''", "globalEscapeChar" : "''"},
+			{
+				"key" : [{"delimiter" : "'='"}],
+				"value" : [{"cutCharsetDelim" : "'a-zA-Z0-9_.)(-'"}]
+			}]
+		}
+	}
+}

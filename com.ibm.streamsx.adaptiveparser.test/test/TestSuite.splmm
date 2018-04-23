@@ -1,0 +1,44 @@
+<%
+	unshift @INC, 'impl/include';
+	require JSONHelper;
+
+	my @test_files = glob("@ARGV[0]/test_*");
+%>
+namespace test;
+
+use com.ibm.streamsx.adaptiveparser::*;
+
+/*
+ *  TestSuite expects path to the test folder to be set as SPLMM argument
+ *  All tests must start from 'test_' prefix
+ */
+composite TestSuite {
+graph
+<%foreach my $test_file (@test_files) {
+  my $test = JSONHelper::parseJson($test_file); next unless($test->{'active'});%>
+	stream<<%=$test->{'data'}->{'type'}%> data> <%=$test->{'name'}%>Input = Custom() {
+        logic onProcess : { submit({data = <%=$test->{'data'}->{'input'}%>}, <%=$test->{'name'}%>Input); }
+    }
+
+	stream<<%=$test->{'data'}->{'schema'}%>> <%=$test->{'name'}%>Test = AdaptiveParser(<%=$test->{'name'}%>Input) {
+	<%if (exists($test->{'operator'}->{'state'})) {%>
+		logic
+			state : <%=JSONHelper::buildState($test->{'operator'}->{'state'})%>
+	<%}%>
+	<%if (exists($test->{'operator'}->{'param'})) {%>
+		param
+		<%=JSONHelper::buildParam($test->{'operator'}->{'param'})%>
+	<%}%>
+	<%if (exists($test->{'operator'}->{'output'})) {%>
+		output <%=$test->{'name'}%>Test :
+			<%=JSONHelper::buildOutputLevel('Param', $test->{'operator'}->{'output'})%>;
+	<%}%>
+	}
+
+	() as <%=$test->{'name'}%>Validate = ValidateOutput(<%=$test->{'name'}%>Test) {
+		param
+			data : <%=$test->{'data'}->{'output'}%>;
+			testName : "<%=$test->{'name'}%>Test";
+	}
+<%}%>
+}

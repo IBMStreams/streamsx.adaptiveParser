@@ -1,0 +1,22 @@
+{
+	"name" : "HierarchicalParser",
+	"description" : "Test for nested structures",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'Neil Armstrong 38 Appolo11 | Buzz Aldrin 39 Appolo11 | Pete Conrad 39 Appolo12 | Alan Bean 37 Appolo12'",
+		"type" : "rstring",
+		"output" : "{walkedOnTheMoon=[{firstName='Neil',lastName='Armstrong',age=38uh,mission='Appolo11'},{firstName='Buzz',lastName='Aldrin',age=39uh,mission='Appolo11'},{firstName='Pete',lastName='Conrad',age=39uh,mission='Appolo12'},{firstName='Alan',lastName='Bean',age=37uh,mission='Appolo12'}]}",
+		"schema" : "list<tuple<rstring firstName, rstring lastName, uint16 age, rstring mission>> walkedOnTheMoon"
+	},
+	"operator" :
+	{
+		"output" :
+		{
+			"walkedOnTheMoon" : [{"globalDelimiter" : "'|'"},
+			{
+				"value" : [{"globalDelimiter" : "''"}]
+			}]
+		}
+	}
+}

@@ -1,0 +1,26 @@
+{
+	"name" : "RandomOrder",
+	"description" : "Test for unordered data recognized base on field types",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'\"text\", (1427889600,657267,0), 42'",
+		"type" : "rstring",
+		"output" : "{bl=true,it=42,str='text',ts=(timestamp)'(1427889600,657267,0)'}",
+		"schema" : "boolean bl, int32 it, rstring str, timestamp ts"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"quotedStrings" : true,
+			"tupleScheme" : "openTypeUnordered",
+			"tsFormat" : "'SPL'"
+		},
+		"output" :
+		{
+			"bl" : [{"defaultValue" : true}]
+		}
+	}
+}

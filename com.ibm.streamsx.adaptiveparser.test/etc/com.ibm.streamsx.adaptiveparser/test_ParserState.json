@@ -1,0 +1,23 @@
+{
+	"name" : "ParserState",
+	"description" : "Test for using state as a count to skip number of characters",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'0123456789'",
+		"type" : "rstring",
+		"output" : "{str='456789'}",
+		"schema" : "rstring str"
+	},
+	"operator" :
+	{
+		"state" :
+		{
+			"count" : [["mutable","uint32"], ["4","u"]]
+		},
+		"output" :
+		{
+			"str" : [{"skipCountBefore" : "count"}]
+		}
+	}
+}

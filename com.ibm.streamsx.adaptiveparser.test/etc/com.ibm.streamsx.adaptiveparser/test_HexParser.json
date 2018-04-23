@@ -1,0 +1,19 @@
+{
+	"name" : "HexParser",
+	"description" : "Test for hexadecimals as string",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'\\\\x31\\\\x32\\\\x33\\\\x34'",
+		"type" : "rstring",
+		"output" : "{hexNums='1234'}",
+		"schema" : "rstring hexNums"
+	},
+	"operator" :
+	{
+		"output" :
+		{
+			"hexNums" : [{"hexCharPrefix" : "'\\\\x'"}]
+		}
+	}
+}

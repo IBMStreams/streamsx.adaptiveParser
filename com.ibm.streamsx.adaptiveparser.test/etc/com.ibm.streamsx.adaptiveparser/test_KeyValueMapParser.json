@@ -1,0 +1,22 @@
+{
+	"name" : "KeyValueMapParser",
+	"description" : "Test for key/value to map parsing",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'boolean_10 = false, rstring_9 = nine, float64_8 = 8.0008, uint16_7 = 7, uint32_6 = 6, int32_5 = 5, int16_4 = 4, float32_3 = 3.3, rstring_2 = two, boolean_1 = true'",
+		"type" : "rstring",
+		"output" : "{properties={'uint32_6':'6','int32_5':'5','boolean_10':'false','rstring_2':'two','boolean_1':'true','int16_4':'4','uint16_7':'7','float64_8':'8.0008','float32_3':'3.3','rstring_9':'nine'}}",
+		"schema" : "map<rstring,rstring> properties"
+	},
+	"operator" :
+	{
+		"output" :
+		{
+			"properties" : [{"globalDelimiter" : "','"},
+			{
+				"key" : [{"delimiter" : "'='"}]
+			}]
+		}
+	}
+}

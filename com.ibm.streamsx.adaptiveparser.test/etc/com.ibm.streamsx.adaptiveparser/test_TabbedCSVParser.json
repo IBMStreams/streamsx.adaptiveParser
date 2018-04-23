@@ -1,0 +1,19 @@
+{
+	"name" : "TabbedCSVParser",
+	"description" : "Test for tab separated csv data",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'word\ttwo words\tand three words'",
+		"type" : "rstring",
+		"output" : "{str1='word',str2='two words',str3='and three words'}",
+		"schema" : "rstring str1, rstring str2, rstring str3"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"globalSkipper" : "tab"
+		}
+	}
+}

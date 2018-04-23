@@ -1,0 +1,24 @@
+{
+	"name" : "CLFParser",
+	"description" : "Test for clf format",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'127.0.0.1 - frank [10/Oct/2000:13:55:36 -0700] \"GET /apache_pb.gif HTTP/1.0\" 200 2326'",
+		"type" : "rstring",
+		"output" : "{clientIp='127.0.0.1',clientId='',userId='frank',ts=(timestamp)'(971178936,0,0)',clientRequest='GET /apache_pb.gif HTTP/1.0',statusCode=200uh,size=2326uh}",
+		"schema" : "rstring clientIp, rstring clientId, rstring userId, timestamp ts, rstring clientRequest, uint16 statusCode, uint16 size"
+	},
+	"operator" :
+	{
+		"param" :
+		{
+			"undefined" : "'-'"
+		},
+		"output" :
+		{
+			"ts" : [{"prefix" : "'['", "suffix" : "']'", "tsFormat" : "'%d/%b/%Y:%H:%M:%S %z'"}],
+			"clientRequest" : [{"quotedStrings" : true}]
+		}
+	}
+}

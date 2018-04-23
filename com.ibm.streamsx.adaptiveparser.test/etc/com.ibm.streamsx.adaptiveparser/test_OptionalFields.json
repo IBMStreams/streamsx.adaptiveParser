@@ -1,0 +1,31 @@
+{
+	"name" : "OptionalFields",
+	"description" : "Test for optional fields recognized base on field types",
+	"active" : true,
+	"data" :
+	{
+		"input" : "'42, \"text\", (1427889600,657267,0)'",
+		"type" : "rstring",
+		"output" : "{bl=true,it=42,str='text',ts=(timestamp)'(1427889600,657267,0)'}",
+		"schema" : "boolean bl, int32 it, rstring str, timestamp ts"
+	},
+	"operator" :
+	{
+		"state" :
+		{
+			"bl" : [["boolean"], true]
+		},
+		"param" :
+		{
+			"globalDelimiter" : "','",
+			"globalSkipper" : "whitespace",
+			"quotedStrings" : true,
+			"tupleScheme" : "openTypeOrdered",
+			"tsFormat" : "'SPL'"
+		},
+		"output" :
+		{
+			"bl" : [{"defaultValue" : "bl"}]
+		}
+	}
+}
