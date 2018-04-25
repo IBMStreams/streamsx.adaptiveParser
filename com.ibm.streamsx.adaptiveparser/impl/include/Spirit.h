@@ -311,6 +311,7 @@ namespace ext {
     				struct tm *currTm = localtime(&currTime);
     				parsedTm.tm_year = currTm->tm_year;
     			}
+    			parsedTm.tm_isdst = -1;
 				time_t rawtime = mktime(&parsedTm);
 				if(rawtime >= 0) {
 					traits::assign_to(SPL::timestamp(rawtime,0,0), attr);
