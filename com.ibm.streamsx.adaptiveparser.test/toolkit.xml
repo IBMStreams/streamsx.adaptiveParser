@@ -10,7 +10,7 @@
     </uriTable>
     <namespace name="test">
       <compositeOp column="11" line="6" name="TestSuite2" potentialMain="true" uriIndex="1"/>
-      <compositeOp column="11" line="6" name="TestSuite" potentialMain="true" uriIndex="2"/>
+      <compositeOp column="11" line="10" name="TestSuite" potentialMain="true" uriIndex="2"/>
       <compositeOp column="11" line="3" name="ValidateOutput" potentialMain="false" uriIndex="3">
         <parameter metaType="Expression" name="data" optional="false"/>
         <parameter metaType="Expression" name="testName" optional="false" type="&lt;rstring>"/>
