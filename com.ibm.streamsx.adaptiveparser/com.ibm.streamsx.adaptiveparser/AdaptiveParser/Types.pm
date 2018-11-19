@@ -266,12 +266,12 @@ sub getPrimitiveValue(@) {
 		}
 	}
 	elsif (Type::isComplex($splType)) {
-		SPL::CodeGen::errorln("The type '%s' is not supported.", $splType, $srcLocation);
+		SPL::CodeGen::exitln("The type '%s' is not supported.", $splType, $srcLocation);
 	}
 	elsif ($parserOpt->{'binaryMode'}) {
 	
 		if (Type::isDecimal($splType)) {
-			SPL::CodeGen::errorln("The type '%s' is not supported in binary mode.", $splType, $srcLocation);
+			SPL::CodeGen::exitln("The type '%s' is not supported in binary mode.", $splType, $srcLocation);
 			$value = 'double_';
 		}
 		elsif (Type::isFloat32($splType)) {
