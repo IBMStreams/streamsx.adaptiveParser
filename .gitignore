@@ -5,6 +5,7 @@ samples/*/doc
 samples/*/output
 samples/*/toolkit.xml
 index.*
+**/toolkit.xml
 # begin streamsx.adaptiveparser excluded
 .classpath
 .settings
